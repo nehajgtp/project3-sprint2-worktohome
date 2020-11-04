@@ -51,3 +51,5 @@ If that doesn't work: `sudo vim $(psql -c "show hba_file;" | grep pg_hba.conf)`
   a) `npm run watch`. If prompted to install webpack-cli, type "yes"    
   b) In a new terminal, `python app.py`    
   c) Preview Running Application (might have to clear your cache by doing a hard refresh)    
+
+#test from ali
