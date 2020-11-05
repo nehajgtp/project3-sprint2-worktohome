@@ -29,15 +29,20 @@ db.app = app
 db.create_all()
 db.session.commit()
 
-def emit_all_addresses(channel):
-    all_addresses = [ \
-        db_address.address for db_address \
-        in db.session.query(models.Usps).all()]
-        
-    socketio.emit(channel, {
-        'allAddresses': all_addresses
-    })
-
+#CALL THIS FUNCTION TO ADD TO THE DATABASE OR UPDATE DATABASE
+def sendToDatabase(email, address, price_range_low, price_range_high, distance, listing):
+    if(db.query()):#Has the table
+       z = 0 #TODO Update the record
+    else:#Doesn't have the table
+        db.session.add(models.table_defintion(address, price_range_low, price_range_high, distance, listing))
+        db.session.commit()
+    return None # !!!!!!!
+def displayTable(user_email):
+    if db.seesion.query(): #TODO find a table matching the user
+        socketio.emit("current table", {})
+    else: #Didn't find it.
+        socketio.emit("current table", {})
+    return None #!!!!
 
 @socketio.on('connect')
 def on_connect():
@@ -46,9 +51,6 @@ def on_connect():
         'test': 'Connected'
     })
     
-    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
-    
-
 @socketio.on('disconnect')
 def on_disconnect():
     print ('Someone disconnected!')
@@ -57,15 +59,8 @@ def on_disconnect():
 def on_new_address(data):
     print("Got an event for new address input with data:", data)
     
-    db.session.add(models.Usps(data["address"]));
-    db.session.commit();
-    
-    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
-
 @app.route('/')
 def index():
-    emit_all_addresses(ADDRESSES_RECEIVED_CHANNEL)
-
     return flask.render_template("index.html")
 
 if __name__ == '__main__': 
