@@ -1,20 +1,54 @@
 import * as React from 'react';
+import { Socket } from './Socket';
+
 
 export function SearchEngine() {
+    const [address, setAddress] = React.useState("");
+    const [city, setCity] = React.useState("");
     const [statecode, setStateCode] = React.useState("");
+    const [maxCommute, setMaxCommute] = React.useState(50);
+    const [minPrice, setMinPrice] = React.useState(0);
+    const [maxPrice, setMaxPrice] = React.useState(10000);
+    
+    function handleAddressChange(event) {
+        setAddress(event.target.value);
+    }
+    
+    function handleCityChange(event) {
+        setCity(event.target.value);
+    }
     
     function handleStateChange(event) {
         setStateCode(event.target.value);
     }
     
+    function handleMaxCommuteChange(event) {
+        setMaxCommute(event.target.value);
+    }
+    
+    function handleMinPriceChange(event) {
+        setMinPrice(event.target.value);
+    }
+    
+    function handleMaxPriceChange(event) {
+        setMaxPrice(event.target.value);
+    }
+    
     function handleSubmit() {
-        alert(statecode);
+        Socket.emit('send search parameters', {
+            'address': address,
+            'city': city,
+            'state': statecode,
+            'max_commute': maxCommute,
+            'min_price': minPrice,
+            'max_price': maxPrice
+        })
     }
     
     return (<div>
                 <h3>Commute Location</h3>
-                Address: <input></input>
-                City: <input></input>
+                Address: <input onChange={handleAddressChange}></input>
+                City: <input onChange={handleCityChange}></input>
                 <label for="state">State:</label>
                 <select onChange={handleStateChange}>
                     <option value=""> -- Select state -- </option>
@@ -72,10 +106,10 @@ export function SearchEngine() {
                 </select> 
                 <h3>Housing Prefrences</h3>
                 Maximum Commute Distance (miles): 
-                <input placeholder="Max Commute"></input>
+                <input placeholder="Max Commute" onChange={handleMaxCommuteChange}></input>
                 Price:
-                <input placeholder="Min Price"></input>
-                <input placeholder="Max Price"></input>
+                <input placeholder="Min Price" onChange={handleMinPriceChange}></input>
+                <input placeholder="Max Price" onChange={handleMaxPriceChange}></input>
                 <br></br>
                 <button onClick={handleSubmit}>Search</button>
                 <hr></hr>
