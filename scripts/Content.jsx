@@ -27,6 +27,7 @@ export function Content() {
                         <li key={index}>{address}</li>)}
                 </ol>
             <Button />
+            <h1>{window.sessionStorage.getItem('name')}</h1>
         </div>
     );
 }
