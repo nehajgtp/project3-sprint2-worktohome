@@ -29,6 +29,8 @@ db.app = app
 db.create_all()
 db.session.commit()
 
+CURRENT_EMAIL = ""
+
 #CALL THIS FUNCTION TO ADD TO THE DATABASE OR UPDATE DATABASE
 def sendToDatabase(email, address, price_range_low, price_range_high, distance, listing):
     if(db.query()):#Has the table
@@ -55,9 +57,18 @@ def on_connect():
 def on_disconnect():
     print ('Someone disconnected!')
 
-@socketio.on('new address input')
-def on_new_address(data):
-    print("Got an event for new address input with data:", data)
+@socketio.on('send search parameters')
+def parsing_search_parameters(data):
+    street_address = data["address"]
+    city = data["city"]
+    state = data["state"]
+    distance = data["max_communte"]
+    min_price = data["min_price"]
+    max_price = data["max_price"]
+    absolute_address = street_address + ", " + city + ", " + state 
+    listing = None # CALL API HERE
+    sendToDatabase(CURRENT_EMAIL, absolute_address, min_price, max_price, distance, listing)
+    #return ?
     
 @app.route('/')
 def index():
