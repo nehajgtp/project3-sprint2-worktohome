@@ -4,15 +4,15 @@ from dotenv import load_dotenv
 import os
 import flask
 import flask_sqlalchemy
-import flask_socketio
+import flask_SOCKETIO
 import models 
 
 ADDRESSES_RECEIVED_CHANNEL = 'addresses received'
 
 app = flask.Flask(__name__)
 
-socketio = flask_socketio.SocketIO(app)
-socketio.init_app(app, cors_allowed_origins="*")
+SOCKETIO = flask_SOCKETIO.SocketIO(app)
+SOCKETIO.init_app(app, cors_allowed_origins="*")
 
 dotenv_path = join(dirname(__file__), 'sql.env')
 load_dotenv(dotenv_path)
@@ -21,43 +21,50 @@ database_uri = os.environ['DATABASE_URL']
 
 app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 
-db = flask_sqlalchemy.SQLAlchemy(app)
-db.init_app(app)
-db.app = app
+DB = flask_sqlalchemy.SQLAlchemy(app)
+DB.init_app(app)
+DB.app = app
 
 
-db.create_all()
-db.session.commit()
+DB.create_all()
+DB.session.commit()
 
 CURRENT_EMAIL = ""
 
 #CALL THIS FUNCTION TO ADD TO THE DATABASE OR UPDATE DATABASE
 def sendToDatabase(email, address, price_range_low, price_range_high, distance, listing):
-    if(db.query()):#Has the table
-       z = 0 #TODO Update the record
+    records = DB.query(models.table_defintion).all()
+    if(records != None):#Has the table
+        DB.session.update()
     else:#Doesn't have the table
-        db.session.add(models.table_defintion(address, price_range_low, price_range_high, distance, listing))
-        db.session.commit()
+        DB.session.add(models.table_defintion(address, price_range_low, price_range_high, distance, listing))
+        DB.session.commit()
     return None # !!!!!!!
 def displayTable(user_email):
-    if db.seesion.query(): #TODO find a table matching the user
-        socketio.emit("current table", {})
+    if DB.seesion.query(): #TODO find a table matching the user
+        SOCKETIO.emit("current table", {})
     else: #Didn't find it.
-        socketio.emit("current table", {})
+        SOCKETIO.emit("current table", {})
     return None #!!!!
 
-@socketio.on('connect')
+@SOCKETIO.on('connect')
 def on_connect():
     print('Someone connected!')
-    socketio.emit('connected', {
+    SOCKETIO.emit('connected', {
         'test': 'Connected'
     })
     
-@socketio.on('disconnect')
+@SOCKETIO.on('disconnect')
 def on_disconnect():
     print ('Someone disconnected!')
 
-@socketio.on('send search parameters')
+@SOCKETIO.on('New Logged In User')
+def new_user(data):
+    email = data["email"]
+    CURRENT_EMAIL = email
+
+    
+@SOCKETIO.on('send search parameters')
 def parsing_search_parameters(data):
     street_address = data["address"]
     city = data["city"]
@@ -70,12 +77,22 @@ def parsing_search_parameters(data):
     sendToDatabase(CURRENT_EMAIL, absolute_address, min_price, max_price, distance, listing)
     #return ?
     
+  #Might need this later, depends on implementation  
+#class instance():
+#    curr_email = ""
+    
+#    def __init__(self, email):
+ #       self.curr_email = email
+#    
+ #   def __repr__(self):
+ #       return '<The email is : %s>' % self.curr_email 
+    
 @app.route('/')
 def index():
     return flask.render_template("index.html")
 
 if __name__ == '__main__': 
-    socketio.run(
+    SOCKETIO.run(
         app,
         host=os.getenv('IP', '0.0.0.0'),
         port=int(os.getenv('PORT', 8080)),
