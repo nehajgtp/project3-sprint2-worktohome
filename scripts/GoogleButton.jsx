@@ -12,7 +12,7 @@ export function GoogleButton(props){
         window.sessionStorage.setItem('name', name);
         window.sessionStorage.setItem('email', email);
         Socket.emit("New Logged In User", {
-            name, email, imageUrl
+            "name":name, "email":email, "imageUrl":imageUrl
         });
         history.push("/content");
         return true;
