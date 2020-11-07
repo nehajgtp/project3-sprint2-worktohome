@@ -1,12 +1,12 @@
 # models.py
 import flask_sqlalchemy
-from app import db
+from app import DB
 
 LISTINGS = {}
 
-class table_defintion(db.Model):
-    address = db.Column(db.String(255), primary_key=True)
-    listings = db.Column(db.Array)
+class table_defintion(DB.Model):
+    address = DB.Column(DB.String(255), primary_key=True)
+    listings = DB.Column(DB.Array)
     
     def __init__(self, string, price_one, price_two, dist, new_listing):
         search_data = search_parameters(string, price_one, price_two, dist)
