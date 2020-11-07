@@ -3,3 +3,4 @@ package-lock.json
 sql.env
 __pycache__
 apikeys.env
+googleapi.py
