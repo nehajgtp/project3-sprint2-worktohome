@@ -2,14 +2,14 @@ import * as React from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { useHistory } from 'react-router-dom';
 
-export function GoogleButton(){
+export function GoogleButton(props){
     const history = useHistory();
     function handleSubmit(response){
-        console.log(response)
         const { name } = response.profileObj;
+        const { email } = response.profileObj
         window.sessionStorage.setItem('name', name);
+        window.sessionStorage.setItem('email', email);
         history.push("/content");
-        
         return true;
     }
     return (
