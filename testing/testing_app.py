@@ -1,7 +1,11 @@
 #tests app.py
+from os.path import dirname, join
+import sys
+sys.path.append(join(dirname(__file__), "../"))
+
 
 import unittest
-import models
+import app
 import os
 
 KEY_INPUT = "input"

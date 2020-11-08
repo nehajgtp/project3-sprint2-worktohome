@@ -41,7 +41,8 @@ def sendToDatabase(email, address, price_range_low, price_range_high, distance, 
         DB.session.add(models.table_defintion(address, price_range_low, price_range_high, distance, listing))
         DB.session.commit()
     return None # !!!!!!!
-def displayTable(user_email):
+    
+def displayTable(user_email):#For Sprint 2
     if DB.seesion.query(): #TODO find a table matching the user
         SOCKETIO.emit("current table", {})
     else: #Didn't find it.

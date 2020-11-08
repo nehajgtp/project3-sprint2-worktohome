@@ -1,8 +1,12 @@
 #tests models.py
+from os.path import dirname, join
+import sys
+sys.path.append(join(dirname(__file__), "../"))
 
 import unittest
 import models
 import os
+
 
 KEY_INPUT = "input"
 KEY_EXPECTED = "expected"
@@ -51,4 +55,4 @@ def check_class__search_parameters(testing_parameter):
     
 if __name__ == '__main__':
     unittest.main()
-    
+    for()
