@@ -14,8 +14,8 @@ export default function SearchListings() {
   const [listings, setListings] = React.useState(dict);
 
   function onSearch() {
-    Socket.on('receive listings', (data) => {
-      setListings(data.listings);
+    Socket.on('sending listing', (data) => {
+      setListings(data);
     });
   }
 

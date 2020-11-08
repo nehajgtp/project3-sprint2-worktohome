@@ -35,12 +35,12 @@ export default function SearchEngine() {
 
   function handleSubmit() {
     Socket.emit('send search parameters', {
-      address,
-      city,
-      state: statecode,
-      max_commute: maxCommute,
-      min_price: minPrice,
-      max_price: maxPrice,
+      'address': address,
+      'city': city,
+      'state': statecode,
+      'max_commute': maxCommute,
+      'min_price': minPrice,
+      'max_price': maxPrice,
     });
   }
 
