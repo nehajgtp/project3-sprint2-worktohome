@@ -68,6 +68,11 @@ def index():
 
     return flask.render_template("index.html")
 
+@app.route('/content')
+def content():
+    return flask.render_template("index.html")
+
+
 if __name__ == '__main__': 
     socketio.run(
         app,
