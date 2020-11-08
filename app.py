@@ -4,14 +4,15 @@ from dotenv import load_dotenv
 import os
 import flask
 import flask_sqlalchemy
-import flask_SOCKETIO
+import flask_socketio
 import models 
+import apifunctions
 
 ADDRESSES_RECEIVED_CHANNEL = 'addresses received'
 
 app = flask.Flask(__name__)
 
-SOCKETIO = flask_SOCKETIO.SocketIO(app)
+SOCKETIO = flask_socketio.SocketIO(app)
 SOCKETIO.init_app(app, cors_allowed_origins="*")
 
 dotenv_path = join(dirname(__file__), 'sql.env')
@@ -75,17 +76,17 @@ def parsing_search_parameters(data):
     absolute_address = street_address + ", " + city + ", " + state 
     listing = None # CALL API HERE
     sendToDatabase(CURRENT_EMAIL, absolute_address, min_price, max_price, distance, listing)
+    listings = apifunctions.getHomes(city, state, min_price, max_price)
+    if(listings == -1):
+        return None
+    else:
+        send_listings(listings)
     #return ?
     
-  #Might need this later, depends on implementation  
-#class instance():
-#    curr_email = ""
-    
-#    def __init__(self, email):
- #       self.curr_email = email
-#    
- #   def __repr__(self):
- #       return '<The email is : %s>' % self.curr_email 
+def send_listings(array):
+    #for listing in array:
+    SOCKETIO.emit('sending listings', array)
+
     
 @app.route('/')
 def index():
