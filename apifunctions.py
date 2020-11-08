@@ -137,6 +137,9 @@ def nearbyHomes(property_id,min_price,max_price):
     except IndexError as e:
         print("No results found for this address!")
     
-    
+
+def distance(start_address,end_address):
+    print("TODO")
+
 getHomes("clifton","nj",300000,70000000)
 #nearbyHomes("M6467862834")
