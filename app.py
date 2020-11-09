@@ -62,6 +62,7 @@ def on_disconnect():
 
 @SOCKETIO.on('New Logged In User')
 def new_user(data):
+    global CURRENT_EMAIL
     email = data["email"]
     CURRENT_EMAIL = email
 
@@ -71,7 +72,7 @@ def parsing_search_parameters(data):
     street_address = data["address"]
     city = data["city"]
     state = data["state"]
-    distance = data["max_communte"]
+    distance = data["max_commute"]
     min_price = data["min_price"]
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state 
@@ -79,14 +80,9 @@ def parsing_search_parameters(data):
     sendToDatabase(CURRENT_EMAIL, absolute_address, min_price, max_price, distance, listing)
     listings = apifunctions.getHomes(city, state, min_price, max_price)
     if(listings == -1):
-        return None
+        SOCKETIO.emit('sending listing', [])
     else:
-        send_listings(listings)
-    #return ?
-    
-def send_listings(array):
-    #for listing in array:
-    SOCKETIO.emit('sending listings', array)
+        SOCKETIO.emit('sending listing', listings)
 
     
 @app.route('/')
