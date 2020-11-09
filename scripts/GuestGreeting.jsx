@@ -4,7 +4,7 @@ export function GuestGreeting() {
     return (
         <div>  
             <h2> Work to Home </h2>
-            <span>Brief Description of Website</span>
+            <p>Make your home search more convenient to your commute!</p>
             <GoogleButton/>
         </div>
         );

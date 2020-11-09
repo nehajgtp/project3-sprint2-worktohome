@@ -3,15 +3,7 @@ import * as React from 'react';
 import { Socket } from './Socket';
 
 export default function SearchListings() {
-  const dict = [{
-    address: '1600 Pennsylvania Ave, Washington, DC',
-    image: 'https://d3g9pb5nvr3u7.cloudfront.net/sites/54e605552720c85d64735cc5/-911839127/256.png',
-  },
-  {
-    address: 'Elvis Presley Blvd, Memphis, TN 38116',
-    image: 'https://upload.wikimedia.org/wikipedia/commons/5/54/Graceland_Memphis_Tennessee.jpg',
-  }];
-  const [listings, setListings] = React.useState(dict);
+  const [listings, setListings] = React.useState([]);
 
   function onSearch() {
     Socket.on('sending listing', (data) => {
@@ -28,9 +20,15 @@ export default function SearchListings() {
                 listings.map(
                   (listing) => (
                     <p>
-                      {listing.address}
+                      Address: {listing.HOME_STREET} {listing.HOME_CITY}, {listing.HOME_STATE_CODE}
                       <br />
-                      <img id="house" alt="House" src={listing.image} />
+                      <img id="house" alt="" src={listing.HOME_IMAGE} />
+                      <br />
+                      Price: ${listing.HOME_PRICE}
+                      <br />
+                      Beds: {listing.HOME_BATHS}
+                      <br />
+                      Baths: {listing.HOME_BEDS}
                       <hr />
                     </p>
                   ),
