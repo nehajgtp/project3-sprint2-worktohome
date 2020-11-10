@@ -34,7 +34,8 @@ HOME_LON = "home_lon"
 
 
 def getHomes(city,state_code,min_price,max_price):
-    
+    min_price = int(min_price)
+    max_price = int(max_price)
     url = "https://rapidapi.p.rapidapi.com/properties/v2/list-for-sale"
     querystring = {"city":city,"limit":"5","offset":"0","state_code":state_code,"sort":"relevance"}
     
