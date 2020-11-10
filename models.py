@@ -10,7 +10,7 @@ class table_defintion(DB.Model):
     price_high = DB.Column(DB.Integer)
     distance = DB.Column(DB.Integer)
 
-    def __init__(self, email, address, price_one, price_two, dist, new_listing):
+    def __init__(self, email, address, price_one, price_two, dist):
         search_data = search_parameters(address, price_one, price_two, dist)
         self.email = email
         self.address = search_data.address
