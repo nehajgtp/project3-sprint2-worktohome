@@ -30,7 +30,7 @@ class search_parameters():
     def __init__(self, string, price_one, price_two, dist):
         self.address = string;
         self.price_range_low = price_one;
-        self.price_range_low = price_two;
+        self.price_range_high = price_two;
         self.distance = dist
         
     def __repr__(self):
