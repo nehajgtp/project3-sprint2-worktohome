@@ -5,7 +5,6 @@ import os
 import flask
 import flask_sqlalchemy
 import flask_socketio
-import models 
 import apifunctions
 
 ADDRESSES_RECEIVED_CHANNEL = 'addresses received'
@@ -23,13 +22,13 @@ database_uri = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 
 DB = flask_sqlalchemy.SQLAlchemy(app)
-DB.init_app(app)
-DB.app = app
+def init_db(app):
+    DB.init_app(app)
+    DB.app = app
+    DB.create_all()
+    DB.session.commit()
 
-
-DB.create_all()
-DB.session.commit()
-
+import models
 CURRENT_EMAIL = ""
 
 #CALL THIS FUNCTION TO ADD TO THE DATABASE OR UPDATE DATABASE
@@ -78,6 +77,7 @@ def parsing_search_parameters(data):
     listing = None # CALL API HERE
     sendToDatabase(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)
     listings = apifunctions.getHomes(city, state, min_price, max_price)
+    print(listings)
     if(listings == -1):
         SOCKETIO.emit('sending listing', [])
     else:
@@ -90,6 +90,7 @@ def index():
 
 @app.route('/content')
 def content():
+    init_db(app)
     return flask.render_template("index.html")
 
 
