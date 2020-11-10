@@ -20,15 +20,15 @@ export default function SearchListings() {
                 listings.map(
                   (listing) => (
                     <p>
-                      Address: {listing.HOME_STREET}, {listing.HOME_CITY}, {listing.HOME_STATE_CODE}
+                      Address: {listing.HOME_STREET}, {listing.home_city}, {listing.home_state_code}
                       <br />
-                      <img id="house" alt="" src={listing.HOME_IMAGE} />
+                      <img id="house" alt="" src={listing.home_image} />
                       <br />
-                      Price: ${listing.HOME_PRICE}
+                      Price: ${listing.home_price}
                       <br />
-                      Beds: {listing.HOME_BATHS}
+                      Beds: {listing.home_baths}
                       <br />
-                      Baths: {listing.HOME_BEDS}
+                      Baths: {listing.home_beds}
                       <hr />
                     </p>
                   ),
