@@ -33,21 +33,20 @@ DB.session.commit()
 CURRENT_EMAIL = ""
 
 #CALL THIS FUNCTION TO ADD TO THE DATABASE OR UPDATE DATABASE
-def sendToDatabase(email, address, price_range_low, price_range_high, distance, listing):
-    records = DB.query(models.table_defintion).all()
-    if(records != None):#Has the table
-        DB.session.update()
-    else:#Doesn't have the table
-        DB.session.add(models.table_defintion(address, price_range_low, price_range_high, distance, listing))
-        DB.session.commit()
-    return None # !!!!!!!
+def sendToDatabase(email, address, price_range_low, price_range_high, distance):
+    DB.session.add(models.table_defintion(CURRENT_EMAIL, address, price_range_low, price_range_high, distance))
+    DB.session.commit()
     
 def displayTable(user_email):#For Sprint 2
-    if DB.seesion.query(): #TODO find a table matching the user
-        SOCKETIO.emit("current table", {})
+    
+    records = DB.session.query(models.table_defintion).filter(models.table_defintion.email == CURRENT_EMAIL).all()
+    if records != None: #TODO find a table matching the user
+        history_table = []
+        for record in records:
+            history_table.append(record)
+        SOCKETIO.emit("current table", history_table)
     else: #Didn't find it.
-        SOCKETIO.emit("current table", {})
-    return None #!!!!
+        SOCKETIO.emit("current table", [])
 
 @SOCKETIO.on('connect')
 def on_connect():
@@ -77,7 +76,7 @@ def parsing_search_parameters(data):
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state 
     listing = None # CALL API HERE
-    sendToDatabase(CURRENT_EMAIL, absolute_address, min_price, max_price, distance, listing)
+    sendToDatabase(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)
     listings = apifunctions.getHomes(city, state, min_price, max_price)
     if(listings == -1):
         SOCKETIO.emit('sending listing', [])
