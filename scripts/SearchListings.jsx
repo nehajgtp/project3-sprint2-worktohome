@@ -20,7 +20,7 @@ export default function SearchListings() {
                 listings.map(
                   (listing) => (
                     <p>
-                      Address: {listing.HOME_STREET}, {listing.home_city}, {listing.home_state_code}
+                      Address: {listing.home_street}, {listing.home_city}, {listing.home_state_code}
                       <br />
                       <img id="house" alt="" src={listing.home_image} />
                       <br />
