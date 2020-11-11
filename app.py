@@ -91,7 +91,7 @@ def parsing_search_parameters(data):
     "home_image": "https://ap.rdcpix.com/4f5171535d64d87096aca43b6b9035e4l-m1056436147xd-w300_h300_q80.jpg",\
     "home_lon": -74.4537076,\
     "home_lat": 40.8606866\
-  }]
+    }]
     if(listings == -1):
         SOCKETIO.emit('sending listing', [])
     else:
