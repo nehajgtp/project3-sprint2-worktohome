@@ -2,8 +2,9 @@
 import flask_sqlalchemy
 from app import DB
 
+
 class table_defintion(DB.Model):
-    id = DB.Column(DB.Integer, primary_key=True)   
+    id = DB.Column(DB.Integer, primary_key=True)
     email = DB.Column(DB.String(255))
     address = DB.Column(DB.String(255))
     price_low = DB.Column(DB.Integer)
@@ -19,19 +20,26 @@ class table_defintion(DB.Model):
         self.distance = search_data.distance
 
     def __repr__(self):
-        return '<The address: %s>' % self.address 
+        return "<The address: %s>" % self.address
 
-class search_parameters():
+
+class search_parameters:
     address = ""
     price_range_low = 0
     price_range_high = 0
     distance = 0
-    
+
     def __init__(self, string, price_one, price_two, dist):
-        self.address = string;
-        self.price_range_low = price_one;
-        self.price_range_high = price_two;
+        self.address = string
+        self.price_range_low = price_one
+        self.price_range_high = price_two
         self.distance = dist
-        
+
     def __repr__(self):
-        return '<The address is %s, the price is between %d and %d, and the distance is %d.>' % self.address %self.price_range_low %self.price_range_high %self.distance
+        return (
+            "<The address is %s, the price is between %d and %d, and the distance is %d.>"
+            % self.address
+            % self.price_range_low
+            % self.price_range_high
+            % self.distance
+        )
