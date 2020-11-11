@@ -2,3 +2,6 @@ node_modules/
 package-lock.json
 sql.env
 __pycache__
+apikeys.env
+googleapi.py
+googleRAPID_keys.env
