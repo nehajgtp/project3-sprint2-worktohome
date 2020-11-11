@@ -95,6 +95,7 @@ def content():
 
 
 if __name__ == '__main__': 
+    init_db(app)
     SOCKETIO.run(
         app,
         host=os.getenv('IP', '0.0.0.0'),
