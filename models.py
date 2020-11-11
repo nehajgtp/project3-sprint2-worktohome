@@ -1,9 +1,15 @@
 # models.py
+'''
+Defines the table for PSQL (data persistence)
+'''
 import flask_sqlalchemy
 from app import DB
 
 
-class table_defintion(DB.Model):
+class TableDefintion(DB.Model):
+    '''
+    Main class
+    '''
     id = DB.Column(DB.Integer, primary_key=True)
     email = DB.Column(DB.String(255))
     address = DB.Column(DB.String(255))
@@ -12,7 +18,7 @@ class table_defintion(DB.Model):
     distance = DB.Column(DB.Integer)
 
     def __init__(self, email, address, price_one, price_two, dist):
-        search_data = search_parameters(address, price_one, price_two, dist)
+        search_data = SearchParameters(address, price_one, price_two, dist)
         self.email = email
         self.address = search_data.address
         self.price_low = search_data.price_range_low
@@ -23,7 +29,10 @@ class table_defintion(DB.Model):
         return "<The address: %s>" % self.address
 
 
-class search_parameters:
+class SearchParameters:
+    '''
+    Helper class
+    '''
     address = ""
     price_range_low = 0
     price_range_high = 0

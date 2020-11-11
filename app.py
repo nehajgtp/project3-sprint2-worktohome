@@ -40,23 +40,23 @@ def send_to_database(email, address, price_range_low, price_range_high, distance
     CALL THIS FUNCTION TO ADD TO THE DATABASE OR UPDATE DATABASE
     '''
     DB.session.add(
-        models.table_defintion(
-            CURRENT_EMAIL, address, price_range_low, price_range_high, distance
+        models.TableDefintion(
+            email, address, price_range_low, price_range_high, distance
         )
     )
     DB.session.commit()
 
 
-def display_table(user_email):
+def display_table():
     '''
     For Sprint 2
     '''
     records = (
-        DB.session.query(models.table_defintion)
-        .filter(models.table_defintion.email == CURRENT_EMAIL)
+        DB.session.query(models.TableDefintion)
+        .filter(models.TableDefintion.email == CURRENT_EMAIL)
         .all()
     )
-    if records != None:
+    if records is not None:
         history_table = []
         for record in records:
             history_table.append(record)

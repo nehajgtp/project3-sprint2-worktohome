@@ -1,21 +1,24 @@
-import requests
+'''
+This file imports infromation from the selected APIs.
+'''
+import os
 import json
 from os.path import join, dirname
 from dotenv import load_dotenv
-import os
 import googlemaps
 from datetime import datetime
+import requests
 
-dotenv_path = join(dirname(__file__), "apikeys.env")
-load_dotenv(dotenv_path)
+DOTENV_PATH = join(dirname(__file__), "apikeys.env")
+load_dotenv(DOTENV_PATH)
 
-null = None
-false = False
-true = True
-rapid_api_key = os.environ["RAPID_API_KEY"]
-google_api_key = os.environ["GOOGLE_API_KEY"]
+NULL = None
+FALSE = False
+TRUE = True
+RAPID_API_KEY = os.environ["RAPID_API_KEY"]
+GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
 
-gmaps = googlemaps.Client(key=google_api_key)
+GMAPS = googlemaps.Client(key=GOOGLE_API_KEY)
 
 
 HOME_CITY = "home_city"
@@ -33,7 +36,10 @@ HOME_LAT = "home_lat"
 HOME_LON = "home_lon"
 
 
-def getHomes(city, state_code, min_price, max_price):
+def get_homes(city, state_code, min_price, max_price):
+    '''
+    Main Method
+    '''
     min_price = int(min_price)
     max_price = int(max_price)
     url = "https://rapidapi.p.rapidapi.com/properties/v2/list-for-sale"
@@ -46,16 +52,16 @@ def getHomes(city, state_code, min_price, max_price):
     }
 
     headers = {
-        "x-rapidapi-key": rapid_api_key,
+        "x-rapidapi-key": RAPID_API_KEY,
         "x-rapidapi-host": "realtor.p.rapidapi.com",
     }
     try:
         response = requests.request("GET", url, headers=headers, params=querystring)
         json_body = response.json()
         # print(json.dumps(json_body,indent=2))
-        ListOfProperties = []
+        list_of_properties = []
         image = ""
-        county = "county"
+        #county = "county"
         if json_body["meta"]["returned_rows"] != 0:
             for property in json_body["properties"]:
                 if "thumbnail" in property:
@@ -66,7 +72,7 @@ def getHomes(city, state_code, min_price, max_price):
                     pass
                 else:
                     continue
-                ListOfProperties.append(
+                list_of_properties.append(
                     {
                         HOME_CITY: property["address"]["city"],
                         HOME_STREET: property["address"]["line"],
@@ -82,16 +88,16 @@ def getHomes(city, state_code, min_price, max_price):
                     }
                 )
             # print(json.dumps(ListOfProperties,indent=2))
-            moreProperties = nearbyHomes(property["property_id"], min_price, max_price)
-            print(moreProperties)
-            if moreProperties != None:
-                ListOfProperties.extend(moreProperties)
-            print(json.dumps(ListOfProperties, indent=2))
+            more_properties = nearby_homes(property["property_id"], min_price, max_price)
+            print(more_properties)
+            if more_properties != None:
+                list_of_properties.extend(more_properties)
+            print(json.dumps(list_of_properties, indent=2))
 
         else:
             print("No properties found near this address!")
             return -1
-        return ListOfProperties
+        return list_of_properties
     except requests.exceptions.HTTPError as errh:
         print("getHomes API : Http Error:", errh)
     except requests.exceptions.ConnectionError as errc:
@@ -100,32 +106,34 @@ def getHomes(city, state_code, min_price, max_price):
         print("getHomes API : Timeout Error:", errt)
     except requests.exceptions.RequestException as err:
         print("getHomes API : Something Else", err)
-    except IndexError as e:
+    except IndexError as out_of_bound:
         print("No results found for this address!")
 
 
-def nearbyHomes(property_id, min_price, max_price):
-
+def nearby_homes(property_id, min_price, max_price):
+    '''
+    Gets other homes
+    '''
     url = "https://realtor.p.rapidapi.com/properties/v2/list-similar-homes"
     querystring = {"property_id": property_id}
 
     headers = {
-        "x-rapidapi-key": rapid_api_key,
+        "x-rapidapi-key": RAPID_API_KEY,
         "x-rapidapi-host": "realtor.p.rapidapi.com",
     }
     try:
         response = requests.request("GET", url, headers=headers, params=querystring)
         json_body = response.json()
         results = json_body["data"]["home"]["related_homes"]["results"]
-        ListOfProperties2 = []
+        list_of_properties_2 = []
         for result in results:
             if result["list_price"] >= min_price and result["list_price"] <= max_price:
-                geocode_result = gmaps.geocode(
+                geocode_result = GMAPS.geocode(
                     result["location"]["address"]["line"]
                     + result["location"]["address"]["city"]
                 )
 
-                ListOfProperties2.append(
+                list_of_properties_2.append(
                     {
                         HOME_CITY: result["location"]["address"]["city"],
                         HOME_STREET: result["location"]["address"]["line"],
@@ -157,16 +165,19 @@ def nearbyHomes(property_id, min_price, max_price):
         print("getHomes API : Timeout Error:", errt)
     except requests.exceptions.RequestException as err:
         print("getHomes API : Something Else", err)
-    except IndexError as e:
+    except IndexError as out_of_bound:
         print("nearby: No results found for this address!")
 
-    print(json.dumps(ListOfProperties2, indent=2))
-    return ListOfProperties2
+    print(json.dumps(list_of_properties_2, indent=2))
+    return list_of_properties_2
 
 
 def get_distance(start_address, end_address):
+    '''
+    Calculates distance with GMAPS
+    '''
     now = datetime.now()
-    directions_result = gmaps.directions(
+    directions_result = GMAPS.directions(
         start_address, end_address, mode="driving", departure_time=now
     )
     print(json.dumps(directions_result, indent=2))
