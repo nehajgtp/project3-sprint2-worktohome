@@ -13,7 +13,7 @@ codecov==2.1.9
 colorama==0.4.3
 coverage==5.3
 coveralls==2.1.2
-dataclasses==0.7
+dataclasses==0.6
 decorator==4.4.2
 Django==2.0.2
 dnspython==1.16.0
