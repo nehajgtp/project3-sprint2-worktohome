@@ -58,12 +58,14 @@ class MockParsingSearchParameters(unittest.TestCase):
         return 1
     def mock_send_To_database(self, email, address, price_range_low, price_range_high, distance):
         return None
-    def test_parse_search_parameters(self):
+        
+    @patch('flask_socketio.SocketIO.emit')
+    def test_parse_search_parameters(self, mock_socket):
         test_case = self.success_test_params
         with mock.patch("app.sendToDatabase", self.mock_send_To_database):
             with mock.patch("apifunctions.getHomes", self.mock_get_homes):
                 result = app.parsing_search_parameters(test_case[KEY_INPUT])
-                self.assertEqual(result, test_case[KEY_EXPECTED])
+                mock_socket.assert_called_with('sending listing', [])
     
     @patch('flask_socketio.SocketIO.emit')
     def test_parse_search_parameters_exists(self, mock_socket):
@@ -71,8 +73,7 @@ class MockParsingSearchParameters(unittest.TestCase):
         with mock.patch("app.sendToDatabase", self.mock_send_To_database):
             with mock.patch("apifunctions.getHomes", self.mock_get_homes_exists):
                 result = app.parsing_search_parameters(test_case[KEY_INPUT])
-                self.assertEqual(result, test_case[KEY_EXPECTED])
-                self.assertTrue(mock_socket.called)
+                mock_socket.assert_called_with('sending listing', 1)
                 
 class MockDisplayTable(unittest.TestCase):
     def setUp(self):
@@ -81,7 +82,9 @@ class MockDisplayTable(unittest.TestCase):
             KEY_EXPECTED:None
         }
     def mock_db_query(self):
-        return ["hello"]
+        return ["hello","hello"]
+    def mock_db_query_no_rows(self):
+        return None
     
     @patch('flask_socketio.SocketIO.emit')
     def test_displayTable(self, mock_socket):
@@ -90,3 +93,16 @@ class MockDisplayTable(unittest.TestCase):
             mock_query.query.return_value.filter_return_value.all.return_value = self.mock_db_query()
             result = app.displayTable(test_case[KEY_INPUT])
             self.assertTrue(mock_socket.called)
+            mock_socket.assert_called_with("current table", [])
+    
+    @patch('flask_socketio.SocketIO.emit')
+    def test_displayTable_norows(self, mock_socket):
+        test_case = self.success_test_params
+        with mock.patch("app.DB.session", new_callable=mock.PropertyMock) as mock_query:
+            mock_query.query.return_value.filter_return_value.all.return_value = self.mock_db_query_no_rows()
+            result = app.displayTable(test_case[KEY_INPUT])
+            # self.assertTrue(mock_socket.called)
+            mock_socket.assert_called_with("current table", [])    
+        
+if __name__ == "__main__":
+    unittest.main()
