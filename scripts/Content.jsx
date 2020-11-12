@@ -1,32 +1,22 @@
-    
 import * as React from 'react';
+import { useHistory } from 'react-router-dom';
 
+import SearchEngine from './SearchEngine';
+import SearchListings from './SearchListings';
 
-import { Button } from './Button';
-import { Socket } from './Socket';
+export default function Content() {
+  const history = useHistory();
+  if (window.sessionStorage.getItem('name') == null) {
+    history.push('/');
+  }
 
-export function Content() {
-    const [addresses, setAddresses] = React.useState([]);
-    
-    function getNewAddresses() {
-        React.useEffect(() => {
-            Socket.on('addresses received', (data) => {
-                console.log("Received addresses from server: " + data['allAddresses']);
-                setAddresses(data['allAddresses']);
-            })
-        });
-    }
-    
-    getNewAddresses();
+  return (
+    <div>
+      <h1>Work to Home</h1>
+      <hr />
+      <SearchEngine />
+      <SearchListings />
+    </div>
 
-    return (
-        <div>
-            <h1>USPS Addresses!</h1>
-                <ol>
-                    {addresses.map((address, index) =>
-                        <li key={index}>{address}</li>)}
-                </ol>
-            <Button />
-        </div>
-    );
+  );
 }
