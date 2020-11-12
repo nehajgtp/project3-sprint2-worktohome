@@ -129,6 +129,8 @@ def nearbyHomes(property_id,min_price,max_price):
                         HOME_LON: geocode_result[0]["geometry"]["location"]["lng"],
                         HOME_LAT:geocode_result[0]["geometry"]["location"]["lat"]
                     })
+        print(json.dumps(ListOfProperties2,indent=2))
+        return ListOfProperties2
     except requests.exceptions.HTTPError as errh:
         print ("getHomes API : Http Error:",errh)
     except requests.exceptions.ConnectionError as errc:
@@ -140,8 +142,7 @@ def nearbyHomes(property_id,min_price,max_price):
     except IndexError as e:
         print("nearby: No results found for this address!")
     
-    print(json.dumps(ListOfProperties2,indent=2))
-    return ListOfProperties2
+    
 
 def get_distance(start_address,end_address):
     now = datetime.now()
