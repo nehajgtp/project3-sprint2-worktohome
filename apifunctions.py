@@ -15,8 +15,8 @@ load_dotenv(DOTENV_PATH)
 NULL = None
 FALSE = False
 TRUE = True
-RAPID_API_KEY = os.environ["RAPID_API_KEY"]
-GOOGLE_API_KEY = os.environ["GOOGLE_API_KEY"]
+RAPID_API_KEY = os.getenv("RAPID_API_KEY")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
 GMAPS = googlemaps.Client(key=GOOGLE_API_KEY)
 
