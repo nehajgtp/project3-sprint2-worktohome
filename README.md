@@ -165,9 +165,9 @@ Unit Testing\
     apifunctions.py:9:0: C0411: standard import "from datetime import datetime" should be placed before "from dotenv import load_dotenv" (wrong-import-order)
 
 ## In Terminal
-    Must run this if psql is not running: sudo service postgresql start
-    Than must source API keys.
-    Run python app.py
+1. Must run this if psql is not running: sudo service postgresql start
+2. Than must source API keys.
+3. Run python app.py
 
 # Individual Contributions
 
@@ -183,3 +183,12 @@ Kevin Ng:
  - Wrote Unit Testing for app.py and apifunctions.py
  - Deployed to Heroku
  - Troubleshooted CircleCI and successfully built and deployed to Heroku
+
+Matthew Meeh
+ - Redid models.py to reflect what we wanted to store
+ - Wrote testing_models.py
+ - Used pylint on models.py, app.py, and apifunctions.py
+ - Tested database side manually
+ - Rebuilt app.py to suit our needs
+ - Merged feature_frontend with Ali's and my backend and fixed conflicts.
+ - Merged Kevin's testing-backend with my linted backend into final-backend.
