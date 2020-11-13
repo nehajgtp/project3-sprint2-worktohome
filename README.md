@@ -93,7 +93,7 @@ Unit Testing\
 2. To run all tests, run `coverage run -m --source=. unittest testing/*.py`
 
 ## Heroku Deployment
-Heroku Deployment
+### Heroku Deployment
 1. Go to heroku.com and make an account
 2. Run `npm install -g heroku` for heroku installation
 3. Run the following commands (enter login when prompted to do so):
@@ -125,7 +125,7 @@ Heroku Deployment
 13. Check your heroku link to see the deployment!
 14. Make sure to add your GOOGLE_API_KEY and RAPID_API_KEY to config variables
 
-Circle CI CI/CD:
+### Circle CI CI/CD:
 1. Go to https://circleci.com/signup/ and sign up with your github account
 2. Authorize and verify the account
 3. Make sure you're in the right repo and organization
