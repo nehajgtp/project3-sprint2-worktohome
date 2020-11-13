@@ -176,3 +176,10 @@ Neha Jagtap:
  - Linted Javascript files
  - Added CircleCI integration to repository
  - Developed idea for project and Github Projects board tasks
+
+Kevin Ng:
+ - Created Landing Page and Router Redirect to Main Content Page
+ - Implemented Google OAuth
+ - Wrote Unit Testing for app.py and apifunctions.py
+ - Deployed to Heroku
+ - Troubleshooted CircleCI and successfully built and deployed to Heroku
