@@ -1,5 +1,6 @@
 # Project 3 - MVP (Work to Home)
 Make your home search more convenient to your commute!
+https://worktohome.herokuapp.com/
 
 ## Setting up React and PSQL
 > React
@@ -167,3 +168,11 @@ Unit Testing\
     Must run this if psql is not running: sudo service postgresql start
     Than must source API keys.
     Run python app.py
+
+# Individual Contributions
+
+Neha Jagtap:
+ - Creating the frontend of the website (SearchEngine.jsx and SearchResults.jsx); connected the client to the server so that the client would display data when calling API 
+ - Linted Javascript files
+ - Added CircleCI integration to repository
+ - Developed idea for project and Github Projects board tasks
