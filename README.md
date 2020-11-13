@@ -45,7 +45,7 @@ Make your home search more convenient to your commute!
 9.  Fill in those values with the values you put in 7. b)
 
 ## Google Login OAUTH
-1. run `npm instsall react-google-login`
+1. run `npm install react-google-login`
 2. Go to https://console.developers.google.com and sign up with personal google account
 3. Click "CREATE PROJECT" or in "Select a Project", click "New Project"
 4. Name your project.
@@ -73,6 +73,8 @@ Make your home search more convenient to your commute!
 
     RAPID_API_KEY='YOUR_RAPID_API_KEY'
     GOOGLE_API_KEY='YOUR_GOOGLE_API_KEY'
+9. Install googlemaps dependency  ``` pip install -U googlemaps ```
+  
 
 ## Enabling read/write from SQLAlchemy
 
