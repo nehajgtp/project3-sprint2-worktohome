@@ -25,9 +25,12 @@ DATABASE_URL = os.getenv("DATABASE_URL")
 APP.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 
 DB = flask_sqlalchemy.SQLAlchemy(APP)
-def init_db(APP):
-    DB.init_app(APP)
-    DB.app = APP
+def init_db(app):
+    '''
+    Initialize the database
+    '''
+    DB.init_app(app)
+    DB.app = app
     DB.create_all()
     DB.session.commit()
 
@@ -102,11 +105,11 @@ def parsing_search_parameters(data):
     distance = data["max_commute"]
     min_price = data["min_price"]
     max_price = data["max_price"]
-    absolute_address = street_address + ", " + city + ", " + state 
+    absolute_address = street_address + ", " + city + ", " + state
     send_to_database(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)
     listings = apifunctions.get_homes(city, state, min_price, max_price)
     print(listings)
-    if(listings == -1):
+    if listings == -1:
         SOCKETIO.emit('sending listing', [])
     else:
         SOCKETIO.emit("sending listing", listings)
@@ -129,7 +132,7 @@ def content():
     return flask.render_template("index.html")
 
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     init_db(APP)
     SOCKETIO.run(
         APP,

@@ -90,7 +90,7 @@ def get_homes(city, state_code, min_price, max_price):
             # print(json.dumps(ListOfProperties,indent=2))
             more_properties = nearby_homes(property["property_id"], min_price, max_price)
             print(more_properties)
-            if more_properties != None:
+            if more_properties is not None:
                 list_of_properties.extend(more_properties)
             print(json.dumps(list_of_properties, indent=2))
 
@@ -156,7 +156,7 @@ def nearby_homes(property_id, min_price, max_price):
                         HOME_LON: geocode_result[0]["geometry"]["location"]["lng"],
                         HOME_LAT:geocode_result[0]["geometry"]["location"]["lat"]
                     })
-        print(json.dumps(list_of_properties_2,indent=2))
+        print(json.dumps(list_of_properties_2, indent=2))
         return list_of_properties_2
     except requests.exceptions.HTTPError as errh:
         print("getHomes API : Http Error:", errh)
