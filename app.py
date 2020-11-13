@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 import flask
 import flask_sqlalchemy
 import flask_socketio
-import models
 import apifunctions
 
 ADDRESSES_RECEIVED_CHANNEL = "addresses received"
@@ -26,13 +25,13 @@ DATABASE_URL = os.environ["DATABASE_URL"]
 APP.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 
 DB = flask_sqlalchemy.SQLAlchemy(APP)
-DB.init_APP(APP)
-DB.APP = APP
+def init_db(APP):
+    DB.init_app(APP)
+    DB.app = APP
+    DB.create_all()
+    DB.session.commit()
 
-
-DB.create_all()
-DB.session.commit()
-
+import models
 CURRENT_EMAIL = ""
 
 def send_to_database(email, address, price_range_low, price_range_high, distance):
@@ -103,27 +102,28 @@ def parsing_search_parameters(data):
     distance = data["max_commute"]
     min_price = data["min_price"]
     max_price = data["max_price"]
-    absolute_address = street_address + ", " + city + ", " + state
-    send_to_database(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)
-    # listings = apifunctions.getHomes(city, state, min_price, max_price)
-    listings = [
-        {
-            "home_city": "Morris Plains",
-            "home_street": "14 Rita Dr",
-            "home_postal_code": "07950",
-            "home_state_code": "NJ",
-            "home_state": "New Jersey",
-            "home_county": "Morris County",
-            "home_price": 494900,
-            "home_baths": 2,
-            "home_beds": 3,
-            "home_image": "https://ap.rdcpix.com/4f5171535d64d87096aca43b6b9035e4l-m1056436147xd-w300_h300_q80.jpg",
-            "home_lon": -74.4537076,
-            "home_lat": 40.8606866,
-        }
-    ]
-    if listings == -1:
-        SOCKETIO.emit("sending listing", [])
+    absolute_address = street_address + ", " + city + ", " + state 
+    sendToDatabase(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)
+    listings = apifunctions.getHomes(city, state, min_price, max_price)
+    print(listings)
+    if(listings == -1):
+        SOCKETIO.emit('sending listing', [])
+    #listings = [
+    #    {
+    #        "home_city": "Morris Plains",
+    #        "home_street": "14 Rita Dr",
+    #        "home_postal_code": "07950",
+    #        "home_state_code": "NJ",
+    #        "home_state": "New Jersey",
+    #        "home_county": "Morris County",
+    #        "home_price": 494900,
+    #        "home_baths": 2,
+    #        "home_beds": 3,
+    #        "home_image": "https://ap.rdcpix.com/4f5171535d64d87096aca43b6b9035e4l-m1056436147xd-w300_h300_q80.jpg",
+    #        "home_lon": -74.4537076,
+    #        "home_lat": 40.8606866,
+    #    }
+    #]
     else:
         SOCKETIO.emit("sending listing", listings)
 
@@ -141,10 +141,12 @@ def content():
     '''
     Kevin's Frontend
     '''
+    init_db(app)
     return flask.render_template("index.html")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__': 
+    init_db(app)
     SOCKETIO.run(
         APP,
         host=os.getenv("IP", "0.0.0.0"),
