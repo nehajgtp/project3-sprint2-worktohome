@@ -20,7 +20,7 @@ SOCKETIO.init_app(APP, cors_allowed_origins="*")
 DOTENV_PATH = join(dirname(__file__), "sql.env")
 load_dotenv(DOTENV_PATH)
 
-DATABASE_URL = os.environ["DATABASE_URL"]
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 APP.config["SQLALCHEMY_DATABASE_URI"] = DATABASE_URL
 
