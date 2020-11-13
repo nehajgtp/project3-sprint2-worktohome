@@ -12,6 +12,7 @@ Make your home search more convenient to your commute!
     e)  `npm install --save-dev webpack`  
     f)  `npm install socket.io-client --save` 
     g) `pip install googlemaps`
+    h) `npm install react-router-dom`
     If you see any error messages, make sure you use  `sudo pip`  or  `sudo npm`. If it says "pip cannot be found", run  `which pip`  and use  `sudo [path to pip from which pip] install`
 
 > Getting PSQL to work with Python
@@ -43,6 +44,20 @@ Make your home search more convenient to your commute!
 8.  `cd`  into  `lect11`  and make a new file called  `sql.env`  and add  `SQL_USER=`  and  `SQL_PASSWORD=`  in it
 9.  Fill in those values with the values you put in 7. b)
 
+## Google Login OAUTH
+1. run `npm instsall react-google-login`
+2. Go to https://console.developers.google.com and sign up with personal google account
+3. Click "CREATE PROJECT" or in "Select a Project", click "New Project"
+4. Name your project.
+5. Click "Credentials" and then click "Create Credentials" and click "OAuth client ID"
+6. If you see a warning, saying "To create an OAuth client ID, you must first set...", do these steps\
+    a) Click "CONFIGURE CONSENT SCREEN"
+    b) Choose "External"
+    c) Give the application a name and press save.
+5. Go to Credentials -> Create Credentials -> OAuth client ID and click "web application"
+6. Put the URL of the web app in Authorized JavaScript origins and Authorized redirect URIs\
+7. Put your client id in the GoogleButton.jsx file under the scripts folder.
+
 ## Setting up API Keys
 > Setting up Rapid API
 1. Go to https://rapidapi.com/marketplace and create an account (preferably use Github account to create new account).
@@ -71,6 +86,57 @@ There's a special file that you need to enable your db admin password to work fo
     a)  `npm run watch`. If prompted to install webpack-cli, type "yes"  
     b) In a new terminal,  `python app.py`  
     c) Preview Running Application (might have to clear your cache by doing a hard refresh)
+
+## Unit Testing
+Unit Testing\
+1. run `pip install coverage`
+2. To run all tests, run `coverage run -m --source=. unittest testing/*.py`
+
+## Heroku Deployment
+Heroku Deployment
+1. Go to heroku.com and make an account
+2. Run `npm install -g heroku` for heroku installation
+3. Run the following commands (enter login when prompted to do so):
+    a)`heroku login -i`
+    b) `heroku create`
+    c) `heroku addons:create heroku-postgresql:hobby-dev`
+    d) `heroku pg:wait`
+4. Alter Users
+    e) `sudo service postgresql start`
+    d) `psql`
+    f) `ALTER DATABASE Postgres OWNER TO <your_psql_username>`
+    g) `ALTER USER <your_psql_username> WITH CREATEDB CREATEROLE REPLICATION`
+    h) `\du`
+    i) `\l`
+    j) `\q`
+5. Push Database to Heroku
+    k) `heroku pg:push postgres DATABASE_URL`
+    l) `heroku pg:psql`
+    m) `select * from message;`
+    n) `\q` to exit
+6. add the changes to git
+7. `touch Procfile && touch requirements.txt`
+8. `pip freeze > requirements.txt`
+9. `echo "web: python app.py" > Procfile`
+10. add and commit Procfile and requiremnts.txt
+11. run `npm run build`
+11. push to master
+12. run `git push heroku master`
+13. Check your heroku link to see the deployment!
+14. Make sure to add your GOOGLE_API_KEY and RAPID_API_KEY to config variables
+
+Circle CI CI/CD:
+1. Go to https://circleci.com/signup/ and sign up with your github account
+2. Authorize and verify the account
+3. Make sure you're in the right repo and organization
+4. Click on the project and specify that are you're using an existing cirlce config.
+5. The one for this project is inside .circleci and claled `config.yml`
+6. Go to project settings -> environment variables
+7. Create environment variables for HEROKU_API_KEY and HEROKU_APP_NAME, you should \
+   be able to find the key in your heroku account.
+8. Add environment variables for GOOGLE_API_KEY and HEROKU_APP_NAME
+9. Now pushing should start a new build and deploy process
+10. If you run into an issue during building with circlci, run `pip freeze > requirements.txt`
 
 ## Linting
 ### app.py

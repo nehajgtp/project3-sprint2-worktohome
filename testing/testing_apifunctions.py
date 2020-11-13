@@ -152,26 +152,6 @@ class MockNearbyHomes(unittest.TestCase):
             inp = test_case[KEY_INPUT]
             result = apifunctions.nearby_homes(inp[PROPERTY_ID],inp[MIN_PRICE], inp[MAX_PRICE])
         
-    # @patch('requests.request')
-    # @patch('googlemaps.Client.geocode')
-    # @patch('builtins.print')
-    # def test_nearbyHomes_HTTPErr(self, mock_request, mock_success_geocode, mock_print):
-    #     mock_request.side_effect = requests.exceptions.HTTPError()
-    #     test_case = self.success_test_params
-    #     inp = test_case[KEY_INPUT]
-    #     mock = apifunctions.nearbyHomes(inp[PROPERTY_ID], inp[MIN_PRICE], inp[MAX_PRICE])
-    #     # mock_print.assert_called_with("getHomes API : Http Error:", requests.exceptions.HTTPError)
-    #     import sys
-    #     sys.stdout.write(str(mock_print.call_args ) + '\n')
-    #     sys.stdout.write(str(mock_print.call_args_list ) + '\n')
-        
-    #     # self.assertIsNotNone(mock_stdout.getvalue())
-    #     # self.assertEqual(mock_stdout.getvalue(), ("getHomes API : Http Error:", requests.exceptions.HTTPError))
-    #     # print(requests.exceptions.HTTPError)
-    #     self.assertRaises(requests.exceptions.HTTPError, apifunctions.nearbyHomes(inp[PROPERTY_ID], inp[MIN_PRICE], inp[MAX_PRICE]))
-
-        # @patch('sys.stdout', new_callable=io.StringIO)
-        
 class MockGetHomes(unittest.TestCase):
     def setUp(self):
         self.success_test_params = {
@@ -411,3 +391,6 @@ class MockGetHomes(unittest.TestCase):
             barMock.side_effect = IndexError
             inp = test_case[KEY_INPUT]
             result = apifunctions.get_homes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
+            
+if __name__ == "__main__":
+    unittest.main()
