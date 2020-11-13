@@ -62,16 +62,16 @@ class MockParsingSearchParameters(unittest.TestCase):
     @patch('flask_socketio.SocketIO.emit')
     def test_parse_search_parameters(self, mock_socket):
         test_case = self.success_test_params
-        with mock.patch("app.sendToDatabase", self.mock_send_To_database):
-            with mock.patch("apifunctions.getHomes", self.mock_get_homes):
+        with mock.patch("app.send_to_database", self.mock_send_To_database):
+            with mock.patch("apifunctions.get_homes", self.mock_get_homes):
                 result = app.parsing_search_parameters(test_case[KEY_INPUT])
                 mock_socket.assert_called_with('sending listing', [])
     
     @patch('flask_socketio.SocketIO.emit')
     def test_parse_search_parameters_exists(self, mock_socket):
         test_case = self.success_test_params
-        with mock.patch("app.sendToDatabase", self.mock_send_To_database):
-            with mock.patch("apifunctions.getHomes", self.mock_get_homes_exists):
+        with mock.patch("app.send_to_database", self.mock_send_To_database):
+            with mock.patch("apifunctions.get_homes", self.mock_get_homes_exists):
                 result = app.parsing_search_parameters(test_case[KEY_INPUT])
                 mock_socket.assert_called_with('sending listing', 1)
                 
@@ -91,7 +91,7 @@ class MockDisplayTable(unittest.TestCase):
         test_case = self.success_test_params
         with mock.patch("app.DB.session") as mock_query:
             mock_query.query.return_value.filter_return_value.all.return_value = self.mock_db_query()
-            result = app.displayTable(test_case[KEY_INPUT])
+            result = app.display_table()
             self.assertTrue(mock_socket.called)
             mock_socket.assert_called_with("current table", [])
     
@@ -100,7 +100,7 @@ class MockDisplayTable(unittest.TestCase):
         test_case = self.success_test_params
         with mock.patch("app.DB.session", new_callable=mock.PropertyMock) as mock_query:
             mock_query.query.return_value.filter_return_value.all.return_value = self.mock_db_query_no_rows()
-            result = app.displayTable(test_case[KEY_INPUT])
+            result = app.display_table()
             # self.assertTrue(mock_socket.called)
             mock_socket.assert_called_with("current table", [])    
         

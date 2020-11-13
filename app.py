@@ -15,7 +15,7 @@ ADDRESSES_RECEIVED_CHANNEL = "addresses received"
 APP = flask.Flask(__name__)
 
 SOCKETIO = flask_socketio.SocketIO(APP)
-SOCKETIO.init_APP(APP, cors_allowed_origins="*")
+SOCKETIO.init_app(APP, cors_allowed_origins="*")
 
 DOTENV_PATH = join(dirname(__file__), "sql.env")
 load_dotenv(DOTENV_PATH)
@@ -103,8 +103,8 @@ def parsing_search_parameters(data):
     min_price = data["min_price"]
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state 
-    sendToDatabase(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)
-    listings = apifunctions.getHomes(city, state, min_price, max_price)
+    send_to_database(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)
+    listings = apifunctions.get_homes(city, state, min_price, max_price)
     print(listings)
     if(listings == -1):
         SOCKETIO.emit('sending listing', [])
@@ -141,12 +141,12 @@ def content():
     '''
     Kevin's Frontend
     '''
-    init_db(app)
+    init_db(APP)
     return flask.render_template("index.html")
 
 
 if __name__ == '__main__': 
-    init_db(app)
+    init_db(APP)
     SOCKETIO.run(
         APP,
         host=os.getenv("IP", "0.0.0.0"),

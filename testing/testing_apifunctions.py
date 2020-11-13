@@ -105,7 +105,7 @@ class MockNearbyHomes(unittest.TestCase):
         with mock.patch("requests.request", self.mock_success_requests):
             with mock.patch("googlemaps.Client.geocode", self.mock_success_geocode):
                 inp = test_case[KEY_INPUT]
-                results = apifunctions.nearbyHomes(inp[PROPERTY_ID], inp[MIN_PRICE], inp[MAX_PRICE])
+                results = apifunctions.nearby_homes(inp[PROPERTY_ID], inp[MIN_PRICE], inp[MAX_PRICE])
                 for result in results:
                     # print(result)
                     # print(test_case[KEY_EXPECTED][0])
@@ -122,35 +122,35 @@ class MockNearbyHomes(unittest.TestCase):
         with mock.patch("requests.request") as barMock:
             barMock.side_effect = requests.exceptions.HTTPError
             inp = test_case[KEY_INPUT]
-            result = apifunctions.nearbyHomes(inp[PROPERTY_ID],inp[MIN_PRICE], inp[MAX_PRICE])
+            result = apifunctions.nearby_homes(inp[PROPERTY_ID],inp[MIN_PRICE], inp[MAX_PRICE])
             
     def test_nearbyHomes_ConnectionErr(self):
         test_case = self.success_test_params
         with mock.patch("requests.request") as barMock:
             barMock.side_effect = requests.exceptions.ConnectionError
             inp = test_case[KEY_INPUT]
-            result = apifunctions.nearbyHomes(inp[PROPERTY_ID],inp[MIN_PRICE], inp[MAX_PRICE])
+            result = apifunctions.nearby_homes(inp[PROPERTY_ID],inp[MIN_PRICE], inp[MAX_PRICE])
     
     def test_nearbyHomes_Timeout(self):
         test_case = self.success_test_params
         with mock.patch("requests.request") as barMock:
             barMock.side_effect = requests.exceptions.Timeout
             inp = test_case[KEY_INPUT]
-            result = apifunctions.nearbyHomes(inp[PROPERTY_ID],inp[MIN_PRICE], inp[MAX_PRICE])
+            result = apifunctions.nearby_homes(inp[PROPERTY_ID],inp[MIN_PRICE], inp[MAX_PRICE])
             
     def test_nearbyHomes_RequestException(self):
         test_case = self.success_test_params
         with mock.patch("requests.request") as barMock:
             barMock.side_effect = requests.exceptions.RequestException
             inp = test_case[KEY_INPUT]
-            result = apifunctions.nearbyHomes(inp[PROPERTY_ID],inp[MIN_PRICE], inp[MAX_PRICE])
+            result = apifunctions.nearby_homes(inp[PROPERTY_ID],inp[MIN_PRICE], inp[MAX_PRICE])
             
     def test_nearbyHomes_IndexError(self):
         test_case = self.success_test_params
         with mock.patch("requests.request") as barMock:
             barMock.side_effect = IndexError
             inp = test_case[KEY_INPUT]
-            result = apifunctions.nearbyHomes(inp[PROPERTY_ID],inp[MIN_PRICE], inp[MAX_PRICE])
+            result = apifunctions.nearby_homes(inp[PROPERTY_ID],inp[MIN_PRICE], inp[MAX_PRICE])
         
     # @patch('requests.request')
     # @patch('googlemaps.Client.geocode')
@@ -315,9 +315,9 @@ class MockGetHomes(unittest.TestCase):
     def test_getHomes_success(self):
         test_case = self.success_test_params
         with mock.patch("requests.request", self.mock_success_requests_properties):
-            with mock.patch("apifunctions.nearbyHomes", self.mock_nearbyHomes):
+            with mock.patch("apifunctions.nearby_homes", self.mock_nearbyHomes):
                 inp = test_case[KEY_INPUT]
-                results = apifunctions.getHomes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
+                results = apifunctions.get_homes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
                 print(inp[MIN_PRICE])
                 print(inp[MAX_PRICE])
                 for i in range(len(results)):
@@ -335,9 +335,9 @@ class MockGetHomes(unittest.TestCase):
     def test_getHomes_success_no_properties(self):
         test_case = self.success_test_params_no_properties
         with mock.patch("requests.request", self.mock_success_requests_properties_none):
-            with mock.patch("apifunctions.nearbyHomes", self.mock_nearbyHomes):
+            with mock.patch("apifunctions.nearby_homes", self.mock_nearbyHomes):
                 inp = test_case[KEY_INPUT]
-                results = apifunctions.getHomes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
+                results = apifunctions.get_homes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
                 self.assertEquals(results, test_case[KEY_EXPECTED])
                 
     def mock_success_requests_properties_no_thumbnail(self, method, url, headers, params):
@@ -368,9 +368,9 @@ class MockGetHomes(unittest.TestCase):
     def test_getHomes_success_no_thumbnail(self):
         test_case = self.success_test_params_no_thumbnail
         with mock.patch("requests.request", self.mock_success_requests_properties_no_thumbnail):
-            with mock.patch("apifunctions.nearbyHomes", self.mock_nearbyHomes):
+            with mock.patch("apifunctions.nearby_homes", self.mock_nearbyHomes):
                 inp = test_case[KEY_INPUT]
-                results = apifunctions.getHomes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
+                results = apifunctions.get_homes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
                 for i in range(len(results)):
                     self.assertDictEqual(results[i], test_case[KEY_EXPECTED][i])
     
@@ -382,44 +382,32 @@ class MockGetHomes(unittest.TestCase):
         with mock.patch("requests.request") as barMock:
             barMock.side_effect = requests.exceptions.HTTPError
             inp = test_case[KEY_INPUT]
-            result = apifunctions.getHomes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
-        # mock_request.side_effect = requests.exceptions.HTTPError()
-        # test_case = self.success_test_params
-        # inp = test_case[KEY_INPUT]
-        # mock = apifunctions.nearbyHomes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
-        # # mock_print.assert_called_with("getHomes API : Http Error:", requests.exceptions.HTTPError)
-        # import sys
-        # sys.stdout.write(str(mock_print.call_args ) + '\n')
-        # sys.stdout.write(str(mock_print.call_args_list ) + '\n')
+            result = apifunctions.get_homes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
         
-        # # self.assertIsNotNone(mock_stdout.getvalue())
-        # # self.assertEqual(mock_stdout.getvalue(), ("getHomes API : Http Error:", requests.exceptions.HTTPError))
-        # # print(requests.exceptions.HTTPError)
-        # self.assertRaises(requests.exceptions.HTTPError, apifunctions.getHomes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE]))
     def test_getHomes_ConnectionErr(self):
         test_case = self.success_test_params
         with mock.patch("requests.request") as barMock:
             barMock.side_effect = requests.exceptions.ConnectionError
             inp = test_case[KEY_INPUT]
-            result = apifunctions.getHomes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
+            result = apifunctions.get_homes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
     
     def test_getHomes_Timeout(self):
         test_case = self.success_test_params
         with mock.patch("requests.request") as barMock:
             barMock.side_effect = requests.exceptions.Timeout
             inp = test_case[KEY_INPUT]
-            result = apifunctions.getHomes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
+            result = apifunctions.get_homes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
             
     def test_getHomes_RequestException(self):
         test_case = self.success_test_params
         with mock.patch("requests.request") as barMock:
             barMock.side_effect = requests.exceptions.RequestException
             inp = test_case[KEY_INPUT]
-            result = apifunctions.getHomes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
+            result = apifunctions.get_homes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
             
     def test_getHomes_IndexError(self):
         test_case = self.success_test_params
         with mock.patch("requests.request") as barMock:
             barMock.side_effect = IndexError
             inp = test_case[KEY_INPUT]
-            result = apifunctions.getHomes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
+            result = apifunctions.get_homes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE])
