@@ -106,13 +106,36 @@ def parsing_search_parameters(data):
     min_price = data["min_price"]
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state
-    send_to_database(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)
-    listings = apifunctions.get_homes(city, state, min_price, max_price)
-    print(listings)
-    if listings == -1:
-        SOCKETIO.emit('sending listing', [])
-    else:
-        SOCKETIO.emit("sending listing", listings)
+    
+    invalid_input_errors = []
+    if (isinstance(street_address, str) == False):
+        invalid_input_errors.append("Not a valid street address")
+    if (isinstance(city, str) == False):
+        invalid_input_errors.append("Not a valid city")
+    if (min_price.isnumeric() == False):
+        invalid_input_errors.append("Minimum price not a valid number")
+    if (max_price.isnumeric() == False):
+        invalid_input_errors.append("Maximum price not a valid number")
+    if (min_price.isnumeric()):
+        if (int(min_price) < 0):
+            invalid_input_errors.append("The min price cannot be a negative number")
+    if (max_price.isnumeric()):
+        if (int(max_price) < 0):
+            invalid_input_errors.append("The max price cannot be a negative number")
+    if (min_price.isnumeric() and max_price.isnumeric()):
+        minimum = int(min_price) 
+        maximum = int(max_price)
+        if (minimum > maximum):
+            invalid_input_errors.append("Min price is bigger than max price")
+    
+    if (len(invalid_input_errors) == 0): 
+        send_to_database(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)
+        listings = apifunctions.get_homes(city, state, min_price, max_price)
+        print(listings)
+        if listings == -1:
+            SOCKETIO.emit('sending listing', [])
+        else:
+            SOCKETIO.emit("sending listing", listings)
 
 
 @APP.route("/")
