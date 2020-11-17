@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 import SearchEngine from './SearchEngine';
 import SearchListings from './SearchListings';
 
+import { Socket } from './Socket';
+
 export default function Content() {
   const history = useHistory();
   if (window.sessionStorage.getItem('name') == null) {

@@ -12,7 +12,7 @@ export default function SearchListings() {
   }
 
   onSearch();
-
+  
   return (
     <div>
       <h2>Listings</h2>

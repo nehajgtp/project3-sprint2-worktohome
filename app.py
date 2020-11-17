@@ -112,6 +112,8 @@ def parsing_search_parameters(data):
         invalid_input_errors.append("Not a valid street address")
     if (isinstance(city, str) == False):
         invalid_input_errors.append("Not a valid city")
+    if (distance.isnumeric() == False):
+        invalid_input_errors.append("Distance not a valid number")
     if (min_price.isnumeric() == False):
         invalid_input_errors.append("Minimum price not a valid number")
     if (max_price.isnumeric() == False):
@@ -126,7 +128,7 @@ def parsing_search_parameters(data):
         minimum = int(min_price) 
         maximum = int(max_price)
         if (minimum > maximum):
-            invalid_input_errors.append("Min price is bigger than max price")
+            invalid_input_errors.append("Min price cannot be bigger than max price")
     
     if (len(invalid_input_errors) == 0): 
         send_to_database(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)
@@ -136,6 +138,11 @@ def parsing_search_parameters(data):
             SOCKETIO.emit('sending listing', [])
         else:
             SOCKETIO.emit("sending listing", listings)
+    if (len(invalid_input_errors) > 0):
+        SOCKETIO.emit('Invalid search input', invalid_input_errors)
+        print("Errors sent")
+        print(invalid_input_errors)
+        invalid_input_errors = []
 
 
 @APP.route("/")

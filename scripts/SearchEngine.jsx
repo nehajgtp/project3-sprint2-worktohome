@@ -32,6 +32,14 @@ export default function SearchEngine() {
   function handleMaxPriceChange(event) {
     setMaxPrice(event.target.value);
   }
+  
+  function handleInputErrors() {
+      Socket.on('Invalid search input', (errors) => {
+        alert(errors)
+      });
+    }
+  
+  handleInputErrors();
 
   function handleSubmit() {
     Socket.emit('send search parameters', {
@@ -42,7 +50,7 @@ export default function SearchEngine() {
       'min_price': minPrice,
       'max_price': maxPrice,
     });
-  }
+  } 
 
   return (
     <div>

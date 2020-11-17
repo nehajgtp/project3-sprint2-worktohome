@@ -1,6 +1,5 @@
 # Project 3 - MVP (Work to Home)
 Make your home search more convenient to your commute!
-https://worktohome.herokuapp.com/
 
 ## Setting up React and PSQL
 > React
