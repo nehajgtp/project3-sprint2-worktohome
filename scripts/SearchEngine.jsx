@@ -32,25 +32,40 @@ export default function SearchEngine() {
   function handleMaxPriceChange(event) {
     setMaxPrice(event.target.value);
   }
-  
-  function handleInputErrors() {
-      Socket.on('Invalid search input', (errors) => {
-        alert(errors)
-      });
-    }
-  
-  handleInputErrors();
 
   function handleSubmit() {
-    Socket.emit('send search parameters', {
+    var input_errors = [];
+    if (Number.isInteger(parseInt(maxCommute)) === false) {
+      input_errors.push("Max commute distance is not a number" + maxCommute)
+    }
+      
+    if (Number.isInteger(parseInt(minPrice)) === false) {
+      input_errors.push("Min price is not a number")
+    }
+      
+    if (Number.isInteger(parseInt(maxPrice)) === false) {
+      input_errors.push("Max price is not a number")
+    }
+    
+    if (input_errors.length > 0) {
+      alert(input_errors)
+    }
+    
+    if (input_errors.length == 0) {
+      Socket.emit('send search parameters', {
       'address': address,
       'city': city,
       'state': statecode,
-      'max_commute': maxCommute,
-      'min_price': minPrice,
-      'max_price': maxPrice,
-    });
-  } 
+      'max_commute': parseInt(maxCommute),
+      'min_price': parseInt(minPrice),
+      'max_price': parseInt(maxPrice),
+      });
+    }
+    
+    Socket.on('Invalid search input', (invalid_input_errors) => {
+        alert(invalid_input_errors)
+    })
+  }  
 
   return (
     <div>

@@ -108,27 +108,13 @@ def parsing_search_parameters(data):
     absolute_address = street_address + ", " + city + ", " + state
     
     invalid_input_errors = []
-    if (isinstance(street_address, str) == False):
-        invalid_input_errors.append("Not a valid street address")
-    if (isinstance(city, str) == False):
-        invalid_input_errors.append("Not a valid city")
-    if (distance.isnumeric() == False):
-        invalid_input_errors.append("Distance not a valid number")
-    if (min_price.isnumeric() == False):
-        invalid_input_errors.append("Minimum price not a valid number")
-    if (max_price.isnumeric() == False):
-        invalid_input_errors.append("Maximum price not a valid number")
-    if (min_price.isnumeric()):
-        if (int(min_price) < 0):
-            invalid_input_errors.append("The min price cannot be a negative number")
-    if (max_price.isnumeric()):
-        if (int(max_price) < 0):
-            invalid_input_errors.append("The max price cannot be a negative number")
-    if (min_price.isnumeric() and max_price.isnumeric()):
-        minimum = int(min_price) 
-        maximum = int(max_price)
-        if (minimum > maximum):
-            invalid_input_errors.append("Min price cannot be bigger than max price")
+    if (min_price < 0):
+        invalid_input_errors.append("The min price cannot be a negative number")
+    if (max_price < 0):
+        invalid_input_errors.append("The max price cannot be a negative number")
+    
+    if (min_price > max_price):
+        invalid_input_errors.append("Min price cannot be bigger than max price")
     
     if (len(invalid_input_errors) == 0): 
         send_to_database(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)

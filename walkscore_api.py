@@ -18,8 +18,8 @@ def get_walkscore_info(home_street, home_city, home_state_code, home_lon, home_l
     "&wsapikey=" + WALKSCORE_API_KEY
         
     response = requests.get(url).json()
-    print(response)
+    # print(response)
     
     
 
-get_walkscore_info("1119 8th Ave S", "Seattle", "WA", -122.3295 ,47.6085)
+# get_walkscore_info("1119 8th Ave S", "Seattle", "WA", -122.3295 ,47.6085)
