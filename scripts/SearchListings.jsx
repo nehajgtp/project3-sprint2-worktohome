@@ -29,6 +29,8 @@ export default function SearchListings() {
                       Beds: {listing.home_baths}
                       <br />
                       Baths: {listing.home_beds}
+                      <br />
+                      Walkscore: {listing.home_walkscore}
                       <hr />
                     </p>
                   ),

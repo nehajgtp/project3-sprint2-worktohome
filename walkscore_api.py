@@ -18,6 +18,7 @@ def get_walkscore_info(home_street, home_city, home_state_code, home_lon, home_l
     "&wsapikey=" + WALKSCORE_API_KEY
         
     response = requests.get(url).json()
+    return response["walkscore"]
     # print(response)
     
     
