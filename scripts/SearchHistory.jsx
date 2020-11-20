@@ -12,6 +12,7 @@ export default function SearchHistory(){
     Socket.emit("request search history", 1);
     
     goToHistory();
+    if(list != null){
     return <div>
     <h1>List of all searches</h1>
     {   
@@ -33,4 +34,8 @@ export default function SearchHistory(){
                 )
     }
     </div>;
+    }
+    else {
+        return <h1>No searches for this user.</h1>
+    }
 }
