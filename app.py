@@ -49,6 +49,7 @@ def send_to_database(email, address, price_range_low, price_range_high, distance
     DB.session.commit()
 
 
+@SOCKETIO.on("request search history")
 def display_table():
     '''
     For Sprint 2
@@ -62,10 +63,9 @@ def display_table():
         history_table = []
         for record in records:
             history_table.append(record)
-        SOCKETIO.emit("current table", history_table)
+        SOCKETIO.emit("received database info", history_table)
     else:  # Didn't find it.
-        SOCKETIO.emit("current table", [])
-
+        SOCKETIO.emit("received database info", None)
 
 @SOCKETIO.on("connect")
 def on_connect():
