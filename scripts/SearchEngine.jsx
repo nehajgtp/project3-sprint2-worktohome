@@ -8,7 +8,9 @@ export default function SearchEngine() {
   const [maxCommute, setMaxCommute] = React.useState(50);
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(10000);
-
+  function routHistory(){
+    
+  }
   function handleAddressChange(event) {
     setAddress(event.target.value);
   }
@@ -116,6 +118,7 @@ export default function SearchEngine() {
       <input placeholder="Max Price" onChange={handleMaxPriceChange} />
       <br />
       <button type="submit" onClick={handleSubmit}>Search</button>
+     <button type="button" onClick={routHistory}>See your search history.</button>
       <hr />
     </div>
   );
