@@ -107,14 +107,31 @@ def parsing_search_parameters(data):
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state
     send_to_database(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)
-    listings = apifunctions.get_homes(city, state, min_price, max_price)
+    #listings = apifunctions.get_homes(city, state, min_price, max_price)
+    listings = [  {
+    "home_city": "Morris Plains",
+    "home_street": "14 Rita Dr",
+    "home_postal_code": "07950",
+    "home_state_code": "NJ",
+    "home_state": "New Jersey",
+    "home_county": "Morris County",
+    "home_price": 494900,
+    "home_baths": 2,
+    "home_beds": 3,
+    "home_image": "https://ap.rdcpix.com/4f5171535d64d87096aca43b6b9035e4l-m1056436147xd-w300_h300_q80.jpg",
+    "home_lon": -74.4537076,
+    "home_lat": 40.8606866
+  }]
     print(listings)
     if listings == -1:
         SOCKETIO.emit('sending listing', [])
     else:
         SOCKETIO.emit("sending listing", listings)
 
-
+@SOCKETIO.on("change to search history page")
+def switch_to_search_history():
+    print("error")
+    
 @APP.route("/")
 def index():
     '''
@@ -122,16 +139,21 @@ def index():
     '''
     return flask.render_template("index.html")
 
-
 @APP.route("/content")
 def content():
     '''
     Kevin's Frontend
     '''
-    init_db(APP)
+    #init_db(APP)
     return flask.render_template("index.html")
-
-
+    
+@APP.route("/history")
+def search_history():
+    '''
+    Search Hisotry Frontend
+    '''
+    return flask.render_template("index.html")
+    
 if __name__ == '__main__':
     init_db(APP)
     SOCKETIO.run(
