@@ -9,7 +9,7 @@ export default function SearchEngine() {
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(10000);
   function routHistory(){
-    
+    Socket.emit("change to search history page");
   }
   function handleAddressChange(event) {
     setAddress(event.target.value);
