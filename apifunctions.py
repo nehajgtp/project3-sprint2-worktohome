@@ -36,7 +36,10 @@ HOME_IMAGE = "home_image"
 HOME_LAT = "home_lat"
 HOME_LON = "home_lon"
 HOME_WALKSCORE = "home_walkscore"
-
+WALKSCORE_DESCRIPTION = "walkscore_description"
+WALKSCORE_LOGO = "walkscore_logo"
+WALKSCORE_MORE_INFO_LINK = "walkscore_more_info_link"
+HOME_WALKSCORE_LINK = "home_walkscore_link"
 
 def get_homes(city, state_code, min_price, max_price):
     '''
@@ -89,7 +92,11 @@ def get_homes(city, state_code, min_price, max_price):
                         HOME_IMAGE: image,
                         HOME_LON: property["address"]["lon"],
                         HOME_LAT: property["address"]["lat"],
-                        HOME_WALKSCORE: walkscore_info["walkscore"]
+                        HOME_WALKSCORE: walkscore_info["walkscore"],
+                        WALKSCORE_DESCRIPTION: walkscore_info["description"],
+                        WALKSCORE_LOGO: walkscore_info["logo"],
+                        WALKSCORE_MORE_INFO_LINK: walkscore_info["more_info_link"],
+                        HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"]
                     }
                 )
             # print(json.dumps(ListOfProperties,indent=2))
@@ -164,7 +171,11 @@ def nearby_homes(property_id, min_price, max_price):
                         HOME_IMAGE: result["primary_photo"]["href"],
                         HOME_LON: geocode_result[0]["geometry"]["location"]["lng"],
                         HOME_LAT:geocode_result[0]["geometry"]["location"]["lat"],
-                        HOME_WALKSCORE: walkscore_info["walkscore"]
+                        HOME_WALKSCORE: walkscore_info["walkscore"],
+                        WALKSCORE_DESCRIPTION: walkscore_info["description"],
+                        WALKSCORE_LOGO: walkscore_info["logo"],
+                        WALKSCORE_MORE_INFO_LINK: walkscore_info["more_info_link"],
+                        HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"]
                     })
         print(json.dumps(list_of_properties_2, indent=2))
         return list_of_properties_2

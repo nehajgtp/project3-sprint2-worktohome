@@ -131,7 +131,7 @@ export default function SearchEngine() {
         <option value="WI">Wisconsin</option>
         <option value="WY">Wyoming</option>
       </select>
-      <h3>Housing Prefrences</h3>
+      <h3>Housing Preferences</h3>
       Maximum Commute Distance (miles):
       <input placeholder="Max Commute" onChange={handleMaxCommuteChange} />
       Price:

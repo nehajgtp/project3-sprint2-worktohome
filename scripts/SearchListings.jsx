@@ -30,7 +30,12 @@ export default function SearchListings() {
                       <br />
                       Baths: {listing.home_beds}
                       <br />
-                      Walkscore: {listing.home_walkscore}
+                      <a href={listing.walkscore_more_info_link}><img src={listing.walkscore_logo} /></a>
+                      {listing.home_walkscore}
+                      <br />
+                      Description: {listing.walkscore_description}
+                      <br />
+                      <a href={listing.home_walkscore_link}>More Walkscore info about listing</a>
                       <hr />
                     </p>
                   ),
