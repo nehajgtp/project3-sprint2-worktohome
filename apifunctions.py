@@ -74,6 +74,8 @@ def get_homes(city, state_code, min_price, max_price):
                     pass
                 else:
                     continue
+                walkscore_info = walkscore_api.get_walkscore_info(property["address"]["line"], property["address"]["city"], \
+                        property["address"]["state_code"], property["address"]["lon"], property["address"]["lat"])
                 list_of_properties.append(
                     {
                         HOME_CITY: property["address"]["city"],
@@ -87,8 +89,7 @@ def get_homes(city, state_code, min_price, max_price):
                         HOME_IMAGE: image,
                         HOME_LON: property["address"]["lon"],
                         HOME_LAT: property["address"]["lat"],
-                        HOME_WALKSCORE: walkscore_api.get_walkscore_info(property["address"]["line"], property["address"]["city"], \
-                        property["address"]["state_code"], property["address"]["lon"], property["address"]["lat"])
+                        HOME_WALKSCORE: walkscore_info["walkscore"]
                     }
                 )
             # print(json.dumps(ListOfProperties,indent=2))
@@ -136,6 +137,10 @@ def nearby_homes(property_id, min_price, max_price):
                     result["location"]["address"]["line"]
                     + result["location"]["address"]["city"]
                 )
+                
+                walkscore_info = walkscore_api.get_walkscore_info(result["location"]["address"]["line"], result["location"]["address"]["city"], \
+                        geocode_result[0]["address_components"][4]["short_name"], geocode_result[0]["geometry"]["location"]["lng"], \
+                        geocode_result[0]["geometry"]["location"]["lat"])
 
                 list_of_properties_2.append(
                     {
@@ -159,9 +164,7 @@ def nearby_homes(property_id, min_price, max_price):
                         HOME_IMAGE: result["primary_photo"]["href"],
                         HOME_LON: geocode_result[0]["geometry"]["location"]["lng"],
                         HOME_LAT:geocode_result[0]["geometry"]["location"]["lat"],
-                        HOME_WALKSCORE: walkscore_api.get_walkscore_info(result["location"]["address"]["line"], result["location"]["address"]["city"], \
-                        geocode_result[0]["address_components"][4]["short_name"], geocode_result[0]["geometry"]["location"]["lng"], \
-                        geocode_result[0]["geometry"]["location"]["lat"])
+                        HOME_WALKSCORE: walkscore_info["walkscore"]
                     })
         print(json.dumps(list_of_properties_2, indent=2))
         return list_of_properties_2
