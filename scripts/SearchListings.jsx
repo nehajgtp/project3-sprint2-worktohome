@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Iframe from 'react-iframe'
 
 import { Socket } from './Socket';
 
@@ -30,9 +31,14 @@ export default function SearchListings() {
                       <br />
                       Baths: {listing.home_beds}
                       <hr />
+                      <Iframe url={listing.iframe_url}
+                        width="450px"
+                        height="450px"
+                        />
                     </p>
                   ),
                 )
+            
             }
     </div>
   );
