@@ -9,6 +9,7 @@ import flask
 import flask_sqlalchemy
 import flask_socketio
 import apifunctions
+import json
 
 ADDRESSES_RECEIVED_CHANNEL = "addresses received"
 
@@ -35,7 +36,7 @@ def init_db(app):
     DB.session.commit()
 
 import models
-CURRENT_EMAIL = ""
+CURRENT_EMAIL = []
 
 def send_to_database(email, address, price_range_low, price_range_high, distance):
     '''
@@ -53,12 +54,14 @@ def display_table(data):
     '''
     For Sprint 2
     '''
-    records = (
-        DB.session.query(models.TableDefintion)
-        .filter(models.TableDefintion.email == CURRENT_EMAIL)
-        .all()
-    )
-    print(type(records))
+    sample_Dictionary = models.TableDefintion.to_dict(models.TableDefintion)
+    #records = (
+    #    DB.session.query("email")
+    #    .filter("email" == CURRENT_EMAIL)
+    #    .all()
+    #)
+    records = []
+    print((records))
     if records is not None:
         history_table = []
         for record in records:
@@ -89,9 +92,8 @@ def new_user(data):
     '''
     ...
     '''
-    global CURRENT_EMAIL
     email = data["email"]
-    CURRENT_EMAIL = email
+    CURRENT_EMAIL.append(email)
 
 
 @SOCKETIO.on("send search parameters")
@@ -106,7 +108,7 @@ def parsing_search_parameters(data):
     min_price = data["min_price"]
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state
-    send_to_database(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)
+    send_to_database(CURRENT_EMAIL[0], absolute_address, min_price, max_price, distance)
     #listings = apifunctions.get_homes(city, state, min_price, max_price)
     listings = [  {
     "home_city": "Morris Plains",
