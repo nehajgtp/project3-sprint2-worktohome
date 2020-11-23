@@ -48,9 +48,8 @@ def send_to_database(email, address, price_range_low, price_range_high, distance
     )
     DB.session.commit()
 
-
 @SOCKETIO.on("request search history")
-def display_table():
+def display_table(data):
     '''
     For Sprint 2
     '''
@@ -59,13 +58,14 @@ def display_table():
         .filter(models.TableDefintion.email == CURRENT_EMAIL)
         .all()
     )
+    print(type(records))
     if records is not None:
         history_table = []
         for record in records:
             history_table.append(record)
         SOCKETIO.emit("received database info", history_table)
     else:  # Didn't find it.
-        SOCKETIO.emit("received database info", None)
+        SOCKETIO.emit("received database info", [])
 
 @SOCKETIO.on("connect")
 def on_connect():
@@ -146,14 +146,13 @@ def content():
     '''
     #init_db(APP)
     return flask.render_template("index.html")
-    
 @APP.route("/history")
-def search_history():
+def history():
     '''
-    Search Hisotry Frontend
+    Matt's Frontend
     '''
     return flask.render_template("index.html")
-    
+
 if __name__ == '__main__':
     init_db(APP)
     SOCKETIO.run(
