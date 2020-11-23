@@ -1,16 +1,22 @@
 import * as React from 'react';
 import { Socket } from './Socket';
+import { useHistory } from 'react-router-dom';
+
 
 export default function SearchEngine() {
+  const history = useHistory();
+
   const [address, setAddress] = React.useState('');
   const [city, setCity] = React.useState('');
   const [statecode, setStateCode] = React.useState('');
   const [maxCommute, setMaxCommute] = React.useState(50);
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(10000);
+
   function routHistory(){
-    Socket.emit("change to search history page");
+    history.push("/history");
   }
+  
   function handleAddressChange(event) {
     setAddress(event.target.value);
   }
