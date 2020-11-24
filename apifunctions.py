@@ -94,7 +94,7 @@ def get_homes(city, state_code, min_price, max_price,absolute_address):
                     }
                 )
             # print(json.dumps(ListOfProperties,indent=2))
-            more_properties = nearby_homes(property["property_id"], min_price, max_price)
+            more_properties = nearby_homes(property["property_id"], min_price, max_price,absolute_address)
             print(more_properties)
             if more_properties is not None:
                 list_of_properties.extend(more_properties)
@@ -116,7 +116,7 @@ def get_homes(city, state_code, min_price, max_price,absolute_address):
         print("No results found for this address!")
 
 
-def nearby_homes(property_id, min_price, max_price):
+def nearby_homes(property_id, min_price, max_price,absolute_address):
     '''
     Gets other homes
     '''
@@ -132,13 +132,18 @@ def nearby_homes(property_id, min_price, max_price):
         json_body = response.json()
         results = json_body["data"]["home"]["related_homes"]["results"]
         list_of_properties_2 = []
+        origin_place_id = get_place_id(absolute_address)
         for result in results:
             if result["list_price"] >= min_price and result["list_price"] <= max_price:
                 geocode_result = GMAPS.geocode(
                     result["location"]["address"]["line"]
                     + result["location"]["address"]["city"]
                 )
-
+                destination_place_id = get_place_id(result["location"]["address"]["line"] + \
+                " , " + result["location"]["address"]["city"] + " , " + \
+                geocode_result[0]["address_components"][4]["long_name"])
+                iframe_url = generate_iframe_url(origin_place_id,destination_place_id)
+                print(iframe_url)
                 list_of_properties_2.append(
                     {
                         HOME_CITY: result["location"]["address"]["city"],
@@ -160,7 +165,8 @@ def nearby_homes(property_id, min_price, max_price):
                         HOME_BEDS: result["description"]["beds"],
                         HOME_IMAGE: result["primary_photo"]["href"],
                         HOME_LON: geocode_result[0]["geometry"]["location"]["lng"],
-                        HOME_LAT:geocode_result[0]["geometry"]["location"]["lat"]
+                        HOME_LAT:geocode_result[0]["geometry"]["location"]["lat"],
+                        IFRAME_URL : iframe_url
                     })
         print(json.dumps(list_of_properties_2, indent=2))
         return list_of_properties_2
