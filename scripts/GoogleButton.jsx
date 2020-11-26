@@ -2,6 +2,7 @@ import * as React from 'react';
 import { GoogleLogin } from 'react-google-login';
 import { useHistory } from 'react-router-dom';
 import { Socket } from './Socket';
+import './GoogleButton.css'
 
 export default function GoogleButton() {
   const history = useHistory();
@@ -19,6 +20,7 @@ export default function GoogleButton() {
   }
   return (
     <GoogleLogin
+      className="googleLogin"
       clientId="1034127712778-v6qvk1ma6ilbg141bvuitipumnvklo4j.apps.googleusercontent.com"
       buttonText="Login"
       onSuccess={handleSubmit}
