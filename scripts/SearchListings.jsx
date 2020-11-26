@@ -13,9 +13,21 @@ export default function SearchListings() {
 
   onSearch();
   
+  function sortListings(event) {
+      if (event.target.value === "low_high") {
+        var sorted = listings.sort((a, b) => parseInt(a.home_price) - parseInt(b.home_price))
+        setListings(sorted);
+      }
+      console.log(listings)
+  }
+  
   return (
     <div>
       <h2>Listings</h2>
+      <select onChange={sortListings}>
+        <option value="">---- Select option -----</option>
+        <option value="low_high">Low to High</option>
+      </select>
       {
                 listings.map(
                   (listing) => (
