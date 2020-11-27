@@ -63,10 +63,8 @@ def get_homes(city, state_code, min_price, max_price):
     try:
         response = requests.request("GET", url, headers=headers, params=querystring)
         json_body = response.json()
-        # print(json.dumps(json_body,indent=2))
         list_of_properties = []
         image = ""
-        #county = "county"
         if json_body["meta"]["returned_rows"] != 0:
             for property in json_body["properties"]:
                 if "thumbnail" in property:
@@ -99,7 +97,6 @@ def get_homes(city, state_code, min_price, max_price):
                         HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"]
                     }
                 )
-            # print(json.dumps(ListOfProperties,indent=2))
             more_properties = nearby_homes(property["property_id"], min_price, max_price)
             print(more_properties)
             if more_properties is not None:
@@ -199,7 +196,3 @@ def get_distance(start_address, end_address):
         start_address, end_address, mode="driving", departure_time=now
     )
     print(json.dumps(directions_result, indent=2))
-
-
-# getHomes("teaneck","nj",300000,70000000)
-# nearbyHomes("M6467862834",300000,10000000)
