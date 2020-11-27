@@ -14,13 +14,20 @@ export default function SearchListings() {
   onSearch();
   
   function sortListings(event) {
-      if (event.target.value === "low_high") {
-        var sorted = listings.sort((a, b) => parseInt(a.home_price) - parseInt(b.home_price))
-        setListings(sorted);
-      }
-      console.log(listings)
+    if (event.target.value === "low_high" && listings !== []) {
+      var sorted = listings.sort((a, b) => parseInt(a.home_price) - parseInt(b.home_price))
+      Socket.emit('sort listings', sorted)
+    }
   }
   
+  function sortedListings() {
+    Socket.on('sorted listings', (listings) => {
+      setListings(listings)
+    })
+  }
+  
+  sortedListings()
+
   return (
     <div>
       <h2>Listings</h2>

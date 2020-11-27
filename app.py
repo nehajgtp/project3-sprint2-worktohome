@@ -130,6 +130,9 @@ def parsing_search_parameters(data):
         print(invalid_input_errors)
         invalid_input_errors = []
 
+@SOCKETIO.on("sort listings")
+def sort_listings(listings):
+    SOCKETIO.emit('sorted listings', listings)
 
 @APP.route("/")
 def index():
