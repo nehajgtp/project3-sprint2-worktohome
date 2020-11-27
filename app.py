@@ -55,17 +55,21 @@ def display_table(data):
     For Sprint 2
     '''
     sample_Dictionary = models.TableDefintion.to_dict(models.TableDefintion)
-    #records = (
-    #    DB.session.query("email")
-    #    .filter("email" == CURRENT_EMAIL)
-    #    .all()
-    #)
-    records = []
-    print((records))
+    records = (
+        DB.session.query(models.TableDefintion)
+        .filter(models.TableDefintion.email==CURRENT_EMAIL[0])
+        .all()
+    )
+    print(type(records))
+    print(records[0].address)
     if records is not None:
         history_table = []
         for record in records:
-            history_table.append(record)
+            transfer = {"address" : record.address,\
+            "price_low" : record.price_low, "price_high" : record.price_high,\
+            "distance" : record.distance}
+            history_table.append(transfer)
+        print(history_table)
         SOCKETIO.emit("received database info", history_table)
     else:  # Didn't find it.
         SOCKETIO.emit("received database info", [])
