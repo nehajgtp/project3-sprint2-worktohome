@@ -9,6 +9,7 @@ import flask
 import flask_sqlalchemy
 import flask_socketio
 import apifunctions
+import email_file
 
 ADDRESSES_RECEIVED_CHANNEL = "addresses received"
 
@@ -39,7 +40,7 @@ def init_db(app):
 
 import models
 
-CURRENT_EMAIL = []
+EMAIL_CLASS = email_file.Email("")
 
 
 def send_to_database(email, address, price_range_low, price_range_high, distance):
@@ -61,7 +62,7 @@ def display_table():
     """
     records = (
         DB.session.query(models.TableDefintion)
-        .filter(models.TableDefintion.email == CURRENT_EMAIL[0])
+        .filter(models.TableDefintion.email == EMAIL_CLASS.value_of())
         .all()
     )
     if records is not None:
@@ -102,9 +103,8 @@ def new_user(data):
     """
     ...
     """
-    email = data["email"]
-    CURRENT_EMAIL.append(email)
-
+    email_variable = data["email"]
+    EMAIL_CLASS.set_email(email_variable)
 
 @SOCKETIO.on("send search parameters")
 def parsing_search_parameters(data):
@@ -118,7 +118,7 @@ def parsing_search_parameters(data):
     min_price = data["min_price"]
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state
-    send_to_database(CURRENT_EMAIL[0], absolute_address, min_price, max_price, distance)
+    send_to_database(EMAIL_CLASS.value_of(), absolute_address, min_price, max_price, distance)
     # listings = apifunctions.get_homes(city, state, min_price, max_price)
     listings = [
         {
