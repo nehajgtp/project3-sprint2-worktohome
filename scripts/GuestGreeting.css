@@ -1,12 +1,35 @@
-#logo {
+.title {
+    margin-bottom: 20px;
+}
+.title #logo {
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
-p {
+.title p {
     text-align: center;
     font-family: Arial;
     font-size: 25px;
     color: white
+}
+
+.about {
+    height: 150px;
+    background-color: white;
+    border-radius: 25px;
+}
+
+.about #about-section {
+    border-radius: 10px;
+    background-color: white;
+    height: 100px;
+    text-align: center;
+    font-family: Arial;
+    margin: auto;
+    width: 98%;
+    padding-top: calc(.05 * 100vh);
+    font-size: 30px;
+    font: Helvetica Neue,Helvetica,Arial,sans-serif; 
+    color: #363636;
 }
