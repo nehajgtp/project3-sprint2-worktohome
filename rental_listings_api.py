@@ -52,7 +52,7 @@ def get_rental_listings(city, state_code, min_price, max_price):
     
     response = requests.request("GET", url, headers=headers, params=querystring)
     json_body = response.json()
-    # print(json.dumps(json_body, indent=2))
+    print(json.dumps(json_body, indent=2))
     list_of_properties = []
     image = ""
     try:
@@ -60,8 +60,7 @@ def get_rental_listings(city, state_code, min_price, max_price):
             for property in json_body["properties"]:
                 if property["photo_count"] > 0:
                     image = property["photos"][0]["href"]
-                walkscore_info = walkscore_api.get_walkscore_info(property["address"]["line"], property["address"]["city"], \
-                        property["address"]["state_code"], property["address"]["lon"], property["address"]["lat"])
+                walkscore_info = walkscore_api.get_walkscore_info(property["address"]["line"], property["address"]["city"], property["address"]["state_code"], property["address"]["lon"], property["address"]["lat"])
                 list_of_properties.append(
                     {
                         HOME_CITY: property["address"]["city"],
@@ -82,7 +81,8 @@ def get_rental_listings(city, state_code, min_price, max_price):
                         HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"]
                     }
                 )    
-            print(json.dumps(list_of_properties, indent=2))        
+            print(json.dumps(list_of_properties, indent=2))   
+            return list_of_properties
         else:
             print("No properties found near this address!")
             return -1
@@ -97,4 +97,3 @@ def get_rental_listings(city, state_code, min_price, max_price):
     except IndexError as out_of_bound:
         print("No results found for this address!")
         
-get_rental_listings("New York", "NY", "20", "2000")

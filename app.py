@@ -9,6 +9,7 @@ import flask
 import flask_sqlalchemy
 import flask_socketio
 import apifunctions
+import rental_listings_api
 
 ADDRESSES_RECEIVED_CHANNEL = "addresses received"
 
@@ -106,7 +107,9 @@ def parsing_search_parameters(data):
     min_price = data["min_price"]
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state
+    purchase_type = data['purchase_type']
     
+    print(data)
     invalid_input_errors = []
     if (min_price < 0):
         invalid_input_errors.append("The min price cannot be a negative number")
@@ -118,7 +121,11 @@ def parsing_search_parameters(data):
     
     if (len(invalid_input_errors) == 0): 
         send_to_database(CURRENT_EMAIL, absolute_address, min_price, max_price, distance)
-        listings = apifunctions.get_homes(city, state, min_price, max_price)
+        listings = ""
+        if (purchase_type == "sale"):
+            listings = apifunctions.get_homes(city, state, min_price, max_price)
+        if (purchase_type == "rent"):
+            listings = rental_listings_api.get_rental_listings(city, state, str(min_price), str(max_price))
         print(listings)
         if listings == -1:
             SOCKETIO.emit('sending listing', [])

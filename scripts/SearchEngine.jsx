@@ -8,7 +8,8 @@ export default function SearchEngine() {
   const [maxCommute, setMaxCommute] = React.useState(50);
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(10000);
-
+  const [purchaseType, setPurchaseType] = React.useState("sale");
+  
   function handleAddressChange(event) {
     setAddress(event.target.value);
   }
@@ -31,6 +32,10 @@ export default function SearchEngine() {
 
   function handleMaxPriceChange(event) {
     setMaxPrice(event.target.value);
+  }
+  
+  function handlePurchaseTypeChange(event) {
+    setPurchaseType(event.target.value);
   }
 
   function handleSubmit() {
@@ -59,6 +64,7 @@ export default function SearchEngine() {
       'max_commute': parseInt(maxCommute),
       'min_price': parseInt(minPrice),
       'max_price': parseInt(maxPrice),
+      'purchase_type': purchaseType
       });
     }
     
@@ -130,6 +136,12 @@ export default function SearchEngine() {
         <option value="WV">West Virginia</option>
         <option value="WI">Wisconsin</option>
         <option value="WY">Wyoming</option>
+      </select>
+      <label htmlFor="purchase-type">Purchase Type (Rent or Sale):</label>
+      <select onChange={handlePurchaseTypeChange}>
+        <option value=""> ---- Select option ---- </option>
+        <option value="rent">For Rent</option>
+        <option value="sale">For Sale</option>
       </select>
       <h3>Housing Preferences</h3>
       Maximum Commute Distance (miles):
