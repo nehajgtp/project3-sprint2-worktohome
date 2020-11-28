@@ -35,20 +35,8 @@ class TestingModels(unittest.TestCase):
                 return True
         return False
             
-    def check_class__search_parameters(self, testing_parameter):
-        expected = testing_parameter[KEY_EXPECTED]
-        input_data = testing_parameter[KEY_INPUT]
-        input_string = input_data[0];  input_dist = input_data[3]
-        input_low = input_data[1];  input_high = input_data[2]; 
-    
-        reference_not_perm = models.SearchParameters(input_string, input_low, input_high, input_dist)
-        if(reference_not_perm.distance == expected[3] and reference_not_perm.address == expected[0]):
-            if(reference_not_perm.price_range_low == expected[1] and reference_not_perm.price_range_high == expected[2]):
-                return True
-        return False
-
     def test_success_test_params(self):
-        test_eval = self.check_class__search_parameters(POSITIVE_TESTING_PARAMETERS[1])
+        test_eval = self.check_class__table_defintion(POSITIVE_TESTING_PARAMETERS[1])
         #test_eval_2 = check_class__table_defintion(POSITIVE_TESTING_PARAMETERS[1])
         #test_eval_3 = mock_addition(POSITIVE_TESTING_PARAMETERS[0])
         
