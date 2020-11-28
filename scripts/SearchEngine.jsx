@@ -3,9 +3,9 @@ import { Socket } from './Socket';
 import { useHistory } from 'react-router-dom';
 
 
-export default function SearchEngine() {
+export default function SearchEngine(props) {
   const history = useHistory();
-
+    
   const [address, setAddress] = React.useState('');
   const [city, setCity] = React.useState('');
   const [statecode, setStateCode] = React.useState('');
@@ -50,6 +50,7 @@ export default function SearchEngine() {
       'min_price': minPrice,
       'max_price': maxPrice,
     });
+    props.changeLoad()
   }
 
   return (
