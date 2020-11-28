@@ -52,14 +52,28 @@ def get_rental_listings(city, state_code, min_price, max_price):
     
     response = requests.request("GET", url, headers=headers, params=querystring)
     json_body = response.json()
-    print(json.dumps(json_body, indent=2))
+    # print(json.dumps(json_body, indent=2))
     list_of_properties = []
     image = ""
+    home_price = ""
+    home_baths = ""
+    home_beds = ""
+    
     try:
         if json_body["meta"]["returned_rows"] > 0:
             for property in json_body["properties"]:
+                print(property)
                 if property["photo_count"] > 0:
                     image = property["photos"][0]["href"]
+                key = "community"
+                if key in property:
+                    home_price = property[key]["price_min"]
+                    home_baths = property[key]["baths_min"]
+                    home_beds = property[key]["beds_min"]
+                if key not in property:
+                    home_price = property["price"]
+                    home_baths = property["baths"]
+                    home_beds = property["beds"]
                 walkscore_info = walkscore_api.get_walkscore_info(property["address"]["line"], property["address"]["city"], property["address"]["state_code"], property["address"]["lon"], property["address"]["lat"])
                 list_of_properties.append(
                     {
@@ -68,9 +82,9 @@ def get_rental_listings(city, state_code, min_price, max_price):
                         HOME_POSTAL_CODE: property["address"]["postal_code"],
                         HOME_STATE_CODE: property["address"]["state_code"],
                         HOME_STATE: property["address"]["state"],
-                        HOME_PRICE: property["community"]["price_min"],
-                        HOME_BATHS: property["community"]["baths_min"],
-                        HOME_BEDS: property["community"]["beds_min"],
+                        HOME_PRICE: home_price,
+                        HOME_BATHS: home_baths,
+                        HOME_BEDS: home_beds,
                         HOME_IMAGE: image,
                         HOME_LON: property["address"]["lon"],
                         HOME_LAT: property["address"]["lat"],

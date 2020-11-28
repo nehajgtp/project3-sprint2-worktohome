@@ -15,8 +15,13 @@ export default function SearchListings() {
   
   function sortListings(event) {
     if (event.target.value === "low_high" && listings !== []) {
-      var sorted = listings.sort((a, b) => parseInt(a.home_price) - parseInt(b.home_price))
-      Socket.emit('sort listings', sorted)
+      var sortedLowHigh = listings.sort((a, b) => parseInt(a.home_price) - parseInt(b.home_price))
+      Socket.emit('sort listings', sortedLowHigh)
+    }
+    
+    else if (event.target.value == "high_low" && listings !== []) {
+      var sortedHighLow = listings.sort((a, b) => parseInt(a.home_price) - parseInt(b.home_price)).reverse()
+      Socket.emit('sort listings', sortedHighLow)
     }
   }
   
@@ -31,9 +36,11 @@ export default function SearchListings() {
   return (
     <div>
       <h2>Listings</h2>
+      <label htmlFor="Sort By">Sort By:</label>
       <select onChange={sortListings}>
         <option value="">---- Select option -----</option>
         <option value="low_high">Low to High</option>
+        <option value="high_low">High to Low</option>
       </select>
       {
                 listings.map(
