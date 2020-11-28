@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { Socket } from './Socket';
+import { useHistory } from 'react-router-dom';
+
 
 export default function SearchEngine(props) {
+  const history = useHistory();
+    
   const [address, setAddress] = React.useState('');
   const [city, setCity] = React.useState('');
   const [statecode, setStateCode] = React.useState('');
@@ -9,6 +13,10 @@ export default function SearchEngine(props) {
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(10000);
 
+  function routHistory(){
+    history.push("/history");
+  }
+  
   function handleAddressChange(event) {
     setAddress(event.target.value);
   }
@@ -117,6 +125,7 @@ export default function SearchEngine(props) {
       <input placeholder="Max Price" onChange={handleMaxPriceChange} />
       <br />
       <button type="submit" onClick={handleSubmit}>Search</button>
+     <button type="button" onClick={routHistory}>See your search history.</button>
       <hr />
     </div>
   );

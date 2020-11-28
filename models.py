@@ -5,7 +5,6 @@ Defines the table for PSQL (data persistence)
 import flask_sqlalchemy
 from app import DB
 
-
 class TableDefintion(DB.Model):
     '''
     Main class
@@ -18,30 +17,10 @@ class TableDefintion(DB.Model):
     distance = DB.Column(DB.Integer)
 
     def __init__(self, email, address, price_one, price_two, dist):
-        search_data = SearchParameters(address, price_one, price_two, dist)
         self.email = email
-        self.address = search_data.address
-        self.price_low = search_data.price_range_low
-        self.price_high = search_data.price_range_high
-        self.distance = search_data.distance
-
-    def __repr__(self):
-        return "<The address: %s>" % self.address
-
-
-class SearchParameters:
-    '''
-    Helper class
-    '''
-    address = ""
-    price_range_low = 0
-    price_range_high = 0
-    distance = 0
-
-    def __init__(self, string, price_one, price_two, dist):
-        self.address = string
-        self.price_range_low = price_one
-        self.price_range_high = price_two
+        self.address = address
+        self.price_low = price_one
+        self.price_high = price_two
         self.distance = dist
 
     def __repr__(self):
@@ -52,3 +31,9 @@ class SearchParameters:
             % self.price_range_high
             % self.distance
         )
+
+    #def to_dict(self):
+    #    dict = {"id" : "id", "email" : "email",\
+    #    "address" : "address", "price_low" : "price_low",\
+    #    "price_high" : "price_high", "distance" : "distance"}
+    #    return dict
