@@ -31,7 +31,7 @@ class TestingModels(unittest.TestCase):
     
         reference_not_perm = models.TableDefintion(input_email, input_address, input_low, input_high, input_dist)
         if(reference_not_perm.email == expected[0] and reference_not_perm.address == expected[1]):#use is instead of == ?????
-            if(reference_not_perm.price_range_low == expected[2] and reference_not_perm.price_range_high == expected[3] and reference_not_perm.distance == expected[4]):
+            if(reference_not_perm.price_low == expected[2] and reference_not_perm.price_high == expected[3] and reference_not_perm.distance == expected[4]):
                 return True
         return False
             
