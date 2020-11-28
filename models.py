@@ -31,9 +31,3 @@ class TableDefintion(DB.Model):
             % self.price_range_high
             % self.distance
         )
-
-    #def to_dict(self):
-    #    dict = {"id" : "id", "email" : "email",\
-    #    "address" : "address", "price_low" : "price_low",\
-    #    "price_high" : "price_high", "distance" : "distance"}
-    #    return dict
