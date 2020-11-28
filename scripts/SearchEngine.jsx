@@ -8,7 +8,7 @@ export default function SearchEngine() {
   const [maxCommute, setMaxCommute] = React.useState(50);
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(10000);
-  const [purchaseType, setPurchaseType] = React.useState("rent");
+  const [purchaseType, setPurchaseType] = React.useState("sale");
   
   function handleAddressChange(event) {
     setAddress(event.target.value);
