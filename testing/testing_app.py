@@ -93,7 +93,7 @@ class MockDisplayTable(unittest.TestCase):
             mock_query.query.return_value.filter_return_value.all.return_value = self.mock_db_query()
             result = app.display_table()
             self.assertTrue(mock_socket.called)
-            mock_socket.assert_called_with("current table", [])
+            mock_socket.assert_called_with("received database info", [])
     
     @patch('flask_socketio.SocketIO.emit')
     def test_displayTable_norows(self, mock_socket):
@@ -102,7 +102,7 @@ class MockDisplayTable(unittest.TestCase):
             mock_query.query.return_value.filter_return_value.all.return_value = self.mock_db_query_no_rows()
             result = app.display_table()
             # self.assertTrue(mock_socket.called)
-            mock_socket.assert_called_with("current table", [])    
+            mock_socket.assert_called_with("received database info", [])    
         
 if __name__ == "__main__":
     unittest.main()
