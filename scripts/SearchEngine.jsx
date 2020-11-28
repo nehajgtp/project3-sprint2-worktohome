@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Socket } from './Socket';
 
-export default function SearchEngine() {
+export default function SearchEngine(props) {
   const [address, setAddress] = React.useState('');
   const [city, setCity] = React.useState('');
   const [statecode, setStateCode] = React.useState('');
@@ -42,6 +42,7 @@ export default function SearchEngine() {
       'min_price': minPrice,
       'max_price': maxPrice,
     });
+    props.changeLoad()
   }
 
   return (

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { Socket } from './Socket';
 
-export default function SearchListings() {
+export default function SearchListings(props) {
   const [listings, setListings] = React.useState(false);
   const [result, setResult] = React.useState("");
 
@@ -51,6 +51,7 @@ export default function SearchListings() {
   }
   useEffect(() => {
     results()
+    props.changeLoad()
   }, [listings]);
   return (
     <div>
