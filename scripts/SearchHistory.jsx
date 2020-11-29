@@ -26,7 +26,8 @@ export default function SearchHistory() {
   if (objects.length !== 0) {
     return (
       <div>
-        <h1>List of all searches</h1>
+        <h1>Search History</h1>
+        <button type="button" onClick={goToSearchEngine}>Go back to search page</button>
         {
             objects.map(
               (listing) => (
@@ -50,7 +51,6 @@ export default function SearchHistory() {
               ),
             )
         }
-        <button type="button" onClick={goToSearchEngine}>Go back to search page.</button>
       </div>
     );
   }

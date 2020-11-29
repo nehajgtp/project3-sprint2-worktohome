@@ -125,7 +125,8 @@ export default function SearchEngine(props) {
       <input placeholder="Max Price" onChange={handleMaxPriceChange} />
       <br />
       <button type="submit" onClick={handleSubmit}>Search</button>
-     <button type="button" onClick={routHistory}>See your search history.</button>
+      <br />
+     <button type="button" onClick={routHistory}>Search History</button>
       <hr />
     </div>
   );
