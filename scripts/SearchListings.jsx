@@ -30,10 +30,12 @@ export default function SearchListings() {
                       Beds: {listing.home_baths}
                       <br />
                       Baths: {listing.home_beds}
+                      <br />
+                      Commute Time: {listing.commute_time}
                       <hr />
                       <Iframe url={listing.iframe_url}
-                        width="450px"
-                        height="450px"
+                        width="400px"
+                        height="400px"
                         />
                     </p>
                   ),

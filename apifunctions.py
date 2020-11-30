@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import googlemaps
 from datetime import datetime
 import requests
+import json
 
 DOTENV_PATH = join(dirname(__file__), "apikeys.env")
 load_dotenv(DOTENV_PATH)
@@ -32,6 +33,7 @@ HOME_BATHS = "home_baths"
 HOME_BEDS = "home_beds"
 HOME_IMAGE = "home_image"
 IFRAME_URL = "iframe_url"
+COMMUTE_TIME = "commute_time"
 
 HOME_LAT = "home_lat"
 HOME_LON = "home_lon"
@@ -77,6 +79,14 @@ def get_homes(city, state_code, min_price, max_price,absolute_address):
                 destination_place_id = get_place_id(property["address"]["line"] + 
                 " ," + property["address"]["city"] + " ,"+ property["address"]["state_code"])
                 iframe_url = generate_iframe_url(origin_place_id,destination_place_id)
+                now = datetime.now()
+                directions_result = GMAPS.directions(absolute_address,
+                                     property["address"]["line"] + \
+                                     " ," + property["address"]["city"] + " ," \
+                                     + property["address"]["state_code"],
+                                     mode="driving",
+                                     departure_time=now)
+                commute = directions_result[0]["legs"][0]["duration"]["text"]
                 list_of_properties.append(
                     {
                         HOME_CITY: property["address"]["city"],
@@ -90,15 +100,16 @@ def get_homes(city, state_code, min_price, max_price,absolute_address):
                         HOME_IMAGE: image,
                         HOME_LON: property["address"]["lon"],
                         HOME_LAT: property["address"]["lat"],
-                        IFRAME_URL : iframe_url
+                        IFRAME_URL : iframe_url,
+                        COMMUTE_TIME : commute
                     }
                 )
             # print(json.dumps(ListOfProperties,indent=2))
             more_properties = nearby_homes(property["property_id"], min_price, max_price,absolute_address)
-            print(more_properties)
+            #print(more_properties)
             if more_properties is not None:
                 list_of_properties.extend(more_properties)
-            print(json.dumps(list_of_properties, indent=2))
+            #print(json.dumps(list_of_properties, indent=2))
 
         else:
             print("No properties found near this address!")
@@ -144,6 +155,14 @@ def nearby_homes(property_id, min_price, max_price,absolute_address):
                 geocode_result[0]["address_components"][4]["long_name"])
                 iframe_url = generate_iframe_url(origin_place_id,destination_place_id)
                 print(iframe_url)
+                now = datetime.now()
+                directions_result = GMAPS.directions(absolute_address,
+                                    result["location"]["address"]["line"] + \
+                                    " , " + result["location"]["address"]["city"] + " , " + \
+                                    geocode_result[0]["address_components"][4]["long_name"],
+                                    mode="driving",
+                                    departure_time=now)
+                commute = directions_result[0]["legs"][0]["duration"]["text"]
                 list_of_properties_2.append(
                     {
                         HOME_CITY: result["location"]["address"]["city"],
@@ -166,9 +185,10 @@ def nearby_homes(property_id, min_price, max_price,absolute_address):
                         HOME_IMAGE: result["primary_photo"]["href"],
                         HOME_LON: geocode_result[0]["geometry"]["location"]["lng"],
                         HOME_LAT:geocode_result[0]["geometry"]["location"]["lat"],
-                        IFRAME_URL : iframe_url
+                        IFRAME_URL : iframe_url,
+                        COMMUTE_TIME : commute
                     })
-        print(json.dumps(list_of_properties_2, indent=2))
+        #print(json.dumps(list_of_properties_2, indent=2))
         return list_of_properties_2
     except requests.exceptions.HTTPError as errh:
         print("getHomes API : Http Error:", errh)
