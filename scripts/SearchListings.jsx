@@ -12,26 +12,24 @@ export default function SearchListings() {
   }
 
   onSearch();
-  
+
   function sortListings(event) {
-    if (event.target.value === "low_high" && listings !== []) {
-      var sortedLowHigh = listings.sort((a, b) => parseInt(a.home_price) - parseInt(b.home_price))
-      Socket.emit('sort listings', sortedLowHigh)
-    }
-    
-    else if (event.target.value == "high_low" && listings !== []) {
-      var sortedHighLow = listings.sort((a, b) => parseInt(a.home_price) - parseInt(b.home_price)).reverse()
-      Socket.emit('sort listings', sortedHighLow)
+    if (event.target.value === 'low_high' && listings !== []) {
+      const sortedLowHigh = listings.sort((a, b) => parseInt(a.home_price, 10) - parseInt(b.home_price, 10));
+      Socket.emit('sort listings', sortedLowHigh);
+    } else if (event.target.value === 'high_low' && listings !== []) {
+      const sortedHighLow = listings.sort((a, b) => parseInt(a.home_price, 10) - parseInt(b.home_price, 10)).reverse();
+      Socket.emit('sort listings', sortedHighLow);
     }
   }
-  
+
   function sortedListings() {
-    Socket.on('sorted listings', (listings) => {
-      setListings(listings)
-    })
+    Socket.on('sorted listings', (returnedListings) => {
+      setListings(returnedListings);
+    });
   }
-  
-  sortedListings()
+
+  sortedListings();
 
   return (
     <div>
@@ -46,20 +44,37 @@ export default function SearchListings() {
                 listings.map(
                   (listing) => (
                     <p>
-                      Address: {listing.home_street}, {listing.home_city}, {listing.home_state_code}
+                      Address:
+                      {' '}
+                      {listing.home_street}
+                      ,
+                      {' '}
+                      {listing.home_city}
+                      ,
+                      {' '}
+                      {listing.home_state_code}
                       <br />
                       <img id="house" alt="" src={listing.home_image} />
                       <br />
-                      Price: ${listing.home_price}
+                      Price: $
+                      {listing.home_price}
                       <br />
-                      Beds: {listing.home_baths}
+                      Beds:
+                      {' '}
+                      {listing.home_baths}
                       <br />
-                      Baths: {listing.home_beds}
+                      Baths:
+                      {' '}
+                      {listing.home_beds}
                       <br />
-                      <a href={listing.walkscore_more_info_link}><img src={listing.walkscore_logo} /></a>
+                      <a href={listing.walkscore_more_info_link}>
+                        <img alt="" src={listing.walkscore_logo} />
+                      </a>
                       {listing.home_walkscore}
                       <br />
-                      Description: {listing.walkscore_description}
+                      Description:
+                      {' '}
+                      {listing.walkscore_description}
                       <br />
                       <a href={listing.home_walkscore_link}>More Walkscore info about listing</a>
                       <hr />

@@ -8,8 +8,8 @@ export default function SearchEngine() {
   const [maxCommute, setMaxCommute] = React.useState(50);
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(10000);
-  const [purchaseType, setPurchaseType] = React.useState("sale");
-  
+  const [purchaseType, setPurchaseType] = React.useState('sale');
+
   function handleAddressChange(event) {
     setAddress(event.target.value);
   }
@@ -33,45 +33,45 @@ export default function SearchEngine() {
   function handleMaxPriceChange(event) {
     setMaxPrice(event.target.value);
   }
-  
+
   function handlePurchaseTypeChange(event) {
     setPurchaseType(event.target.value);
   }
 
   function handleSubmit() {
-    var input_errors = [];
-    if (Number.isInteger(parseInt(maxCommute)) === false) {
-      input_errors.push("Max commute distance is not a number" + maxCommute)
+    const inputErrors = [];
+    if (Number.isInteger(parseInt(maxCommute, 10)) === false) {
+      inputErrors.push(`Max commute distance is not a number${maxCommute}`);
     }
-      
-    if (Number.isInteger(parseInt(minPrice)) === false) {
-      input_errors.push("Min price is not a number")
+
+    if (Number.isInteger(parseInt(minPrice, 10)) === false) {
+      inputErrors.push('Min price is not a number');
     }
-      
-    if (Number.isInteger(parseInt(maxPrice)) === false) {
-      input_errors.push("Max price is not a number")
+
+    if (Number.isInteger(parseInt(maxPrice, 10)) === false) {
+      inputErrors.push('Max price is not a number');
     }
-    
-    if (input_errors.length > 0) {
-      alert(input_errors)
+
+    if (inputErrors.length > 0) {
+      alert(inputErrors);
     }
-    
-    if (input_errors.length == 0) {
+
+    if (inputErrors.length === 0) {
       Socket.emit('send search parameters', {
-      'address': address,
-      'city': city,
-      'state': statecode,
-      'max_commute': parseInt(maxCommute),
-      'min_price': parseInt(minPrice),
-      'max_price': parseInt(maxPrice),
-      'purchase_type': purchaseType
+        address,
+        city,
+        state: statecode,
+        max_commute: parseInt(maxCommute, 10),
+        min_price: parseInt(minPrice, 10),
+        max_price: parseInt(maxPrice, 10),
+        purchase_type: purchaseType,
       });
     }
-    
-    Socket.on('Invalid search input', (invalid_input_errors) => {
-        alert(invalid_input_errors)
-    })
-  }  
+
+    Socket.on('Invalid search input', (invalidInputErrors) => {
+      alert(invalidInputErrors);
+    });
+  }
 
   return (
     <div>
