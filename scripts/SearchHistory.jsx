@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Socket } from './Socket';
 
-export default function SearchHistory() {
+export default function SearchHistory(props) {
   const [List, changeList] = new React.useState([]);
   const [Happened, changeHappened] = new React.useState(false);
   const history = useHistory();
@@ -13,7 +13,9 @@ export default function SearchHistory() {
       changeList(data);
     });
   }
-
+  function handleSubmit(){
+    history.push('/content')
+  }
   function goToSearchEngine() {
     history.push('/content');
   }
@@ -30,6 +32,7 @@ export default function SearchHistory() {
         {
             objects.map(
               (listing) => (
+              <div>
                 <p>
                   Address:
                   {' '}
@@ -47,6 +50,8 @@ export default function SearchHistory() {
                   {listing.distance}
                   <hr />
                 </p>
+                <button type="submit" onClick={handleSubmit}>Search</button>
+                </div>
               ),
             )
         }

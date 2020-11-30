@@ -52,7 +52,16 @@ export default function SearchEngine(props) {
     });
     props.changeLoad()
   }
-
+  function DoStuff(){
+    history.push('/content')
+    // setAddress(address)
+    // setCity(city)
+    // setStateCode(statecode)
+    // setMaxCommute(maxCommute)
+    // setMinPrice(minPrice)
+    // setMaxPrice(maxPrice)
+    // handleSubmit()
+  }
   return (
     <div>
       <h3>Commute Location</h3>
@@ -124,7 +133,7 @@ export default function SearchEngine(props) {
       <input placeholder="Min Price" onChange={handleMinPriceChange} />
       <input placeholder="Max Price" onChange={handleMaxPriceChange} />
       <br />
-      <button type="submit" onClick={handleSubmit}>Search</button>
+      <button type="submit" onClick={handleSubmit} >Search</button>
      <button type="button" onClick={routHistory}>See your search history.</button>
       <hr />
     </div>
