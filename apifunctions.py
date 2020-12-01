@@ -10,6 +10,7 @@ from datetime import datetime
 import requests
 import json
 import walkscore_api
+from google_maps_api import get_place_id, generate_iframe_url
 
 DOTENV_PATH = join(dirname(__file__), "apikeys.env")
 load_dotenv(DOTENV_PATH)
@@ -221,26 +222,6 @@ def nearby_homes(property_id, min_price, max_price,absolute_address):
     except IndexError as out_of_bound:
         print("nearby: No results found for this address!")
 
-def get_distance(start_address, end_address):
-    '''
-    Calculates distance with GMAPS
-    '''
-    now = datetime.now()
-    directions_result = GMAPS.directions(
-        start_address, end_address, mode="driving", departure_time=now
-    )
-    print(json.dumps(directions_result, indent=2))
-
-def get_place_id(address):
-    place = GMAPS.find_place(address,input_type="textquery")
-    return place["candidates"][0]["place_id"]
-
-def generate_iframe_url(origin_place_id,destination_place_id):
-    url = ("https://www.google.com/maps/embed/v1/directions"
-        "?origin=place_id:{}"
-        "&destination=place_id:{}"
-        "&key={}".format(origin_place_id,destination_place_id,GOOGLE_API_KEY))
-    return url
 
 # getHomes("teaneck","nj",300000,70000000)
 # nearbyHomes("M6467862834",300000,10000000)
