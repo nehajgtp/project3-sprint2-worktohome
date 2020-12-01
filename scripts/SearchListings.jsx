@@ -13,6 +13,7 @@ export default function SearchListings(props) {
       console.log(data)
       if(data.length == 0){
         setListings("None Found")
+        props.changeLoad()
       }
       else{setListings(data);}
       
