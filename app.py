@@ -9,11 +9,8 @@ import flask
 import flask_sqlalchemy
 import flask_socketio
 import apifunctions
-<<<<<<< HEAD
 import rental_listings_api
-=======
 import email_file
->>>>>>> merging
 
 ADDRESSES_RECEIVED_CHANNEL = "addresses received"
 
