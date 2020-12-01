@@ -9,6 +9,7 @@ import googlemaps
 from datetime import datetime
 import requests
 import json
+import walkscore_api
 
 DOTENV_PATH = join(dirname(__file__), "apikeys.env")
 load_dotenv(DOTENV_PATH)
@@ -37,7 +38,11 @@ COMMUTE_TIME = "commute_time"
 
 HOME_LAT = "home_lat"
 HOME_LON = "home_lon"
-
+HOME_WALKSCORE = "home_walkscore"
+WALKSCORE_DESCRIPTION = "walkscore_description"
+WALKSCORE_LOGO = "walkscore_logo"
+WALKSCORE_MORE_INFO_LINK = "walkscore_more_info_link"
+HOME_WALKSCORE_LINK = "home_walkscore_link"
 
 def get_homes(city, state_code, min_price, max_price,absolute_address):
     '''
@@ -62,10 +67,8 @@ def get_homes(city, state_code, min_price, max_price,absolute_address):
     try:
         response = requests.request("GET", url, headers=headers, params=querystring)
         json_body = response.json()
-        # print(json.dumps(json_body,indent=2))
         list_of_properties = []
         image = ""
-        #county = "county"
         if json_body["meta"]["returned_rows"] != 0:
             for property in json_body["properties"]:
                 if "thumbnail" in property:
@@ -87,6 +90,8 @@ def get_homes(city, state_code, min_price, max_price,absolute_address):
                                      mode="driving",
                                      departure_time=now)
                 commute = directions_result[0]["legs"][0]["duration"]["text"]
+                walkscore_info = walkscore_api.get_walkscore_info(property["address"]["line"], property["address"]["city"], \
+                        property["address"]["state_code"], property["address"]["lon"], property["address"]["lat"])
                 list_of_properties.append(
                     {
                         HOME_CITY: property["address"]["city"],
@@ -101,7 +106,12 @@ def get_homes(city, state_code, min_price, max_price,absolute_address):
                         HOME_LON: property["address"]["lon"],
                         HOME_LAT: property["address"]["lat"],
                         IFRAME_URL : iframe_url,
-                        COMMUTE_TIME : commute
+                        COMMUTE_TIME : commute,
+                        HOME_WALKSCORE: walkscore_info["walkscore"],
+                        WALKSCORE_DESCRIPTION: walkscore_info["description"],
+                        WALKSCORE_LOGO: walkscore_info["logo"],
+                        WALKSCORE_MORE_INFO_LINK: walkscore_info["more_info_link"],
+                        HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"]
                     }
                 )
             # print(json.dumps(ListOfProperties,indent=2))
@@ -163,6 +173,11 @@ def nearby_homes(property_id, min_price, max_price,absolute_address):
                                     mode="driving",
                                     departure_time=now)
                 commute = directions_result[0]["legs"][0]["duration"]["text"]
+                
+                walkscore_info = walkscore_api.get_walkscore_info(result["location"]["address"]["line"], result["location"]["address"]["city"], \
+                        geocode_result[0]["address_components"][4]["short_name"], geocode_result[0]["geometry"]["location"]["lng"], \
+                        geocode_result[0]["geometry"]["location"]["lat"])
+
                 list_of_properties_2.append(
                     {
                         HOME_CITY: result["location"]["address"]["city"],
@@ -186,7 +201,12 @@ def nearby_homes(property_id, min_price, max_price,absolute_address):
                         HOME_LON: geocode_result[0]["geometry"]["location"]["lng"],
                         HOME_LAT:geocode_result[0]["geometry"]["location"]["lat"],
                         IFRAME_URL : iframe_url,
-                        COMMUTE_TIME : commute
+                        COMMUTE_TIME : commute,
+                        HOME_WALKSCORE: walkscore_info["walkscore"],
+                        WALKSCORE_DESCRIPTION: walkscore_info["description"],
+                        WALKSCORE_LOGO: walkscore_info["logo"],
+                        WALKSCORE_MORE_INFO_LINK: walkscore_info["more_info_link"],
+                        HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"]
                     })
         #print(json.dumps(list_of_properties_2, indent=2))
         return list_of_properties_2
