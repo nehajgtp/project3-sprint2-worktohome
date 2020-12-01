@@ -4,11 +4,19 @@ from os.path import join, dirname
 from dotenv import load_dotenv
 import requests
 import walkscore_api
+import googlemaps
+from datetime import datetime
+
+from google_maps_api import get_place_id, generate_iframe_url
 
 DOTENV_PATH = join(dirname(__file__), "apikeys.env")
 load_dotenv(DOTENV_PATH)
 
 RAPID_API_KEY = os.getenv("RAPID_API_KEY")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+
+GMAPS = googlemaps.Client(key=GOOGLE_API_KEY)
+
 
 HOME_CITY = "home_city"
 HOME_STREET = "home_street"
@@ -20,6 +28,8 @@ HOME_PRICE = "home_price"
 HOME_BATHS = "home_baths"
 HOME_BEDS = "home_beds"
 HOME_IMAGE = "home_image"
+IFRAME_URL = "iframe_url"
+COMMUTE_TIME = "commute_time"
 
 HOME_LAT = "home_lat"
 HOME_LON = "home_lon"
@@ -29,11 +39,11 @@ WALKSCORE_LOGO = "walkscore_logo"
 WALKSCORE_MORE_INFO_LINK = "walkscore_more_info_link"
 HOME_WALKSCORE_LINK = "home_walkscore_link"
 
-def get_rental_listings(city, state_code, min_price, max_price):
+def get_rental_listings(city, state_code, min_price, max_price, absolute_address):
     '''
     Main Method
     '''
-
+    origin_place_id = get_place_id(absolute_address)
     url = "https://realtor.p.rapidapi.com/properties/v2/list-for-rent"
     querystring = {
         "city": city,
@@ -62,7 +72,7 @@ def get_rental_listings(city, state_code, min_price, max_price):
     try:
         if json_body["meta"]["returned_rows"] > 0:
             for property in json_body["properties"]:
-                print(property)
+                # print(property)
                 if property["photo_count"] > 0:
                     image = property["photos"][0]["href"]
                 key = "community"
@@ -74,6 +84,17 @@ def get_rental_listings(city, state_code, min_price, max_price):
                     home_price = property["price"]
                     home_baths = property["baths"]
                     home_beds = property["beds"]
+                destination_place_id = get_place_id(property["address"]["line"] + 
+                " ," + property["address"]["city"] + " ,"+ property["address"]["state_code"])
+                iframe_url = generate_iframe_url(origin_place_id,destination_place_id)
+                now = datetime.now()
+                directions_result = GMAPS.directions(absolute_address,
+                                     property["address"]["line"] + \
+                                     " ," + property["address"]["city"] + " ," \
+                                     + property["address"]["state_code"],
+                                     mode="driving",
+                                     departure_time=now)
+                commute = directions_result[0]["legs"][0]["duration"]["text"]
                 walkscore_info = walkscore_api.get_walkscore_info(property["address"]["line"], property["address"]["city"], property["address"]["state_code"], property["address"]["lon"], property["address"]["lat"])
                 list_of_properties.append(
                     {
@@ -88,6 +109,8 @@ def get_rental_listings(city, state_code, min_price, max_price):
                         HOME_IMAGE: image,
                         HOME_LON: property["address"]["lon"],
                         HOME_LAT: property["address"]["lat"],
+                        IFRAME_URL : iframe_url,
+                        COMMUTE_TIME : commute,
                         HOME_WALKSCORE: walkscore_info["walkscore"],
                         WALKSCORE_DESCRIPTION: walkscore_info["description"],
                         WALKSCORE_LOGO: walkscore_info["logo"],
@@ -95,7 +118,7 @@ def get_rental_listings(city, state_code, min_price, max_price):
                         HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"]
                     }
                 )    
-            print(json.dumps(list_of_properties, indent=2))   
+            # print(json.dumps(list_of_properties, indent=2))   
             return list_of_properties
         else:
             print("No properties found near this address!")

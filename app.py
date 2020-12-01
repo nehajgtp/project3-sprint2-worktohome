@@ -137,8 +137,8 @@ def parsing_search_parameters(data):
         if (purchase_type == "sale"):
             listings = apifunctions.get_homes(city, state, min_price, max_price,absolute_address)
         if (purchase_type == "rent"):
-            listings = rental_listings_api.get_rental_listings(city, state, str(min_price), str(max_price))
-        print(listings)
+            listings = rental_listings_api.get_rental_listings(city, state, str(min_price), str(max_price), absolute_address)
+        print("Final listings outputted: " + str(listings))
         if listings == -1:
             SOCKETIO.emit('sending listing', [])
         else:

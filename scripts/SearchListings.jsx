@@ -15,7 +15,7 @@ export default function SearchListings(props) {
         setListings("None Found")
       }
       else{setListings(data);}
-      
+      console.log(data)
     });
   }
   
