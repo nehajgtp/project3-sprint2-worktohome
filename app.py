@@ -111,6 +111,7 @@ def parsing_search_parameters(data):
     """
     Main Function
     """
+    print(data)
     street_address = data["address"]
     city = data["city"]
     state = data["state"]
@@ -118,7 +119,8 @@ def parsing_search_parameters(data):
     min_price = data["min_price"]
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state
-    send_to_database(EMAIL_CLASS.value_of(), absolute_address, min_price, max_price, distance)
+    if 're-search' not in data:
+        send_to_database(EMAIL_CLASS.value_of(), absolute_address, min_price, max_price, distance)
     listings = apifunctions.get_homes(city, state, min_price, max_price)
     if listings == -1:
         SOCKETIO.emit("sending listing", [])

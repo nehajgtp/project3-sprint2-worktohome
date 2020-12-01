@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Socket } from './Socket';
-import { useHistory } from 'react-router-dom';
-
+import { useHistory, useLocation } from 'react-router-dom';
+import {useEffect } from 'react';
 
 export default function SearchEngine(props) {
   const history = useHistory();
+  const location = useLocation();
     
   const [address, setAddress] = React.useState('');
   const [city, setCity] = React.useState('');
@@ -12,13 +13,16 @@ export default function SearchEngine(props) {
   const [maxCommute, setMaxCommute] = React.useState(50);
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(10000);
+  const [historyState, setHistoryState] = React.useState(false);
 
   function routHistory(){
+    setHistoryState(true)
     history.push("/history");
   }
   
   function handleAddressChange(event) {
     setAddress(event.target.value);
+    console.log("wtf")
   }
 
   function handleCityChange(event) {
@@ -48,7 +52,7 @@ export default function SearchEngine(props) {
       'state': statecode,
       'max_commute': maxCommute,
       'min_price': minPrice,
-      'max_price': maxPrice,
+      'max_price': maxPrice
     });
     props.changeLoad()
   }
@@ -62,6 +66,20 @@ export default function SearchEngine(props) {
     // setMaxPrice(maxPrice)
     // handleSubmit()
   }
+  useEffect(() => {
+    const win = window.sessionStorage
+    Socket.emit('send search parameters', {
+      'address': win.getItem('address'),
+      'city': win.getItem('city'),
+      'state': win.getItem('state'),
+      'max_commute': win.getItem('maxCommute'),
+      'min_price': win.getItem('minPrice'),
+      'max_price': win.getItem('maxPrice'),
+      're-search' : true
+    });
+    props.changeLoad()
+    // handleSubmit()
+  },[historyState]);
   return (
     <div>
       <h3>Commute Location</h3>

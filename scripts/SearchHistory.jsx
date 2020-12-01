@@ -14,7 +14,19 @@ export default function SearchHistory(props) {
     });
   }
   function handleSubmit(){
-    history.push('/content')
+    const address = "26 Wilton Street";
+    const city = "New Hyde Park";
+    const state = "NY";
+    const maxCommute = "10";
+    const minPrice = "0";
+    const maxPrice ="1000000";
+    window.sessionStorage.setItem('address', address);
+    window.sessionStorage.setItem('city', city);
+    window.sessionStorage.setItem('state', state);
+    window.sessionStorage.setItem('maxCommute', maxCommute)
+    window.sessionStorage.setItem('minPrice', minPrice)
+    window.sessionStorage.setItem('maxPrice', maxPrice)
+    history.push('/content', {historyState: false, address: "26 Wilton Street", city: "New Hyde Park", statecode: "NY", maxCommute: "10", minPrice:"0", maxPrice:"1000000"})
   }
   function goToSearchEngine() {
     history.push('/content');
