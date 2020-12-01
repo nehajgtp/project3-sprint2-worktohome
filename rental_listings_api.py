@@ -72,7 +72,7 @@ def get_rental_listings(city, state_code, min_price, max_price, absolute_address
     try:
         if json_body["meta"]["returned_rows"] > 0:
             for property in json_body["properties"]:
-                # print(property)
+                print(property)
                 if property["photo_count"] > 0:
                     image = property["photos"][0]["href"]
                 key = "community"
@@ -133,4 +133,6 @@ def get_rental_listings(city, state_code, min_price, max_price, absolute_address
         print("getRentalListings API : Something Else", err)
     except IndexError as out_of_bound:
         print("No results found for this address!")
+    except KeyError as errk:
+        print("KeyError", errk)
         

@@ -139,7 +139,7 @@ def parsing_search_parameters(data):
         if (purchase_type == "rent"):
             listings = rental_listings_api.get_rental_listings(city, state, str(min_price), str(max_price), absolute_address)
         print("Final listings outputted: " + str(listings))
-        if listings == -1:
+        if (listings == -1 or listings == None):
             SOCKETIO.emit('sending listing', [])
         else:
             SOCKETIO.emit("sending listing", listings)

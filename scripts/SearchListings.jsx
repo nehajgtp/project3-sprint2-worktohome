@@ -11,7 +11,7 @@ export default function SearchListings(props) {
   function onSearch() {
     Socket.on('sending listing', (data) => {
       console.log(data)
-      if(data.length == 0){
+      if((data.length === 0)){
         setListings("None Found")
       }
       else{setListings(data);}
@@ -85,13 +85,14 @@ export default function SearchListings(props) {
                       {' '}
                       {listing.walkscore_description}
                       <br />
-                      Commute Time: {listing.commute_time}
                       <a href={listing.home_walkscore_link}>More Walkscore info about listing</a>
-                      <hr />
+                      <br />
+                      Commute Time: {listing.commute_time}
                       <Iframe url={listing.iframe_url}
                         width="400px"
                         height="400px"
                         />
+                      <hr />
                     </p>
                   ),
                 )

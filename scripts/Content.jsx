@@ -15,7 +15,6 @@ export default function Content() {
     setLoading(true)
   }
   function changeLoadtoFalse(){
-    console.log("Hello")
     setLoading(false)
   }
   return (
