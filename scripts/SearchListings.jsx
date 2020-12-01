@@ -63,7 +63,7 @@ export default function SearchListings(props) {
                       {' '}
                       {listing.home_state_code}
                       <br />
-                      <img id="house" alt="" src={listing.home_image} />
+                      <img id="house" alt="" src={listing.home_image}/>
                       <br />
                       Price: $
                       {listing.home_price}
@@ -85,7 +85,7 @@ export default function SearchListings(props) {
                       {' '}
                       {listing.walkscore_description}
                       <br />
-                      <a href={listing.home_walkscore_link}>More Walkscore info about listing</a>
+                      <a href={listing.home_walkscore_link} target="_blank">More Walkscore info about listing</a>
                       <br />
                       Commute Time: {listing.commute_time}
                       <Iframe url={listing.iframe_url}
