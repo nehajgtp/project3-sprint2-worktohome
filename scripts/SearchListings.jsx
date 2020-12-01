@@ -1,16 +1,22 @@
 import * as React from 'react';
-
+import { useEffect } from 'react';
 import { Socket } from './Socket';
 
-export default function SearchListings() {
-  const [listings, setListings] = React.useState([]);
+export default function SearchListings(props) {
+  const [listings, setListings] = React.useState(false);
+  const [result, setResult] = React.useState("");
 
   function onSearch() {
     Socket.on('sending listing', (data) => {
-      setListings(data);
+      console.log(data)
+      if(data.length == 0){
+        setListings("None Found")
+      }
+      else{setListings(data);}
+      
     });
   }
-
+  
   onSearch();
 
   function sortListings(event) {
@@ -31,17 +37,18 @@ export default function SearchListings() {
 
   sortedListings();
 
-  return (
-    <div>
-      <h2>Listings</h2>
-      <label htmlFor="Sort By">Sort By:</label>
-      <select onChange={sortListings}>
-        <option value="">---- Select option -----</option>
-        <option value="low_high">Low to High</option>
-        <option value="high_low">High to Low</option>
-      </select>
-      {
-                listings.map(
+  function results(){
+    console.log(listings)
+    if(listings === false){
+      setResult(<span>Enter an Address</span>)
+    }
+    else if(listings === "None Found"){
+      setResult(<span>No Listings Found</span>)
+    }
+    else{
+      setResult(
+        <ul>{
+          listings.map(
                   (listing) => (
                     <p>
                       Address:
@@ -81,7 +88,25 @@ export default function SearchListings() {
                     </p>
                   ),
                 )
-            }
+      }</ul>)
+    }
+  }
+  
+  useEffect(() => {
+    results()
+    props.changeLoad()
+  }, [listings]);
+  
+  return (
+    <div>
+      <h2>Listings</h2>
+      <label htmlFor="Sort By">Sort By:</label>
+      <select onChange={sortListings}>
+        <option value="">---- Select option -----</option>
+        <option value="low_high">Low to High</option>
+        <option value="high_low">High to Low</option>
+      </select>
+      {result}
     </div>
   );
 }
