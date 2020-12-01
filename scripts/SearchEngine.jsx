@@ -12,6 +12,7 @@ export default function SearchEngine(props) {
   const [maxCommute, setMaxCommute] = React.useState(50);
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(10000);
+  const [purchaseType, setPurchaseType] = React.useState('sale');
 
   function routHistory(){
     history.push("/history");
@@ -41,14 +42,42 @@ export default function SearchEngine(props) {
     setMaxPrice(event.target.value);
   }
 
+  function handlePurchaseTypeChange(event) {
+    setPurchaseType(event.target.value);
+  }
+
   function handleSubmit() {
-    Socket.emit('send search parameters', {
-      'address': address,
-      'city': city,
-      'state': statecode,
-      'max_commute': maxCommute,
-      'min_price': minPrice,
-      'max_price': maxPrice,
+    const inputErrors = [];
+    if (Number.isInteger(parseInt(maxCommute, 10)) === false) {
+      inputErrors.push(`Max commute distance is not a number${maxCommute}`);
+    }
+
+    if (Number.isInteger(parseInt(minPrice, 10)) === false) {
+      inputErrors.push('Min price is not a number');
+    }
+
+    if (Number.isInteger(parseInt(maxPrice, 10)) === false) {
+      inputErrors.push('Max price is not a number');
+    }
+
+    if (inputErrors.length > 0) {
+      alert(inputErrors);
+    }
+
+    if (inputErrors.length === 0) {
+      Socket.emit('send search parameters', {
+        address,
+        city,
+        state: statecode,
+        max_commute: parseInt(maxCommute, 10),
+        min_price: parseInt(minPrice, 10),
+        max_price: parseInt(maxPrice, 10),
+        purchase_type: purchaseType,
+      });
+    }
+
+    Socket.on('Invalid search input', (invalidInputErrors) => {
+      alert(invalidInputErrors);
     });
     props.changeLoad()
   }
@@ -117,7 +146,12 @@ export default function SearchEngine(props) {
         <option value="WI">Wisconsin</option>
         <option value="WY">Wyoming</option>
       </select>
-      <h3>Housing Prefrences</h3>
+      <label htmlFor="purchase-type">Purchase Type:</label>
+      <select onChange={handlePurchaseTypeChange}>
+        <option value="rent">For Rent</option>
+        <option value="sale">For Sale</option>
+      </select>
+      <h3>Housing Preferences</h3>
       Maximum Commute Distance (miles):
       <input placeholder="Max Commute" onChange={handleMaxCommuteChange} />
       Price:

@@ -18,6 +18,25 @@ export default function SearchListings(props) {
   }
   
   onSearch();
+
+  function sortListings(event) {
+    if (event.target.value === 'low_high' && listings !== []) {
+      const sortedLowHigh = listings.sort((a, b) => parseInt(a.home_price, 10) - parseInt(b.home_price, 10));
+      Socket.emit('sort listings', sortedLowHigh);
+    } else if (event.target.value === 'high_low' && listings !== []) {
+      const sortedHighLow = listings.sort((a, b) => parseInt(a.home_price, 10) - parseInt(b.home_price, 10)).reverse();
+      Socket.emit('sort listings', sortedHighLow);
+    }
+  }
+
+  function sortedListings() {
+    Socket.on('sorted listings', (returnedListings) => {
+      setListings(returnedListings);
+    });
+  }
+
+  sortedListings();
+
   function results(){
     console.log(listings)
     if(listings === false){
@@ -30,32 +49,63 @@ export default function SearchListings(props) {
       setResult(
         <ul>{
           listings.map(
-            (listing) => (
-            <li key = {listing}>
-                <p>
-                  Address: {listing.home_street}, {listing.home_city}, {listing.home_state_code}
-                  <br />
-                  <img id="house" alt="" src={listing.home_image} />
-                  <br />
-                  Price: ${listing.home_price}
-                  <br />
-                  Beds: {listing.home_baths}
-                  <br />
-                  Baths: {listing.home_beds}
-                </p>
-              </li>
-            ),
-          )
+                  (listing) => (
+                    <p>
+                      Address:
+                      {' '}
+                      {listing.home_street}
+                      ,
+                      {' '}
+                      {listing.home_city}
+                      ,
+                      {' '}
+                      {listing.home_state_code}
+                      <br />
+                      <img id="house" alt="" src={listing.home_image} />
+                      <br />
+                      Price: $
+                      {listing.home_price}
+                      <br />
+                      Beds:
+                      {' '}
+                      {listing.home_baths}
+                      <br />
+                      Baths:
+                      {' '}
+                      {listing.home_beds}
+                      <br />
+                      <a href={listing.walkscore_more_info_link}>
+                        <img alt="" src={listing.walkscore_logo} />
+                      </a>
+                      {listing.home_walkscore}
+                      <br />
+                      Description:
+                      {' '}
+                      {listing.walkscore_description}
+                      <br />
+                      <a href={listing.home_walkscore_link}>More Walkscore info about listing</a>
+                      <hr />
+                    </p>
+                  ),
+                )
       }</ul>)
     }
   }
+  
   useEffect(() => {
     results()
     props.changeLoad()
   }, [listings]);
+  
   return (
     <div>
       <h2>Listings</h2>
+      <label htmlFor="Sort By">Sort By:</label>
+      <select onChange={sortListings}>
+        <option value="">---- Select option -----</option>
+        <option value="low_high">Low to High</option>
+        <option value="high_low">High to Low</option>
+      </select>
       {result}
     </div>
   );

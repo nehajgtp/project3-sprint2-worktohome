@@ -1,6 +1,5 @@
-# Project 3 - Sprint 2 (Work to Home)
+# Project 3 - MVP (Work to Home)
 Make your home search more convenient to your commute!
-No longer have Heroku reference!!
 
 ## Setting up React and PSQL
 > React

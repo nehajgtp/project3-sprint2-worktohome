@@ -9,7 +9,11 @@ import flask
 import flask_sqlalchemy
 import flask_socketio
 import apifunctions
+<<<<<<< HEAD
+import rental_listings_api
+=======
 import email_file
+>>>>>>> merging
 
 ADDRESSES_RECEIVED_CHANNEL = "addresses received"
 
@@ -118,13 +122,39 @@ def parsing_search_parameters(data):
     min_price = data["min_price"]
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state
-    send_to_database(EMAIL_CLASS.value_of(), absolute_address, min_price, max_price, distance)
-    listings = apifunctions.get_homes(city, state, min_price, max_price)
-    if listings == -1:
-        SOCKETIO.emit("sending listing", [])
-    else:
-        SOCKETIO.emit("sending listing", listings)
+    purchase_type = data['purchase_type']
+    
+    print(data)
+    invalid_input_errors = []
+    if (min_price < 0):
+        invalid_input_errors.append("The min price cannot be a negative number")
+    if (max_price < 0):
+        invalid_input_errors.append("The max price cannot be a negative number")
+    
+    if (min_price > max_price):
+        invalid_input_errors.append("Min price cannot be bigger than max price")
+    
+    if (len(invalid_input_errors) == 0): 
+        send_to_database(EMAIL_CLASS.value_of(), absolute_address, min_price, max_price, distance)
+        listings = ""
+        if (purchase_type == "sale"):
+            listings = apifunctions.get_homes(city, state, min_price, max_price)
+        if (purchase_type == "rent"):
+            listings = rental_listings_api.get_rental_listings(city, state, str(min_price), str(max_price))
+        print(listings)
+        if listings == -1:
+            SOCKETIO.emit('sending listing', [])
+        else:
+            SOCKETIO.emit("sending listing", listings)
+    if (len(invalid_input_errors) > 0):
+        SOCKETIO.emit('Invalid search input', invalid_input_errors)
+        print("Errors sent")
+        print(invalid_input_errors)
+        invalid_input_errors = []
 
+@SOCKETIO.on("sort listings")
+def sort_listings(listings):
+    SOCKETIO.emit('sorted listings', listings)
 
 @APP.route("/")
 def index():

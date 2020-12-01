@@ -8,6 +8,7 @@ from dotenv import load_dotenv
 import googlemaps
 from datetime import datetime
 import requests
+import walkscore_api
 
 DOTENV_PATH = join(dirname(__file__), "apikeys.env")
 load_dotenv(DOTENV_PATH)
@@ -34,7 +35,11 @@ HOME_IMAGE = "home_image"
 
 HOME_LAT = "home_lat"
 HOME_LON = "home_lon"
-
+HOME_WALKSCORE = "home_walkscore"
+WALKSCORE_DESCRIPTION = "walkscore_description"
+WALKSCORE_LOGO = "walkscore_logo"
+WALKSCORE_MORE_INFO_LINK = "walkscore_more_info_link"
+HOME_WALKSCORE_LINK = "home_walkscore_link"
 
 def get_homes(city, state_code, min_price, max_price):
     '''
@@ -58,10 +63,8 @@ def get_homes(city, state_code, min_price, max_price):
     try:
         response = requests.request("GET", url, headers=headers, params=querystring)
         json_body = response.json()
-        # print(json.dumps(json_body,indent=2))
         list_of_properties = []
         image = ""
-        #county = "county"
         if json_body["meta"]["returned_rows"] != 0:
             for property in json_body["properties"]:
                 if "thumbnail" in property:
@@ -72,6 +75,8 @@ def get_homes(city, state_code, min_price, max_price):
                     pass
                 else:
                     continue
+                walkscore_info = walkscore_api.get_walkscore_info(property["address"]["line"], property["address"]["city"], \
+                        property["address"]["state_code"], property["address"]["lon"], property["address"]["lat"])
                 list_of_properties.append(
                     {
                         HOME_CITY: property["address"]["city"],
@@ -85,9 +90,13 @@ def get_homes(city, state_code, min_price, max_price):
                         HOME_IMAGE: image,
                         HOME_LON: property["address"]["lon"],
                         HOME_LAT: property["address"]["lat"],
+                        HOME_WALKSCORE: walkscore_info["walkscore"],
+                        WALKSCORE_DESCRIPTION: walkscore_info["description"],
+                        WALKSCORE_LOGO: walkscore_info["logo"],
+                        WALKSCORE_MORE_INFO_LINK: walkscore_info["more_info_link"],
+                        HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"]
                     }
                 )
-            # print(json.dumps(ListOfProperties,indent=2))
             more_properties = nearby_homes(property["property_id"], min_price, max_price)
             print(more_properties)
             if more_properties is not None:
@@ -132,6 +141,10 @@ def nearby_homes(property_id, min_price, max_price):
                     result["location"]["address"]["line"]
                     + result["location"]["address"]["city"]
                 )
+                
+                walkscore_info = walkscore_api.get_walkscore_info(result["location"]["address"]["line"], result["location"]["address"]["city"], \
+                        geocode_result[0]["address_components"][4]["short_name"], geocode_result[0]["geometry"]["location"]["lng"], \
+                        geocode_result[0]["geometry"]["location"]["lat"])
 
                 list_of_properties_2.append(
                     {
@@ -154,7 +167,12 @@ def nearby_homes(property_id, min_price, max_price):
                         HOME_BEDS: result["description"]["beds"],
                         HOME_IMAGE: result["primary_photo"]["href"],
                         HOME_LON: geocode_result[0]["geometry"]["location"]["lng"],
-                        HOME_LAT:geocode_result[0]["geometry"]["location"]["lat"]
+                        HOME_LAT:geocode_result[0]["geometry"]["location"]["lat"],
+                        HOME_WALKSCORE: walkscore_info["walkscore"],
+                        WALKSCORE_DESCRIPTION: walkscore_info["description"],
+                        WALKSCORE_LOGO: walkscore_info["logo"],
+                        WALKSCORE_MORE_INFO_LINK: walkscore_info["more_info_link"],
+                        HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"]
                     })
         print(json.dumps(list_of_properties_2, indent=2))
         return list_of_properties_2
@@ -178,7 +196,3 @@ def get_distance(start_address, end_address):
         start_address, end_address, mode="driving", departure_time=now
     )
     print(json.dumps(directions_result, indent=2))
-
-
-# getHomes("teaneck","nj",300000,70000000)
-# nearbyHomes("M6467862834",300000,10000000)

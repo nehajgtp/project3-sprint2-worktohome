@@ -12,7 +12,8 @@
     "@babel/preset-react": "^7.0.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-loader": "^8.0.5",
-    "eslint": "^7.13.0",
+    "css-loader": "^3.6.0",
+    "eslint": "^7.14.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
@@ -39,5 +40,19 @@
     "react-spinners": "^0.9.0",
     "react-use-googlelogin": "^0.12.5",
     "socket.io-client": "^2.3.1"
-  }
+  },
+  "name": "project3-sprint2-worktohome",
+  "description": "Make your home search more convenient to your commute!",
+  "version": "1.0.0",
+  "main": ".eslintrc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nehajgtp/project3-sprint2-worktohome.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nehajgtp/project3-sprint2-worktohome/issues"
+  },
+  "homepage": "https://github.com/nehajgtp/project3-sprint2-worktohome#readme"
 }
