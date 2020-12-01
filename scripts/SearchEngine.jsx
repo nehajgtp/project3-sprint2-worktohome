@@ -12,7 +12,7 @@ export default function SearchEngine(props) {
   const [maxCommute, setMaxCommute] = React.useState(50);
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(10000);
-  const [purchaseType, setPurchaseType] = React.useState('sale');
+  const [purchaseType, setPurchaseType] = React.useState('rent');
 
   function routHistory(){
     history.push("/history");
