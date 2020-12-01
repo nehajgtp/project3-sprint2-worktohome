@@ -1,4 +1,6 @@
 import * as React from 'react';
+import Iframe from 'react-iframe'
+
 import { useEffect } from 'react';
 import { Socket } from './Socket';
 
@@ -83,8 +85,13 @@ export default function SearchListings(props) {
                       {' '}
                       {listing.walkscore_description}
                       <br />
+                      Commute Time: {listing.commute_time}
                       <a href={listing.home_walkscore_link}>More Walkscore info about listing</a>
                       <hr />
+                      <Iframe url={listing.iframe_url}
+                        width="400px"
+                        height="400px"
+                        />
                     </p>
                   ),
                 )

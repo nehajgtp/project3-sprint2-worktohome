@@ -135,7 +135,7 @@ def parsing_search_parameters(data):
         send_to_database(EMAIL_CLASS.value_of(), absolute_address, min_price, max_price, distance)
         listings = ""
         if (purchase_type == "sale"):
-            listings = apifunctions.get_homes(city, state, min_price, max_price)
+            listings = apifunctions.get_homes(city, state, min_price, max_price,absolute_address)
         if (purchase_type == "rent"):
             listings = rental_listings_api.get_rental_listings(city, state, str(min_price), str(max_price))
         print(listings)
