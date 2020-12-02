@@ -1,6 +1,7 @@
 """
 This file contains one class,
 with the purpose of removing the global variable without breaking the tests.
+(Model)
 """
 
 
