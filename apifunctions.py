@@ -1,14 +1,15 @@
-'''
-This file imports infromation from the selected APIs.
-'''
+"""
+This file imports infromation from the selected realtor APIs.
+(Model)
+"""
 import os
 import json
 from os.path import join, dirname
+from datetime import datetime
 from dotenv import load_dotenv
 import googlemaps
-from datetime import datetime
+
 import requests
-import json
 import walkscore_api
 
 DOTENV_PATH = join(dirname(__file__), "apikeys.env")
@@ -44,10 +45,11 @@ WALKSCORE_LOGO = "walkscore_logo"
 WALKSCORE_MORE_INFO_LINK = "walkscore_more_info_link"
 HOME_WALKSCORE_LINK = "home_walkscore_link"
 
-def get_homes(city, state_code, min_price, max_price,absolute_address):
-    '''
+
+def get_homes(city, state_code, min_price, max_price, absolute_address):
+    """
     Main Method
-    '''
+    """
     min_price = int(min_price)
     max_price = int(max_price)
     origin_place_id = get_place_id(absolute_address)
@@ -70,56 +72,73 @@ def get_homes(city, state_code, min_price, max_price,absolute_address):
         list_of_properties = []
         image = ""
         if json_body["meta"]["returned_rows"] != 0:
-            for property in json_body["properties"]:
-                if "thumbnail" in property:
-                    image = property["thumbnail"]
+            for property_instance in json_body["properties"]:
+                if "thumbnail" in property_instance:
+                    image = property_instance["thumbnail"]
                 else:
                     image = "DEFAULT_IMAGE"
-                if property["price"] >= min_price and property["price"] <= max_price:
+                if property_instance["price"] >= min_price and \
+                property_instance["price"] <= max_price:
                     pass
                 else:
                     continue
-                destination_place_id = get_place_id(property["address"]["line"] + 
-                " ," + property["address"]["city"] + " ,"+ property["address"]["state_code"])
-                iframe_url = generate_iframe_url(origin_place_id,destination_place_id)
+                destination_place_id = get_place_id(
+                    property_instance["address"]["line"]
+                    + " ,"
+                    + property_instance["address"]["city"]
+                    + " ,"
+                    + property_instance["address"]["state_code"]
+                )
+                iframe_url = generate_iframe_url(origin_place_id, destination_place_id)
                 now = datetime.now()
-                directions_result = GMAPS.directions(absolute_address,
-                                     property["address"]["line"] + \
-                                     " ," + property["address"]["city"] + " ," \
-                                     + property["address"]["state_code"],
-                                     mode="driving",
-                                     departure_time=now)
+                directions_result = GMAPS.directions(
+                    absolute_address,
+                    property_instance["address"]["line"]
+                    + " ,"
+                    + property_instance["address"]["city"]
+                    + " ,"
+                    + property_instance["address"]["state_code"],
+                    mode="driving",
+                    departure_time=now,
+                )
                 commute = directions_result[0]["legs"][0]["duration"]["text"]
-                walkscore_info = walkscore_api.get_walkscore_info(property["address"]["line"], property["address"]["city"], \
-                        property["address"]["state_code"], property["address"]["lon"], property["address"]["lat"])
+                walkscore_info = walkscore_api.get_walkscore_info(
+                    property_instance["address"]["line"],
+                    property_instance["address"]["city"],
+                    property_instance["address"]["state_code"],
+                    property_instance["address"]["lon"],
+                    property_instance["address"]["lat"],
+                )
                 list_of_properties.append(
                     {
-                        HOME_CITY: property["address"]["city"],
-                        HOME_STREET: property["address"]["line"],
-                        HOME_POSTAL_CODE: property["address"]["postal_code"],
-                        HOME_STATE_CODE: property["address"]["state_code"],
-                        HOME_STATE: property["address"]["state"],
-                        HOME_PRICE: property["price"],
-                        HOME_BATHS: property["baths"],
-                        HOME_BEDS: property["beds"],
+                        HOME_CITY: property_instance["address"]["city"],
+                        HOME_STREET: property_instance["address"]["line"],
+                        HOME_POSTAL_CODE: property_instance["address"]["postal_code"],
+                        HOME_STATE_CODE: property_instance["address"]["state_code"],
+                        HOME_STATE: property_instance["address"]["state"],
+                        HOME_PRICE: property_instance["price"],
+                        HOME_BATHS: property_instance["baths"],
+                        HOME_BEDS: property_instance["beds"],
                         HOME_IMAGE: image,
-                        HOME_LON: property["address"]["lon"],
-                        HOME_LAT: property["address"]["lat"],
-                        IFRAME_URL : iframe_url,
-                        COMMUTE_TIME : commute,
+                        HOME_LON: property_instance["address"]["lon"],
+                        HOME_LAT: property_instance["address"]["lat"],
+                        IFRAME_URL: iframe_url,
+                        COMMUTE_TIME: commute,
                         HOME_WALKSCORE: walkscore_info["walkscore"],
                         WALKSCORE_DESCRIPTION: walkscore_info["description"],
                         WALKSCORE_LOGO: walkscore_info["logo"],
                         WALKSCORE_MORE_INFO_LINK: walkscore_info["more_info_link"],
-                        HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"]
+                        HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"],
                     }
                 )
             # print(json.dumps(ListOfProperties,indent=2))
-            more_properties = nearby_homes(property["property_id"], min_price, max_price,absolute_address)
-            #print(more_properties)
+            more_properties = nearby_homes(
+                property_instance["property_id"], min_price, max_price, absolute_address
+            )
+            # print(more_properties)
             if more_properties is not None:
                 list_of_properties.extend(more_properties)
-            #print(json.dumps(list_of_properties, indent=2))
+            # print(json.dumps(list_of_properties, indent=2))
 
         else:
             print("No properties found near this address!")
@@ -137,10 +156,10 @@ def get_homes(city, state_code, min_price, max_price,absolute_address):
         print("No results found for this address!")
 
 
-def nearby_homes(property_id, min_price, max_price,absolute_address):
-    '''
+def nearby_homes(property_id, min_price, max_price, absolute_address):
+    """
     Gets other homes
-    '''
+    """
     url = "https://realtor.p.rapidapi.com/properties/v2/list-similar-homes"
     querystring = {"property_id": property_id}
 
@@ -160,23 +179,35 @@ def nearby_homes(property_id, min_price, max_price,absolute_address):
                     result["location"]["address"]["line"]
                     + result["location"]["address"]["city"]
                 )
-                destination_place_id = get_place_id(result["location"]["address"]["line"] + \
-                " , " + result["location"]["address"]["city"] + " , " + \
-                geocode_result[0]["address_components"][4]["long_name"])
-                iframe_url = generate_iframe_url(origin_place_id,destination_place_id)
+                destination_place_id = get_place_id(
+                    result["location"]["address"]["line"]
+                    + " , "
+                    + result["location"]["address"]["city"]
+                    + " , "
+                    + geocode_result[0]["address_components"][4]["long_name"]
+                )
+                iframe_url = generate_iframe_url(origin_place_id, destination_place_id)
                 print(iframe_url)
                 now = datetime.now()
-                directions_result = GMAPS.directions(absolute_address,
-                                    result["location"]["address"]["line"] + \
-                                    " , " + result["location"]["address"]["city"] + " , " + \
-                                    geocode_result[0]["address_components"][4]["long_name"],
-                                    mode="driving",
-                                    departure_time=now)
+                directions_result = GMAPS.directions(
+                    absolute_address,
+                    result["location"]["address"]["line"]
+                    + " , "
+                    + result["location"]["address"]["city"]
+                    + " , "
+                    + geocode_result[0]["address_components"][4]["long_name"],
+                    mode="driving",
+                    departure_time=now,
+                )
                 commute = directions_result[0]["legs"][0]["duration"]["text"]
-                
-                walkscore_info = walkscore_api.get_walkscore_info(result["location"]["address"]["line"], result["location"]["address"]["city"], \
-                        geocode_result[0]["address_components"][4]["short_name"], geocode_result[0]["geometry"]["location"]["lng"], \
-                        geocode_result[0]["geometry"]["location"]["lat"])
+
+                walkscore_info = walkscore_api.get_walkscore_info(
+                    result["location"]["address"]["line"],
+                    result["location"]["address"]["city"],
+                    geocode_result[0]["address_components"][4]["short_name"],
+                    geocode_result[0]["geometry"]["location"]["lng"],
+                    geocode_result[0]["geometry"]["location"]["lat"],
+                )
 
                 list_of_properties_2.append(
                     {
@@ -199,16 +230,17 @@ def nearby_homes(property_id, min_price, max_price,absolute_address):
                         HOME_BEDS: result["description"]["beds"],
                         HOME_IMAGE: result["primary_photo"]["href"],
                         HOME_LON: geocode_result[0]["geometry"]["location"]["lng"],
-                        HOME_LAT:geocode_result[0]["geometry"]["location"]["lat"],
-                        IFRAME_URL : iframe_url,
-                        COMMUTE_TIME : commute,
+                        HOME_LAT: geocode_result[0]["geometry"]["location"]["lat"],
+                        IFRAME_URL: iframe_url,
+                        COMMUTE_TIME: commute,
                         HOME_WALKSCORE: walkscore_info["walkscore"],
                         WALKSCORE_DESCRIPTION: walkscore_info["description"],
                         WALKSCORE_LOGO: walkscore_info["logo"],
                         WALKSCORE_MORE_INFO_LINK: walkscore_info["more_info_link"],
-                        HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"]
-                    })
-        #print(json.dumps(list_of_properties_2, indent=2))
+                        HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"],
+                    }
+                )
+        # print(json.dumps(list_of_properties_2, indent=2))
         return list_of_properties_2
     except requests.exceptions.HTTPError as errh:
         print("getHomes API : Http Error:", errh)
@@ -221,26 +253,38 @@ def nearby_homes(property_id, min_price, max_price,absolute_address):
     except IndexError as out_of_bound:
         print("nearby: No results found for this address!")
 
+
 def get_distance(start_address, end_address):
-    '''
+    """
     Calculates distance with GMAPS
-    '''
+    """
     now = datetime.now()
     directions_result = GMAPS.directions(
         start_address, end_address, mode="driving", departure_time=now
     )
     print(json.dumps(directions_result, indent=2))
 
+
 def get_place_id(address):
-    place = GMAPS.find_place(address,input_type="textquery")
+    '''
+    Finds possible locations
+    '''
+    place = GMAPS.find_place(address, input_type="textquery")
     return place["candidates"][0]["place_id"]
 
-def generate_iframe_url(origin_place_id,destination_place_id):
-    url = ("https://www.google.com/maps/embed/v1/directions"
+
+def generate_iframe_url(origin_place_id, destination_place_id):
+    '''
+    Creates a IFRAME for the Walkscore
+    '''
+    url = (
+        "https://www.google.com/maps/embed/v1/directions"
         "?origin=place_id:{}"
         "&destination=place_id:{}"
-        "&key={}".format(origin_place_id,destination_place_id,GOOGLE_API_KEY))
+        "&key={}".format(origin_place_id, destination_place_id, GOOGLE_API_KEY)
+    )
     return url
+
 
 # getHomes("teaneck","nj",300000,70000000)
 # nearbyHomes("M6467862834",300000,10000000)
