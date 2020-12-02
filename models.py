@@ -1,6 +1,6 @@
 # models.py
 '''
-Defines the table for PSQL (data persistence)
+Defines the table for PSQL (Model)
 '''
 import flask_sqlalchemy
 from app import DB
