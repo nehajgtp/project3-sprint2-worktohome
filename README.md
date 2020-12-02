@@ -170,6 +170,26 @@ Unit Testing\
 ### walkscore_api.py
     walkscore_api.py:54:4: W0612: Unused variable 'out_of_bound' (unused-variable) : Not needed.
 
+## FacebookButton.jsx
+  3:8  error  'ReactDOM' is defined but never used  no-unused-vars
+
+## SearchEngine.jsx
+  63:7   warning  Unexpected alert                             no-alert
+  79:7   warning  Unexpected alert                             no-alert
+  81:11  error    'changeLoad' is missing in props validation  react/prop-types
+
+## SearchHistory.jsx
+  6:40  error  A constructor name should not start with a lowercase letter  new-cap
+  7:48  error  A constructor name should not start with a lowercase letter  new-cap
+
+## SearchListings.jsx
+   23:1   error  This line has a length of 109. Maximum allowed is 100  max-len
+   26:1   error  This line has a length of 119. Maximum allowed is 100  max-len
+  104:11  error  'changeLoad' is missing in props validation            react/prop-types
+
+## Socket.jsx
+  3:1  error  Prefer default export  import/prefer-default-export
+
 ## In Terminal
 1. Must run this if psql is not running: sudo service postgresql start
 2. Than must source API keys.
