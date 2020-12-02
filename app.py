@@ -1,6 +1,6 @@
 # APP.py
 """
-The file handles the inputs and outputs
+The file handles the inputs and outputs. (Controller)
 """
 import os
 from os.path import join, dirname
@@ -107,6 +107,7 @@ def new_user(data):
     email_variable = data["email"]
     EMAIL_CLASS.set_email(email_variable)
 
+
 @SOCKETIO.on("send search parameters")
 def parsing_search_parameters(data):
     """
@@ -119,39 +120,50 @@ def parsing_search_parameters(data):
     min_price = data["min_price"]
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state
-    purchase_type = data['purchase_type']
-    
+    purchase_type = data["purchase_type"]
+
     print(data)
     invalid_input_errors = []
-    if (min_price < 0):
+    if min_price < 0:
         invalid_input_errors.append("The min price cannot be a negative number")
-    if (max_price < 0):
+    if max_price < 0:
         invalid_input_errors.append("The max price cannot be a negative number")
-    
-    if (min_price > max_price):
+
+    if min_price > max_price:
         invalid_input_errors.append("Min price cannot be bigger than max price")
-    
-    if (len(invalid_input_errors) == 0): 
-        send_to_database(EMAIL_CLASS.value_of(), absolute_address, min_price, max_price, distance)
+
+    if len(invalid_input_errors) == 0:
+        send_to_database(
+            EMAIL_CLASS.value_of(), absolute_address, min_price, max_price, distance
+        )
         listings = ""
-        if (purchase_type == "sale"):
-            listings = apifunctions.get_homes(city, state, min_price, max_price,absolute_address)
-        if (purchase_type == "rent"):
-            listings = rental_listings_api.get_rental_listings(city, state, str(min_price), str(max_price))
+        if purchase_type == "sale":
+            listings = apifunctions.get_homes(
+                city, state, min_price, max_price, absolute_address
+            )
+        if purchase_type == "rent":
+            listings = rental_listings_api.get_rental_listings(
+                city, state, str(min_price), str(max_price)
+            )
         print(listings)
         if listings == -1:
-            SOCKETIO.emit('sending listing', [])
+            SOCKETIO.emit("sending listing", [])
         else:
             SOCKETIO.emit("sending listing", listings)
-    if (len(invalid_input_errors) > 0):
-        SOCKETIO.emit('Invalid search input', invalid_input_errors)
+    if len(invalid_input_errors) > 0:
+        SOCKETIO.emit("Invalid search input", invalid_input_errors)
         print("Errors sent")
         print(invalid_input_errors)
         invalid_input_errors = []
 
+
 @SOCKETIO.on("sort listings")
 def sort_listings(listings):
-    SOCKETIO.emit('sorted listings', listings)
+    '''
+    Solution to handling change in desired list order
+    '''
+    SOCKETIO.emit("sorted listings", listings)
+
 
 @APP.route("/")
 def index():
