@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Socket } from './Socket';
 import { useHistory } from 'react-router-dom';
-
+import { Socket } from './Socket';
 
 export default function SearchEngine(props) {
   const history = useHistory();
-    
+
   const [address, setAddress] = React.useState('');
   const [city, setCity] = React.useState('');
   const [statecode, setStateCode] = React.useState('');
@@ -14,10 +13,10 @@ export default function SearchEngine(props) {
   const [maxPrice, setMaxPrice] = React.useState(10000);
   const [purchaseType, setPurchaseType] = React.useState('sale');
 
-  function routHistory(){
-    history.push("/history");
+  function routHistory() {
+    history.push('/history');
   }
-  
+
   function handleAddressChange(event) {
     setAddress(event.target.value);
   }
@@ -79,7 +78,7 @@ export default function SearchEngine(props) {
     Socket.on('Invalid search input', (invalidInputErrors) => {
       alert(invalidInputErrors);
     });
-    props.changeLoad()
+    props.changeLoad();
   }
 
   return (
@@ -160,7 +159,7 @@ export default function SearchEngine(props) {
       <br />
       <button type="submit" onClick={handleSubmit}>Search</button>
       <br />
-     <button type="button" onClick={routHistory}>Search History</button>
+      <button type="button" onClick={routHistory}>Search History</button>
       <hr />
     </div>
   );
