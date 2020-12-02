@@ -15,7 +15,8 @@ export default function GuestGreeting() {
       </div>
       <div className="about">
         <div id="about-section">
-          Our website tailors your home search to your specific commute, providing information about the commute from each listing to your desired destination.
+          Our website tailors your home search to your specific commute,
+          providing information about the commute from each listing to your desired destination.
         </div>
       </div>
     </div>
