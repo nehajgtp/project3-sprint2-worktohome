@@ -1,3 +1,7 @@
+'''
+This file is a model file that specificly handles the rent part of the realtor API.
+(Model)
+'''
 import os
 import json
 from os.path import join, dirname
@@ -29,10 +33,11 @@ WALKSCORE_LOGO = "walkscore_logo"
 WALKSCORE_MORE_INFO_LINK = "walkscore_more_info_link"
 HOME_WALKSCORE_LINK = "home_walkscore_link"
 
+
 def get_rental_listings(city, state_code, min_price, max_price):
-    '''
+    """
     Main Method
-    '''
+    """
 
     url = "https://realtor.p.rapidapi.com/properties/v2/list-for-rent"
     querystring = {
@@ -42,14 +47,14 @@ def get_rental_listings(city, state_code, min_price, max_price):
         "state_code": state_code,
         "sort": "relevance",
         "price_min": min_price,
-        "price_max": max_price
+        "price_max": max_price,
     }
 
     headers = {
         "x-rapidapi-key": RAPID_API_KEY,
         "x-rapidapi-host": "realtor.p.rapidapi.com",
     }
-    
+
     response = requests.request("GET", url, headers=headers, params=querystring)
     json_body = response.json()
     # print(json.dumps(json_body, indent=2))
@@ -58,44 +63,50 @@ def get_rental_listings(city, state_code, min_price, max_price):
     home_price = ""
     home_baths = ""
     home_beds = ""
-    
+
     try:
         if json_body["meta"]["returned_rows"] > 0:
-            for property in json_body["properties"]:
-                print(property)
-                if property["photo_count"] > 0:
-                    image = property["photos"][0]["href"]
+            for property_inst in json_body["properties"]:
+                print(property_inst)
+                if property_inst["photo_count"] > 0:
+                    image = property_inst["photos"][0]["href"]
                 key = "community"
-                if key in property:
-                    home_price = property[key]["price_min"]
-                    home_baths = property[key]["baths_min"]
-                    home_beds = property[key]["beds_min"]
-                if key not in property:
-                    home_price = property["price"]
-                    home_baths = property["baths"]
-                    home_beds = property["beds"]
-                walkscore_info = walkscore_api.get_walkscore_info(property["address"]["line"], property["address"]["city"], property["address"]["state_code"], property["address"]["lon"], property["address"]["lat"])
+                if key in property_inst:
+                    home_price = property_inst[key]["price_min"]
+                    home_baths = property_inst[key]["baths_min"]
+                    home_beds = property_inst[key]["beds_min"]
+                if key not in property_inst:
+                    home_price = property_inst["price"]
+                    home_baths = property_inst["baths"]
+                    home_beds = property_inst["beds"]
+                walkscore_info = walkscore_api.get_walkscore_info(
+                    property_inst["address"]["line"],
+                    property_inst["address"]["city"],
+                    property_inst["address"]["state_code"],
+                    property_inst["address"]["lon"],
+                    property_inst["address"]["lat"],
+                )
                 list_of_properties.append(
                     {
-                        HOME_CITY: property["address"]["city"],
-                        HOME_STREET: property["address"]["line"],
-                        HOME_POSTAL_CODE: property["address"]["postal_code"],
-                        HOME_STATE_CODE: property["address"]["state_code"],
-                        HOME_STATE: property["address"]["state"],
+                        HOME_CITY: property_inst["address"]["city"],
+                        HOME_STREET: property_inst["address"]["line"],
+                        HOME_POSTAL_CODE: property_inst["address"]["postal_code"],
+                        HOME_STATE_CODE: property_inst["address"]["state_code"],
+                        HOME_STATE: property_inst["address"]["state"],
                         HOME_PRICE: home_price,
                         HOME_BATHS: home_baths,
                         HOME_BEDS: home_beds,
                         HOME_IMAGE: image,
-                        HOME_LON: property["address"]["lon"],
-                        HOME_LAT: property["address"]["lat"],
+                        HOME_LON: property_inst["address"]["lon"],
+                        HOME_LAT: property_inst["address"]["lat"],
                         HOME_WALKSCORE: walkscore_info["walkscore"],
                         WALKSCORE_DESCRIPTION: walkscore_info["description"],
                         WALKSCORE_LOGO: walkscore_info["logo"],
                         WALKSCORE_MORE_INFO_LINK: walkscore_info["more_info_link"],
-                        HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"]
+                        HOME_WALKSCORE_LINK: walkscore_info["walkscore_link"],
                     }
-                )    
-            print(json.dumps(list_of_properties, indent=2))   
+                )
+            print(json.dumps(list_of_properties, indent=2))
             return list_of_properties
         else:
             print("No properties found near this address!")
@@ -110,4 +121,3 @@ def get_rental_listings(city, state_code, min_price, max_price):
         print("getRentalListings API : Something Else", err)
     except IndexError as out_of_bound:
         print("No results found for this address!")
-        
