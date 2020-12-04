@@ -27,6 +27,7 @@ STATE = "state"
 DISTANCE = "max_commute"
 MIN_PRICE = "min_price"
 MAX_PRICE = "max_price"
+PURCHASE_TYPE = "purchase_type"
 # class MockSendToDatabase(unittest.TestCase):
 #     def setUp(self):
 #         self.success_test_params = {
@@ -46,15 +47,16 @@ class MockParsingSearchParameters(unittest.TestCase):
                 CITY:"Newark",
                 STATE:"NJ",
                 DISTANCE:"40",
-                MIN_PRICE:"100",
-                MAX_PRICE:"2000"
+                MIN_PRICE:100,
+                MAX_PRICE:2000,
+                PURCHASE_TYPE: "sale"
             },
             KEY_EXPECTED: None
         }
         
-    def mock_get_homes(self, city, state, min_price, max_price):
+    def mock_get_homes(self, city, state, min_price, max_price, absolute_address):
         return -1
-    def mock_get_homes_exists(self, city, state, min_price, max_price):
+    def mock_get_homes_exists(self, city, state, min_price, max_price, absolute_address):
         return 1
     def mock_send_To_database(self, email, address, price_range_low, price_range_high, distance):
         return None
