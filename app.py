@@ -44,13 +44,14 @@ import models
 EMAIL_CLASS = email_file.Email("")
 
 
-def send_to_database(email, address, price_range_low, price_range_high, distance):
+def send_to_database(email, address, price_range_low, price_range_high, distance, city, state, purchase_type):
     """
     CALL THIS FUNCTION TO ADD TO THE DATABASE OR UPDATE DATABASE
     """
     DB.session.add(
         models.TableDefintion(
-            email, address, price_range_low, price_range_high, distance
+            email, address, price_range_low, price_range_high, distance,\
+            city, state, purchase_type\
         )
     )
     DB.session.commit()
@@ -134,17 +135,34 @@ def parsing_search_parameters(data):
 
     if len(invalid_input_errors) == 0:
         send_to_database(
-            EMAIL_CLASS.value_of(), absolute_address, min_price, max_price, distance
+            EMAIL_CLASS.value_of(), absolute_address, min_price, max_price,\
+            distance, city, state, purchase_type\
         )
         listings = ""
         if purchase_type == "sale":
-            listings = apifunctions.get_homes(
-                city, state, min_price, max_price, absolute_address
-            )
+            y = 0
+            #listings = apifunctions.get_homes(
+            #    city, state, min_price, max_price, absolute_address
+            #)
         if purchase_type == "rent":
-            listings = rental_listings_api.get_rental_listings(
-                city, state, str(min_price), str(max_price)
-            )
+            x = 0
+            #listings = rental_listings_api.get_rental_listings(
+            #    city, state, str(min_price), str(max_price)
+            #)
+        listing = [  {
+        "home_city": "Morris Plains",
+        "home_street": "14 Rita Dr",
+        "home_postal_code": "07950",
+        "home_state_code": "NJ",
+        "home_state": "New Jersey",
+        "home_county": "Morris County",
+        "home_price": 494900,
+        "home_baths": 2,
+        "home_beds": 3,
+        "home_image": "https://ap.rdcpix.com/4f5171535d64d87096aca43b6b9035e4l-m1056436147xd-w300_h300_q80.jpg",
+        "home_lon": -74.4537076,
+        "home_lat": 40.8606866
+        } ]
         print(listings)
         if listings == -1:
             SOCKETIO.emit("sending listing", [])
