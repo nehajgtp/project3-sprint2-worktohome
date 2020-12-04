@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
+import { BeatLoader } from 'react-spinners';
 import SearchEngine from './SearchEngine';
 import SearchListings from './SearchListings';
-import { BeatLoader } from 'react-spinners'
 
 export default function Content() {
   const history = useHistory();
@@ -10,21 +10,21 @@ export default function Content() {
     history.push('/');
   }
   const [loading, setLoading] = React.useState(false);
-  function changeLoadtoTrue(){
-    console.log("damn")
-    setLoading(true)
+
+  function changeLoadtoTrue() {
+    setLoading(true);
   }
-  function changeLoadtoFalse(){
-    console.log("dude")
-    setLoading(false)
+  function changeLoadtoFalse() {
+    setLoading(false);
+
   }
   return (
     <div>
       <h1>Work to Home</h1>
       <hr />
-      <SearchEngine changeLoad={changeLoadtoTrue}/>
-      <SearchListings changeLoad={changeLoadtoFalse}/>
-      {loading ? <BeatLoader/>: null}
+      <SearchEngine changeLoad={changeLoadtoTrue} />
+      <SearchListings changeLoad={changeLoadtoFalse} />
+      {loading ? <BeatLoader /> : null}
     </div>
 
   );

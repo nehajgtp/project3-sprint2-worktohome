@@ -144,24 +144,51 @@ Unit Testing\
 ### app.py
     app.py:34:0: C0413: Import "import models" should be placed at the top of the module (wrong-import-position) : Needs to be in this location to prevent an error according to Kevin.
     app.py:54:8: E1101: Instance of 'query' has no 'filter' member (no-member) : Pylint doesn't detect the method member.
-    app.py:89:4: W0603: Using the global statement (global-statement) : Would need an entire overhaul of the email handling to solve.
     app.py:137:17: W1508: os.getenv default type is builtins.int. Expected str or None. (invalid-envvar-default) : It is correct ignore this error. 
 
 ### models.py
     models.py:20:4: R0913: Too many arguments (6/5) (too-many-arguments) : It's really close to the max number of arguments and would require a massive overhaul of the application.
     models.py:9:0: R0903: Too few public methods (1/2) (too-few-public-methods) : Unnecessary to add more methods
-    models.py:32:0: R0903: Too few public methods (1/2) (too-few-public-methods) : Unnecessary to add more methods
     models.py:5:0: W0611: Unused import flask_sqlalchemy (unused-import) : Import is actually nesscary to prevent werid behavior, pylint just does not know this.
 
 ### apifunctions.py
-    apifunctions.py:66:16: W0622: Redefining built-in 'property' (redefined-builtin): Ali's code.
-    apifunctions.py:39:0: R0914: Too many local variables (18/15) (too-many-locals) : Ali's code would require a large refactor.
-    apifunctions.py:91:43: W0631: Using possibly undefined loop variable 'property' (undefined-loop-variable) : It is defined. 
-    apifunctions.py:109:4: W0612: Unused variable 'out_of_bound' (unused-variable) : Describes the error
-    apifunctions.py:39:0: R0912: Too many branches (13/12) (too-many-branches) : Ali's code would require a large refactor.
-    apifunctions.py:113:0: R0914: Too many local variables (17/15) (too-many-locals) : Ali's code would require a large refactor.
-    apifunctions.py:169:4: W0612: Unused variable 'out_of_bound' (unused-variable) : Describes the error
-    apifunctions.py:9:0: C0411: standard import "from datetime import datetime" should be placed before "from dotenv import load_dotenv" (wrong-import-order)
+    apifunctions.py:48:0: R0914: Too many local variables (26/15) (too-many-locals) : Extremely hard to remove this many variables
+    apifunctions.py:134:16: W0631: Using possibly undefined loop variable 'property' : It is defined
+    apifunctions.py:153:4: W0612: Unused variable 'out_of_bound' (unused-variable) : Not needed.
+    apifunctions.py:48:0: R0912: Too many branches (13/12) (too-many-branches) : One extra branch
+    apifunctions.py:157:0: R0914: Too many local variables (25/15) (too-many-locals) : Duplicate error
+    apifunctions.py:251:4: W0612: Unused variable 'out_of_bound' (unused-variable) : Duplicate error
+
+### email_file.py
+    No linting warnings or errors.
+    
+### rental_listings_api
+    rental_listings_api.py:36:0: R0914: Too many local variables (22/15) (too-many-locals) : Extremely hard to remove this many variables
+    rental_listings_api.py:67:8: R1705: Unnecessary "else" after "return" (no-else-return) : This error should not show up.
+    rental_listings_api.py:121:4: W0612: Unused variable 'out_of_bound' (unused-variable) : Not needed.
+    
+### walkscore_api.py
+    walkscore_api.py:54:4: W0612: Unused variable 'out_of_bound' (unused-variable) : Not needed.
+
+## FacebookButton.jsx
+  3:8  error  'ReactDOM' is defined but never used  no-unused-vars
+
+## SearchEngine.jsx
+  63:7   warning  Unexpected alert                             no-alert
+  79:7   warning  Unexpected alert                             no-alert
+  81:11  error    'changeLoad' is missing in props validation  react/prop-types
+
+## SearchHistory.jsx
+  6:40  error  A constructor name should not start with a lowercase letter  new-cap
+  7:48  error  A constructor name should not start with a lowercase letter  new-cap
+
+## SearchListings.jsx
+   23:1   error  This line has a length of 109. Maximum allowed is 100  max-len
+   26:1   error  This line has a length of 119. Maximum allowed is 100  max-len
+  104:11  error  'changeLoad' is missing in props validation            react/prop-types
+
+## Socket.jsx
+  3:1  error  Prefer default export  import/prefer-default-export
 
 ## In Terminal
 1. Must run this if psql is not running: sudo service postgresql start

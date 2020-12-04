@@ -1,4 +1,5 @@
 import * as React from 'react';
+
 import Iframe from 'react-iframe'
 import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -6,22 +7,21 @@ import { Socket } from './Socket';
 
 export default function SearchListings(props) {
   const [listings, setListings] = React.useState(false);
+
   const [result, setResult] = React.useState("");
   const history = useHistory();
 
   function onSearch() {
     Socket.on('sending listing', (data) => {
       console.log(data)
-      history.push("/content")
       if(data.length == 0){
         setListings("None Found")
         props.changeLoad()
       }
       else{setListings(data);}
-      
     });
   }
-  
+
   onSearch();
 
   function sortListings(event) {
@@ -42,71 +42,74 @@ export default function SearchListings(props) {
 
   sortedListings();
 
-  function results(){
-    console.log(listings)
-    if(listings === false){
-      setResult(<span>Enter an Address</span>)
-    }
-    else if(listings === "None Found"){
-      setResult(<span>No Listings Found</span>)
-    }
-    else{
+  function results() {
+    if (listings === false) {
+      setResult(<span>Enter an Address</span>);
+    } else if (listings === 'None Found') {
+      setResult(<span>No Listings Found</span>);
+    } else {
       setResult(
-        <ul>{
+        <ul>
+          {
           listings.map(
-                  (listing) => (
-                    <p>
-                      Address:
-                      {' '}
-                      {listing.home_street}
-                      ,
-                      {' '}
-                      {listing.home_city}
-                      ,
-                      {' '}
-                      {listing.home_state_code}
-                      <br />
-                      <img id="house" alt="" src={listing.home_image} />
-                      <br />
-                      Price: $
-                      {listing.home_price}
-                      <br />
-                      Beds:
-                      {' '}
-                      {listing.home_baths}
-                      <br />
-                      Baths:
-                      {' '}
-                      {listing.home_beds}
-                      <br />
-                      <a href={listing.walkscore_more_info_link}>
-                        <img alt="" src={listing.walkscore_logo} />
-                      </a>
-                      {listing.home_walkscore}
-                      <br />
-                      Description:
-                      {' '}
-                      {listing.walkscore_description}
-                      <br />
-                      Commute Time: {listing.commute_time}
-                      <a href={listing.home_walkscore_link}>More Walkscore info about listing</a>
-                      <hr />
-                      <Iframe url={listing.iframe_url}
-                        width="400px"
-                        height="400px"
-                        />
-                    </p>
-                  ),
-                )
-      }</ul>)
+            (listing) => (
+              <p>
+                Address:
+                {' '}
+                {listing.home_street}
+                ,
+                {' '}
+                {listing.home_city}
+                ,
+                {' '}
+                {listing.home_state_code}
+                <br />
+                <img id="house" alt="" src={listing.home_image} />
+                <br />
+                Price: $
+                {listing.home_price}
+                <br />
+                Beds:
+                {' '}
+                {listing.home_baths}
+                <br />
+                Baths:
+                {' '}
+                {listing.home_beds}
+                <br />
+                <a href={listing.walkscore_more_info_link}>
+                  <img alt="" src={listing.walkscore_logo} />
+                </a>
+                {listing.home_walkscore}
+                <br />
+                Description:
+                {' '}
+                {listing.walkscore_description}
+                <br />
+                Commute Time:
+                {' '}
+                {listing.commute_time}
+                <a href={listing.home_walkscore_link}>More Walkscore info about listing</a>
+                <hr />
+                <Iframe
+                  url={listing.iframe_url}
+                  width="400px"
+                  height="400px"
+                />
+              </p>
+            ),
+          )
+      }
+        </ul>,
+      );
     }
   }
-  
+
   useEffect(() => {
-    results()
-    props.changeLoad()
+    results();
+    props.changeLoad();
   }, [listings]);
-  
+
   return (
     <div>
       <h2>Listings</h2>

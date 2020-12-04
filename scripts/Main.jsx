@@ -12,7 +12,7 @@ function Greeting() {
         <Switch>
           <Route exact path="/" component={GuestGreeting} />
           <Route path="/content" component={Content} />
-          <Route path="/history" component={SearchHistory}/>
+          <Route path="/history" component={SearchHistory} />
         </Switch>
       </Router>
     </div>
