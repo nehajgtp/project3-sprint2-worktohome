@@ -86,7 +86,6 @@ export default function SearchEngine(props) {
     if (inputErrors.length > 0) {
       alert(inputErrors);
     }
-    const email = window.sessionStorage.getItem('email')
     if (inputErrors.length === 0) {
       Socket.emit('send search parameters', {
         address,
@@ -95,8 +94,7 @@ export default function SearchEngine(props) {
         max_commute: parseInt(maxCommute, 10),
         min_price: parseInt(minPrice, 10),
         max_price: parseInt(maxPrice, 10),
-        purchase_type: purchaseType,
-        email:email
+        purchase_type: purchaseType
       });
     }
 
