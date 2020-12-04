@@ -5,6 +5,7 @@ The file handles the inputs and outputs
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
+from flask_socketio import join_room, leave_room
 import flask
 import flask_sqlalchemy
 import flask_socketio
@@ -104,6 +105,8 @@ def new_user(data):
     """
     ...
     """
+    room = flask.request.sid
+    join_room(room)
     email_variable = data["email"]
     EMAIL_CLASS.set_email(email_variable)
 
@@ -112,6 +115,8 @@ def parsing_search_parameters(data):
     """
     Main Function
     """
+    print("bodyfadfyadfya")
+    print(data)
     street_address = data["address"]
     city = data["city"]
     state = data["state"]
@@ -120,7 +125,7 @@ def parsing_search_parameters(data):
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state
     purchase_type = data['purchase_type']
-    
+    room = flask.request.sid
     print(data)
     invalid_input_errors = []
     if (min_price < 0):
@@ -140,14 +145,20 @@ def parsing_search_parameters(data):
             listings = rental_listings_api.get_rental_listings(city, state, str(min_price), str(max_price))
         print(listings)
         if listings == -1:
-            SOCKETIO.emit('sending listing', [])
+            SOCKETIO.emit('sending listing', [],room=room)
         else:
-            SOCKETIO.emit("sending listing", listings)
+            SOCKETIO.emit("sending listing", listings, room=room)
     if (len(invalid_input_errors) > 0):
         SOCKETIO.emit('Invalid search input', invalid_input_errors)
         print("Errors sent")
         print(invalid_input_errors)
         invalid_input_errors = []
+
+@SOCKETIO.on("send search history parameters")
+def send_search_parameters(data):
+    print(";alfdjs")
+    print(data)
+    SOCKETIO.emit('send history parameters', data)
 
 @SOCKETIO.on("sort listings")
 def sort_listings(listings):

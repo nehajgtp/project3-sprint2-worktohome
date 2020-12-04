@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Socket } from './Socket';
 import { useHistory } from 'react-router-dom';
-
+import { useEffect, useRef } from 'react';
 
 export default function SearchEngine(props) {
   const history = useHistory();
@@ -13,8 +13,10 @@ export default function SearchEngine(props) {
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(10000);
   const [purchaseType, setPurchaseType] = React.useState('sale');
+  const [searchHistory, setSearchHistory] = React.useState(false)
 
   function routHistory(){
+    // setSearchHistory(true)
     history.push("/history");
   }
   
@@ -45,7 +47,28 @@ export default function SearchEngine(props) {
   function handlePurchaseTypeChange(event) {
     setPurchaseType(event.target.value);
   }
-
+  // function getSearchHistoryParameters(){
+  useEffect(()=>{
+    Socket.once('send history parameters', (data) => {
+      console.log(data)
+      
+      Socket.emit('send search parameters', {
+        address:data.address,
+        city: data.city,
+        state: data.state,
+        max_commute: data.max_commute,
+        min_price: data.min_price,
+        max_price: data.max_price,
+        purchase_type: data.purchase_type
+      });
+      props.changeLoad()
+      // setSearchHistory(false)
+    })
+  },[])
+    
+    // props.changeLoad()
+  // }
+  // getSearchHistoryParameters()
   function handleSubmit() {
     const inputErrors = [];
     if (Number.isInteger(parseInt(maxCommute, 10)) === false) {
@@ -63,7 +86,7 @@ export default function SearchEngine(props) {
     if (inputErrors.length > 0) {
       alert(inputErrors);
     }
-
+    const email = window.sessionStorage.getItem('email')
     if (inputErrors.length === 0) {
       Socket.emit('send search parameters', {
         address,
@@ -73,6 +96,7 @@ export default function SearchEngine(props) {
         min_price: parseInt(minPrice, 10),
         max_price: parseInt(maxPrice, 10),
         purchase_type: purchaseType,
+        email:email
       });
     }
 
@@ -81,7 +105,6 @@ export default function SearchEngine(props) {
     });
     props.changeLoad()
   }
-
   return (
     <div>
       <h3>Commute Location</h3>

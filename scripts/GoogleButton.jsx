@@ -12,6 +12,7 @@ export default function GoogleButton() {
     const { imageUrl } = response.profileObj;
     window.sessionStorage.setItem('name', name);
     window.sessionStorage.setItem('email', email);
+    // Socket.join(email)
     Socket.emit('New Logged In User', {
       name, email, imageUrl,
     });

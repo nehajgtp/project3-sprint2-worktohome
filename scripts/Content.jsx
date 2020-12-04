@@ -11,11 +11,11 @@ export default function Content() {
   }
   const [loading, setLoading] = React.useState(false);
   function changeLoadtoTrue(){
-    console.log("Hello")
+    console.log("damn")
     setLoading(true)
   }
   function changeLoadtoFalse(){
-    console.log("Hello")
+    console.log("dude")
     setLoading(false)
   }
   return (

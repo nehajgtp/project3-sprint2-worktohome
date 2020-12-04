@@ -1,16 +1,18 @@
 import * as React from 'react';
 import Iframe from 'react-iframe'
-
+import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Socket } from './Socket';
 
 export default function SearchListings(props) {
   const [listings, setListings] = React.useState(false);
   const [result, setResult] = React.useState("");
+  const history = useHistory();
 
   function onSearch() {
     Socket.on('sending listing', (data) => {
       console.log(data)
+      history.push("/content")
       if(data.length == 0){
         setListings("None Found")
         props.changeLoad()
