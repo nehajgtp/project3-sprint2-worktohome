@@ -25,7 +25,7 @@ MIN_PRICE = "min_price"
 MAX_PRICE = "max_price"
 ABSOLUTE_ADDRESS = "absolute_address"
 
-CITY = "city",
+CITY = "city"
 STATE_CODE = "state_code"
 
 class MockedResponse:
@@ -511,5 +511,26 @@ class MockGetHomes(unittest.TestCase):
             inp = test_case[KEY_INPUT]
             result = apifunctions.get_homes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE], inp[ABSOLUTE_ADDRESS])
             
+class MockGetPlaceId(unittest.TestCase):
+    def setUp(self):
+        self.success_test_params = {
+            KEY_INPUT: "141 Summit St, Newark, NJ",
+            KEY_EXPECTED: "some_id"
+        }
+    
+    def mock_find_place(self, address, input_type):
+        return {
+                "candidates":[{
+                    "place_id": "some_id"
+                    }
+                ]
+            }
+        
+    def test_get_place_id(self):
+        test_case = self.success_test_params
+        with mock.patch("googlemaps.Client.find_place", self.mock_find_place):
+            result = apifunctions.get_place_id(test_case[KEY_INPUT])
+            self.assertEqual(result, test_case[KEY_EXPECTED])
+    
 if __name__ == "__main__":
     unittest.main()
