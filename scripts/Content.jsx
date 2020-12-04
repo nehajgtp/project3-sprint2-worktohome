@@ -10,11 +10,13 @@ export default function Content() {
     history.push('/');
   }
   const [loading, setLoading] = React.useState(false);
+
   function changeLoadtoTrue() {
     setLoading(true);
   }
   function changeLoadtoFalse() {
     setLoading(false);
+
   }
   return (
     <div>

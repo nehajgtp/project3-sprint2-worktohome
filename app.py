@@ -5,6 +5,7 @@ The file handles the inputs and outputs. (Controller)
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
+from flask_socketio import join_room, leave_room
 import flask
 import flask_sqlalchemy
 import flask_socketio
@@ -105,6 +106,8 @@ def new_user(data):
     """
     ...
     """
+    room = flask.request.sid
+    join_room(room)
     email_variable = data["email"]
     EMAIL_CLASS.set_email(email_variable)
 
@@ -114,6 +117,8 @@ def parsing_search_parameters(data):
     """
     Main Function
     """
+    print("bodyfadfyadfya")
+    print(data)
     street_address = data["address"]
     city = data["city"]
     state = data["state"]
@@ -174,6 +179,12 @@ def parsing_search_parameters(data):
         print(invalid_input_errors)
         invalid_input_errors = []
 
+
+@SOCKETIO.on("send search history parameters")
+def send_search_parameters(data):
+    print(";alfdjs")
+    print(data)
+    SOCKETIO.emit('send history parameters', data)
 
 @SOCKETIO.on("sort listings")
 def sort_listings(listings):

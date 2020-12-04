@@ -13,7 +13,18 @@ export default function SearchHistory() {
       changeList(data);
     });
   }
-
+  function search(){
+    history.push("/content")
+    Socket.emit('send search history parameters', {
+      address: "26 Wilton Street", 
+      city: "New Hyde Park", 
+      state: "NY", 
+      max_commute: "10", 
+      min_price:0, 
+      max_price:1000000,
+      purchase_type: "sale"
+    });
+  }
   function goToSearchEngine() {
     history.push('/content');
   }
@@ -31,6 +42,7 @@ export default function SearchHistory() {
         {
             objects.map(
               (listing) => (
+              <div>
                 <p>
                   Address:
                   {' '}
@@ -48,6 +60,8 @@ export default function SearchHistory() {
                   {listing.distance}
                   <hr />
                 </p>
+                <button type="button" onClick={search}>Search</button>
+              </div>
               ),
             )
         }
