@@ -15,13 +15,19 @@ class TableDefintion(DB.Model):
     price_low = DB.Column(DB.Integer)
     price_high = DB.Column(DB.Integer)
     distance = DB.Column(DB.Integer)
+    city = DB.Column(DB.String(60))
+    state = DB.Column(DB.String(60))
+    purchase_type = DB.Column(DB.String(60))
 
-    def __init__(self, email, address, price_one, price_two, dist):
+    def __init__(self, email, address, price_one, price_two, dist, city, state, purchase_type):
         self.email = email
         self.address = address
         self.price_low = price_one
         self.price_high = price_two
         self.distance = dist
+        self.city = city
+        self.state = state
+        self.purchase = purchase_type
 
     def __repr__(self):
         return (
