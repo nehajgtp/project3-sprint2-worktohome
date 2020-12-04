@@ -32,6 +32,7 @@
     ]
   },
   "dependencies": {
+    "@material-ui/core": "^4.11.2",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-facebook-login": "^4.1.1",
@@ -40,7 +41,8 @@
     "react-router-dom": "^5.2.0",
     "react-spinners": "^0.9.0",
     "react-use-googlelogin": "^0.12.5",
-    "socket.io-client": "^2.3.1"
+    "socket.io-client": "^2.3.1",
+    "style-loader": "^2.0.0"
   },
   "name": "project3-sprint2-worktohome",
   "description": "Make your home search more convenient to your commute!",

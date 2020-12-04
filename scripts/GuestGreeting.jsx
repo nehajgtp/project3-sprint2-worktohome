@@ -4,20 +4,47 @@ import FacebookButton from './FacebookButton';
 
 import './GuestGreeting.css';
 
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+
+
+const useStyles = makeStyles({
+  title: {
+    width: '100%',
+    maxWidth: 2000,
+    
+  },
+  header: {
+    fontSize: '4rem',
+    margin: "4.3rem"
+  }
+  }
+);
+
 export default function GuestGreeting() {
+  const classes = useStyles();
+  
   return (
-    <div>
-      <div className="title">
-        <img alt="" id="logo" src="https://i.imgur.com/Zi1Oxa7.png" width="350" height="350" />
+    <html>
+    <div className="guestGreet">
+      <div className="desc">
+        <img alt="" id="logo" src="https://i.imgur.com/o6qLeN4.png" width="350" height="350" />
         <p>Find the best home for your commute!</p>
-        <GoogleButton />
         <FacebookButton />
+        <GoogleButton />
       </div>
-      <div className="about">
-        <div id="about-section">
-          Our website tailors your home search to your specific commute, providing information about the commute from each listing to your desired destination.
-        </div>
+      <div className={classes.title}>
+        <Divider />
+        <Typography variant="h1" component="div" align="center" className={classes.header}>
+        About
+        </Typography>
+        <Divider />
+        <Typography variant="h1" component="div" align="center" className={classes.header}>
+        Technologies Used
+        </Typography>
       </div>
     </div>
+    </html>
   );
 }
