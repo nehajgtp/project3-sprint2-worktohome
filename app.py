@@ -125,7 +125,6 @@ def parsing_search_parameters(data):
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state
     purchase_type = data['purchase_type']
-    room = flask.request.sid
     print(data)
     invalid_input_errors = []
     if (min_price < 0):
@@ -145,9 +144,9 @@ def parsing_search_parameters(data):
             listings = rental_listings_api.get_rental_listings(city, state, str(min_price), str(max_price))
         print(listings)
         if listings == -1:
-            SOCKETIO.emit('sending listing', [],room=room)
+            SOCKETIO.emit('sending listing', [])
         else:
-            SOCKETIO.emit("sending listing", listings, room=room)
+            SOCKETIO.emit("sending listing", listings)
     if (len(invalid_input_errors) > 0):
         SOCKETIO.emit('Invalid search input', invalid_input_errors)
         print("Errors sent")
