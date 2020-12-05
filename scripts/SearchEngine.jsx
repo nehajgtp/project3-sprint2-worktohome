@@ -9,7 +9,6 @@ export default function SearchEngine(props) {
   const [address, setAddress] = React.useState('');
   const [city, setCity] = React.useState('');
   const [statecode, setStateCode] = React.useState('');
-  const [maxCommute, setMaxCommute] = React.useState(50);
   const [minPrice, setMinPrice] = React.useState(0);
   const [maxPrice, setMaxPrice] = React.useState(10000);
   const [purchaseType, setPurchaseType] = React.useState('rent');
@@ -30,10 +29,6 @@ export default function SearchEngine(props) {
     setStateCode(event.target.value);
   }
 
-  function handleMaxCommuteChange(event) {
-    setMaxCommute(event.target.value);
-  }
-
   function handleMinPriceChange(event) {
     setMinPrice(event.target.value);
   }
@@ -48,9 +43,6 @@ export default function SearchEngine(props) {
 
   function handleSubmit() {
     const inputErrors = [];
-    if (Number.isInteger(parseInt(maxCommute, 10)) === false) {
-      inputErrors.push(`Max commute distance is not a number${maxCommute}`);
-    }
 
     if (Number.isInteger(parseInt(minPrice, 10)) === false) {
       inputErrors.push('Min price is not a number');
@@ -69,7 +61,6 @@ export default function SearchEngine(props) {
         address,
         city,
         state: statecode,
-        max_commute: parseInt(maxCommute, 10),
         min_price: parseInt(minPrice, 10),
         max_price: parseInt(maxPrice, 10),
         purchase_type: purchaseType,
@@ -152,8 +143,6 @@ export default function SearchEngine(props) {
         <option value="sale">For Sale</option>
       </select>
       <h3>Housing Preferences</h3>
-      Maximum Commute Distance (miles):
-      <input placeholder="Max Commute" onChange={handleMaxCommuteChange} />
       Price:
       <input placeholder="Min Price" onChange={handleMinPriceChange} />
       <input placeholder="Max Price" onChange={handleMaxPriceChange} />

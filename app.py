@@ -44,13 +44,13 @@ import models
 EMAIL_CLASS = email_file.Email("")
 
 
-def send_to_database(email, address, price_range_low, price_range_high, distance):
+def send_to_database(email, address, price_range_low, price_range_high):
     """
     CALL THIS FUNCTION TO ADD TO THE DATABASE OR UPDATE DATABASE
     """
     DB.session.add(
         models.TableDefintion(
-            email, address, price_range_low, price_range_high, distance
+            email, address, price_range_low, price_range_high
         )
     )
     DB.session.commit()
@@ -73,7 +73,6 @@ def display_table():
                 "address": record.address,
                 "price_low": record.price_low,
                 "price_high": record.price_high,
-                "distance": record.distance,
             }
             history_table.append(transfer)
         print(history_table)
@@ -115,7 +114,6 @@ def parsing_search_parameters(data):
     street_address = data["address"]
     city = data["city"]
     state = data["state"]
-    distance = data["max_commute"]
     min_price = data["min_price"]
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state
@@ -132,7 +130,7 @@ def parsing_search_parameters(data):
         invalid_input_errors.append("Min price cannot be bigger than max price")
     
     if (len(invalid_input_errors) == 0): 
-        send_to_database(EMAIL_CLASS.value_of(), absolute_address, min_price, max_price, distance)
+        send_to_database(EMAIL_CLASS.value_of(), absolute_address, min_price, max_price)
         listings = ""
         if (purchase_type == "sale"):
             listings = apifunctions.get_homes(city, state, min_price, max_price,absolute_address)

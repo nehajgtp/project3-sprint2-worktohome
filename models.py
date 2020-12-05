@@ -14,20 +14,17 @@ class TableDefintion(DB.Model):
     address = DB.Column(DB.String(255))
     price_low = DB.Column(DB.Integer)
     price_high = DB.Column(DB.Integer)
-    distance = DB.Column(DB.Integer)
 
-    def __init__(self, email, address, price_one, price_two, dist):
+    def __init__(self, email, address, price_one, price_two):
         self.email = email
         self.address = address
         self.price_low = price_one
         self.price_high = price_two
-        self.distance = dist
 
     def __repr__(self):
         return (
-            "<The address is %s, the price is between %d and %d, and the distance is %d.>"
+            "<The address is %s, the price is between %d and %d.>"
             % self.address
             % self.price_range_low
             % self.price_range_high
-            % self.distance
         )

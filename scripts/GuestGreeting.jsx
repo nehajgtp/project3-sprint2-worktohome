@@ -9,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 
@@ -33,11 +34,17 @@ const useStyles = makeStyles({
   name: {
     padding: 2,
     minWidth: 200,
-    minHeight: 120,
+    minHeight: 320,
     backgroundColor: "#f2f2fc"
   },
   link: {
-    fontSize: '1.5rem'
+    fontSize: '1.2rem'
+  },
+  media: {
+    height: 300,
+  },
+  desc: {
+    fontSize: '1.2rem'
   }
   }
 );
@@ -62,7 +69,13 @@ export default function GuestGreeting() {
         <Card className={classes.box}>
           <CardContent>
           <Typography className={classes.pos} align="center">
-            Our website tailors your home search to your specific commute, providing information about the commute from each listing to your desired destination.
+            Our website tailors your home search to your specific commute, providing information about the commute from each listing to 
+            your desired destination. 
+            <ol type="1"><b>Steps</b>
+            <li>Log in</li>
+            <li>Search for the location where you will commute to</li>
+            <li>Get listings for homes nearby (each listing has info about travel routes, Walkscore scores, and commute times!</li>
+            </ol>
           </Typography>
           </CardContent>
         </Card>
@@ -96,6 +109,11 @@ export default function GuestGreeting() {
         </Grid>
         <Grid item xs={6} sm={3}>
         <Card className={classes.name} align="center">
+          <CardMedia
+            component="img"
+            className={classes.media}
+            image="https://i.imgur.com/t1RSRAD.jpeg"
+          />
           <CardContent>
           <Typography className={classes.pos} align="center">
             Neha Jagtap
@@ -103,11 +121,21 @@ export default function GuestGreeting() {
           <Link className={classes.link} href="https://github.com/nehajgtp" target="_blank">
             GitHub
           </Link>
+          <Typography variant="h4" component="div" align="center" className={classes.desc}>
+            As a Computer Science major about to enter the workforce, being in CS 490 was a great opportunity. 
+            Not only did I learn a lot of new technologies, but I also have a better understanding what it takes to
+            develop complex software programs as part of a team. 
+          </Typography>
           </CardContent>
         </Card>
         </Grid>
         <Grid item xs={6} sm={3}>
         <Card className={classes.name} align="center">
+          <CardMedia
+            component="img"
+            className={classes.media}
+            image="https://i.imgur.com/2zo7dCR.jpg"
+          />
           <CardContent>
           <Typography className={classes.pos} align="center">
             Matthew Meeh
@@ -115,11 +143,20 @@ export default function GuestGreeting() {
           <Link className={classes.link} href="https://github.com/Matthew-J-M" target="_blank">
             GitHub
           </Link>
+          <Typography variant="h4" component="div" align="center" className={classes.desc}>
+            Hello, I am Matthew Meeh. I love video games especially platform fighters. My plan is to work in industry as a software engineer. 
+            I hope you enjoy using our CS490 project.
+          </Typography>
           </CardContent>
         </Card>
         </Grid>
         <Grid item xs={6} sm={3}>
         <Card className={classes.name} align="center">
+          <CardMedia
+            component="img"
+            className={classes.media}
+            image="https://i.imgur.com/AqXgJS5.png"
+          />
           <CardContent>
           <Typography className={classes.pos} align="center">
             Kevin Ng
@@ -127,6 +164,10 @@ export default function GuestGreeting() {
           <Link className={classes.link} href="https://github.com/kevinng250" target="_blank">
             GitHub
           </Link>
+          <Typography variant="h4" component="div" align="center" className={classes.desc}>
+            Hello, my name is Kevin Ng. I’m a senior studying computer science at NJIT. 
+            Work to Home is our CS490 Project and we hope you guys like it!
+          </Typography>
           </CardContent>
         </Card>
         </Grid>

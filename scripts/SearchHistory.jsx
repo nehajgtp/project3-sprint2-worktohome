@@ -43,9 +43,6 @@ export default function SearchHistory() {
                   {' '}
                   {listing.price_high}
                   <br />
-                  Distance from Address:
-                  {' '}
-                  {listing.distance}
                   <hr />
                 </p>
               ),
