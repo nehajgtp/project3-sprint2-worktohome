@@ -71,6 +71,7 @@ def get_homes(city, state_code, min_price, max_price, absolute_address):
         json_body = response.json()
         list_of_properties = []
         image = ""
+        print(json_body)
         if json_body["meta"]["returned_rows"] != 0:
             for property_instance in json_body["properties"]:
                 if "thumbnail" in property_instance:

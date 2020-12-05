@@ -27,7 +27,7 @@ class TableDefintion(DB.Model):
         self.distance = dist
         self.city = city
         self.state = state
-        self.purchase = purchase_type
+        self.purchase_type = purchase_type
 
     def __repr__(self):
         return (
