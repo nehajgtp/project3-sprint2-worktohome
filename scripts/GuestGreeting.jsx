@@ -12,6 +12,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
+import CssBaseline from "@material-ui/core/CssBaseline";
+
 
 const useStyles = makeStyles({
   title: {
@@ -34,7 +36,7 @@ const useStyles = makeStyles({
   name: {
     padding: 2,
     minWidth: 200,
-    minHeight: 320,
+    minHeight: 600,
     backgroundColor: "#f2f2fc"
   },
   link: {
@@ -45,6 +47,10 @@ const useStyles = makeStyles({
   },
   desc: {
     fontSize: '1.2rem'
+  },
+  github: {
+    width: '25px',
+    margin: '3px'
   }
   }
 );
@@ -55,6 +61,7 @@ export default function GuestGreeting() {
   return (
     <html>
     <div className="guestGreet">
+    <CssBaseline />
       <div className="desc">
         <img alt="" id="logo" src="https://i.imgur.com/o6qLeN4.png" width="350" height="350" />
         <p>Find the best home for your commute!</p>
@@ -69,12 +76,28 @@ export default function GuestGreeting() {
         <Card className={classes.box}>
           <CardContent>
           <Typography className={classes.pos} align="center">
-            Our website tailors your home search to your specific commute, providing information about the commute from each listing to 
+            <p>Our website tailors your home search to your specific commute, providing information about the commute from each listing to 
             your desired destination. 
-            <ol type="1"><b>Steps</b>
+            </p>
+            <p>Traveling to work is a major factor in the decision to purchase or rent a property for many home owners and renters. However,
+            other real estate websites do not provide enough information about this.
+            Therefore, we built this website so that could help those customers to conveniently access commute information for each property listing 
+            on a single website.</p>
+            
+          </Typography>
+          </CardContent>
+        </Card>
+        <Divider />
+        <Typography variant="h1" component="div" align="center" className={classes.header}>
+        Steps
+        </Typography>
+        <Card className={classes.box}>
+          <CardContent>
+          <Typography className={classes.pos} align="center">
+            <ol type="1">
             <li>Log in</li>
             <li>Search for the location where you will commute to</li>
-            <li>Get listings for homes nearby (each listing has info about travel routes, Walkscore scores, and commute times!</li>
+            <li>Get listings for homes nearby (each listing has info about travel routes, Walkscore scores, and commute times!)</li>
             </ol>
           </Typography>
           </CardContent>
@@ -86,7 +109,19 @@ export default function GuestGreeting() {
         <Card className={classes.box}>
           <CardContent>
           <Typography className={classes.pos} align="center">
-            React, Python, PostgreSQL, MaterialUI, Heroku, Git, CircleCI, Rapid API (Realtor), Google Maps API, ESLint, PyLint
+            <ul>
+            <li>React</li>
+            <li>Python</li>
+            <li>PostgreSQL</li>
+            <li>MaterialUI</li>
+            <li>Heroku</li>
+            <li>Git</li>
+            <li>CircleCI</li>
+            <li>Rapid API (Realtor)</li>
+            <li>Google Maps API</li>
+            <li>ESLint</li>
+            <li>PyLint</li>
+            </ul>
           </Typography>
           </CardContent>
         </Card>
@@ -102,7 +137,7 @@ export default function GuestGreeting() {
             Ali Alkhateeb 
           </Typography>
           <Link className={classes.link} href="https://github.com/alialkhateeb99" target="_blank">
-            GitHub
+            <img className={classes.github}src="https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png"></img>
           </Link>
           </CardContent>
         </Card>
@@ -119,7 +154,7 @@ export default function GuestGreeting() {
             Neha Jagtap
           </Typography>
           <Link className={classes.link} href="https://github.com/nehajgtp" target="_blank">
-            GitHub
+            <img className={classes.github}src="https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png"></img>
           </Link>
           <Typography variant="h4" component="div" align="center" className={classes.desc}>
             As a Computer Science major about to enter the workforce, being in CS 490 was a great opportunity. 
@@ -141,7 +176,7 @@ export default function GuestGreeting() {
             Matthew Meeh
           </Typography>
           <Link className={classes.link} href="https://github.com/Matthew-J-M" target="_blank">
-            GitHub
+            <img className={classes.github}src="https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png"></img>
           </Link>
           <Typography variant="h4" component="div" align="center" className={classes.desc}>
             Hello, I am Matthew Meeh. I love video games especially platform fighters. My plan is to work in industry as a software engineer. 
@@ -162,7 +197,7 @@ export default function GuestGreeting() {
             Kevin Ng
           </Typography>
           <Link className={classes.link} href="https://github.com/kevinng250" target="_blank">
-            GitHub
+            <img className={classes.github}src="https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png"></img>
           </Link>
           <Typography variant="h4" component="div" align="center" className={classes.desc}>
             Hello, my name is Kevin Ng. I’m a senior studying computer science at NJIT. 
