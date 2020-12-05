@@ -96,7 +96,8 @@ export default function SearchListings(props) {
                     </p>
                   ),
                 )
-      }</ul>)
+      }</ul>
+      )
     }
   }
   
