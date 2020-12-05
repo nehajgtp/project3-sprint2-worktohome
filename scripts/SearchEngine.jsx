@@ -97,12 +97,12 @@ export default function SearchEngine(props) {
         max_price: parseInt(maxPrice, 10),
         purchase_type: purchaseType
       });
+      props.changeLoad();
     }
 
     Socket.on('Invalid search input', (invalidInputErrors) => {
       alert(invalidInputErrors);
     });
-    props.changeLoad();
   }
   return (
     <div>
