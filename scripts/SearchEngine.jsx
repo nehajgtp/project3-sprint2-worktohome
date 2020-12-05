@@ -8,21 +8,57 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import PropTypes from "prop-types";
+import NumberFormat from "react-number-format";
+import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles((theme) => ({
   formControl: {
-    margin: '2.8rem',
+    margin: '2.7rem',
     minWidth: 200,
   },
   address: {
-    margin: '2.8rem',
+    margin: '2.7rem',
     width: '50ch'
   },
   city: {
-    margin: '2.8rem',
+    margin: '2.7rem',
     width: '30ch'
+  },
+  price: {
+    margin: '1.5rem',
   }
 }));
+
+const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props,ref) 
+{
+  const { onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={ref}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value
+          }
+        });
+      }}
+      thousandSeparator
+      isNumericString
+      prefix="$"
+    />
+  );
+});
+
+NumberFormatCustom.propTypes = {
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired
+};
+
 
 export default function SearchEngine(props) {
   const history = useHistory();
@@ -31,8 +67,12 @@ export default function SearchEngine(props) {
   const [address, setAddress] = React.useState('');
   const [city, setCity] = React.useState('');
   const [statecode, setStateCode] = React.useState('');
-  const [minPrice, setMinPrice] = React.useState(0);
-  const [maxPrice, setMaxPrice] = React.useState(10000);
+  const [minPrice, setMinPrice] = React.useState({
+    numberformat: ""
+  });
+  const [maxPrice, setMaxPrice] = React.useState({
+    numberformat: ""
+  });
   const [purchaseType, setPurchaseType] = React.useState('');
 
   function routHistory(){
@@ -115,7 +155,7 @@ export default function SearchEngine(props) {
     <div className="searchPart">
       <TextField
         className={classes.address}
-          id="outlined-textarea"
+          id=""
           label="Address"
           placeholder="Enter work address"
           multiline
@@ -123,7 +163,7 @@ export default function SearchEngine(props) {
         />
         <TextField
           className={classes.city}
-          id="outlined-textarea"
+          id=""
           label="City"
           placeholder="Enter work city"
           multiline
@@ -211,15 +251,35 @@ export default function SearchEngine(props) {
           <MenuItem value={"sale"}>For Sale</MenuItem>
         </Select>
       </FormControl>
-      <h3>Housing Preferences</h3>
-      Price:
-      <input placeholder="Min Price" onChange={handleMinPriceChange} />
-      <input placeholder="Max Price" onChange={handleMaxPriceChange} />
-      <br />
-      <button type="submit" onClick={handleSubmit}>Search</button>
-      <br />
-     <button type="button" onClick={routHistory}>Search History</button>
-      <hr />
+      <div id="price">
+      <TextField
+        className={classes.price}
+        label="Minimum Price"
+        value={minPrice.numberformat}
+        onChange={handleMinPriceChange}
+        name=""
+        id=""
+        placeholder="Enter numerical value"
+        InputProps={{
+          inputComponent: NumberFormatCustom
+        }}
+      />
+      <TextField
+        className={classes.price}
+        label="Maximum Price"
+        value={maxPrice.numberformat}
+        onChange={handleMaxPriceChange}
+        name=""
+        id=""
+        placeholder="Enter numerical value"
+        inputProps={{style: { textAlign: 'center' }}}
+        InputProps={{
+          inputComponent: NumberFormatCustom,
+        }}
+      />
+      </div>
+      <Button id="searchButton" variant="contained" onClick={handleSubmit}>Search</Button>
+      <Divider />
     </div>
   );
 }

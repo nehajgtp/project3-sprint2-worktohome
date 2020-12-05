@@ -1,3 +1,13 @@
 .searchPart {
     margin-top: 80px;
 }
+
+.searchPart #price {
+    margin-left: 35%;
+}
+
+.searchPart #searchButton {
+    margin-top: 8px;
+    margin-left: 46%;
+    margin-bottom: 30px;
+}
