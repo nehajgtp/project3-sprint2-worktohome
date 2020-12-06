@@ -74,10 +74,6 @@ export default function SearchEngine(props) {
     numberformat: ""
   });
   const [purchaseType, setPurchaseType] = React.useState('');
-
-  function routHistory(){
-    history.push("/history");
-  }
   
   function handleAddressChange(event) {
     setAddress(event.target.value);
