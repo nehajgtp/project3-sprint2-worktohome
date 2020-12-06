@@ -18,3 +18,6 @@ html {
     color: #555057
 }
 
+.guestGreet #stepsCards {
+    margin-bottom: 30px;
+}

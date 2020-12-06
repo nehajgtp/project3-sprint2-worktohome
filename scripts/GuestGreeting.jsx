@@ -36,7 +36,7 @@ const useStyles = makeStyles({
   name: {
     padding: 2,
     minWidth: 200,
-    minHeight: 600,
+    minHeight: 620,
     backgroundColor: "#f2f2fc"
   },
   link: {
@@ -51,6 +51,13 @@ const useStyles = makeStyles({
   github: {
     width: '25px',
     margin: '3px'
+  },
+  steps: {
+    minHeight: 700,
+    minWidth: 100
+  },
+  stepsmedia: {
+    width: '100%'
   }
   }
 );
@@ -91,17 +98,68 @@ export default function GuestGreeting() {
         <Typography variant="h1" component="div" align="center" className={classes.header}>
         Steps
         </Typography>
-        <Card className={classes.box}>
-          <CardContent>
-          <Typography className={classes.pos} align="center">
-            <ol type="1">
-            <li>Log in</li>
-            <li>Search for the location where you will commute to</li>
-            <li>Get listings for homes nearby (each listing has info about travel routes, Walkscore scores, and commute times!)</li>
-            </ol>
-          </Typography>
-          </CardContent>
-        </Card>
+        <Grid container spacing={3} id="stepsCards">
+        <Grid item xs={4} alignItems="stretch">
+          <Card className={classes.steps} align="center">
+            <CardMedia
+              component="img"
+              className={classes.stepsmedia}
+              image="https://i.imgur.com/9CHbWtY.png"
+            />
+            <CardContent>
+              <Typography className={classes.pos} align="center">
+                Log in to begin search
+              </Typography>
+              <Typography
+                variant="h4"
+                component="div"
+                align="center"
+                className={classes.desc}
+              ></Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={4} alignItems="stretch">
+          <Card className={classes.steps} align="center">
+            <CardMedia
+              component="img"
+              className={classes.stepsmedia}
+              image="https://i.imgur.com/joUKKrJ.png"
+            />
+            <CardContent>
+              <Typography className={classes.pos} align="center">
+                Make a search with commute location and housing preferences
+              </Typography>
+              <Typography
+                variant="h4"
+                component="div"
+                align="center"
+                className={classes.desc}
+              ></Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={4} alignItems="stretch">
+          <Card className={classes.steps} align="center">
+            <CardMedia
+              component="img"
+              className={classes.stepsmedia}
+              image="https://i.imgur.com/L3BycJs.png"
+            />
+            <CardContent>
+              <Typography className={classes.pos} align="center">
+                Get property listings!
+              </Typography>
+              <Typography
+                variant="h4"
+                component="div"
+                align="center"
+                className={classes.desc}
+              ></Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
         <Divider />
         <Typography variant="h1" component="div" align="center" className={classes.header}>
         Technologies Used
@@ -109,19 +167,7 @@ export default function GuestGreeting() {
         <Card className={classes.box}>
           <CardContent>
           <Typography className={classes.pos} align="center">
-            <ul>
-            <li>React</li>
-            <li>Python</li>
-            <li>PostgreSQL</li>
-            <li>MaterialUI</li>
-            <li>Heroku</li>
-            <li>Git</li>
-            <li>CircleCI</li>
-            <li>Rapid API (Realtor)</li>
-            <li>Google Maps API</li>
-            <li>ESLint</li>
-            <li>PyLint</li>
-            </ul>
+          React, Python, PostgreSQL, MaterialUI, Heroku, Git, CircleCI, Rapid API (Realtor), Google Maps API, ESLint, PyLint
           </Typography>
           </CardContent>
         </Card>
@@ -132,6 +178,11 @@ export default function GuestGreeting() {
         <Grid container spacing={3}>
         <Grid item xs={6} sm={3}>
         <Card className={classes.name} align="center">
+          <CardMedia
+            component="img"
+            className={classes.media}
+            image="https://i.imgur.com/H4Or1pB.png"
+          />
           <CardContent>
           <Typography className={classes.pos} align="center">
             Ali Alkhateeb 
@@ -139,6 +190,9 @@ export default function GuestGreeting() {
           <Link className={classes.link} href="https://github.com/alialkhateeb99" target="_blank">
             <img className={classes.github}src="https://cdn.iconscout.com/icon/free/png-256/github-153-675523.png"></img>
           </Link>
+          <Typography variant="h4" component="div" align="center" className={classes.desc}>
+            Hello! My name is Ali Alkhateeb and I am computer science student at NJIT. We built this project for purpose of finding new homes for commuters. We hope you enjoy it!
+          </Typography>
           </CardContent>
         </Card>
         </Grid>
