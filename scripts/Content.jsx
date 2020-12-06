@@ -55,6 +55,14 @@ export default function Content(props) {
     history.push("/history");
   }
   
+  function logout() {
+    history.push('/');
+  }
+  
+  function scrollUp() {
+   window.scrollTo({top: 0, behavior: 'smooth'});
+  };
+  
   if (window.sessionStorage.getItem('name') == null) {
     history.push('/');
   }
@@ -81,7 +89,7 @@ export default function Content(props) {
         <AppBar className={classes.appbar}>
           <Toolbar>
             <Typography variant="h6" component="div" align="center" className={classes.header}>
-              <img className={classes.icon}src="https://i.imgur.com/Zlaf5hk.png" align="center"></img>
+              <img className={classes.icon}src="https://i.imgur.com/Zlaf5hk.png" align="center" onClick={scrollUp}></img>
             </Typography>
             {auth && (
             <div>
@@ -111,6 +119,7 @@ export default function Content(props) {
                 onClose={handleClose}
               >
                 <MenuItem onClick={routHistory}>Search History</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
               </Menu>
             </div>
           )}
