@@ -45,13 +45,13 @@ import models
 EMAIL_CLASS = email_file.Email("")
 
 
-def send_to_database(email, address, price_range_low, price_range_high, distance, city, state, purchase_type):
+def send_to_database(email, address, price_range_low, price_range_high, city, state, purchase_type):
     """
     CALL THIS FUNCTION TO ADD TO THE DATABASE OR UPDATE DATABASE
     """
     DB.session.add(
         models.TableDefintion(
-            email, address, price_range_low, price_range_high, distance,\
+            email, address, price_range_low, price_range_high,\
             city, state, purchase_type\
         )
     )
@@ -77,7 +77,6 @@ def display_table():
                 "state": record.state,
                 "price_low": record.price_low,
                 "price_high": record.price_high,
-                "distance": record.distance,
                 "purchase_type": record.purchase_type
             }
             history_table.append(transfer)
@@ -125,7 +124,6 @@ def parsing_search_parameters(data):
     street_address = data["address"]
     city = data["city"]
     state = data["state"]
-    distance = data["max_commute"]
     min_price = data["min_price"]
     max_price = data["max_price"]
     absolute_address = street_address + ", " + city + ", " + state
@@ -140,26 +138,17 @@ def parsing_search_parameters(data):
 
     if min_price > max_price:
         invalid_input_errors.append("Min price cannot be bigger than max price")
-
-    if len(invalid_input_errors) == 0:
-        send_to_database(
-            EMAIL_CLASS.value_of(), absolute_address, min_price, max_price,\
-            distance, city, state, purchase_type\
-        )
+    
+    if (len(invalid_input_errors) == 0): 
+        send_to_database(EMAIL_CLASS.value_of(), absolute_address, min_price, max_price, city, state, purchase_type)
         listings = ""
-        if purchase_type == "sale":
-            # y = 0
-            listings = apifunctions.get_homes(
-                city, state, min_price, max_price, absolute_address
-            )
-        if purchase_type == "rent":
-            # x = 0
-            listings = rental_listings_api.get_rental_listings(
-                city, state, str(min_price), str(max_price)
-            )
-        print(listings)
-        if listings == -1:
-            SOCKETIO.emit("sending listing", [])
+        if (purchase_type == "sale"):
+            listings = apifunctions.get_homes(city, state, min_price, max_price,absolute_address)
+        if (purchase_type == "rent"):
+            listings = rental_listings_api.get_rental_listings(city, state, str(min_price), str(max_price), absolute_address)
+        print("Final listings outputted: " + str(listings))
+        if (listings == -1 or listings == None):
+            SOCKETIO.emit('sending listing', [])
         else:
             SOCKETIO.emit("sending listing", listings)
     if len(invalid_input_errors) > 0:

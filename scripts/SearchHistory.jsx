@@ -56,10 +56,6 @@ export default function SearchHistory() {
                   {' '}
                   {listing.price_high}
                   <br />
-                  Distance from Address:
-                  {' '}
-                  {listing.distance}
-                  <br />
                   Purchase Type:
                   {' '}
                   {listing.purchae_type}
