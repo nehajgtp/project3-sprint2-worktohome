@@ -128,7 +128,7 @@ export default function Content(props) {
       </ElevationScroll>
       <SearchEngine changeLoad={changeLoadtoTrue}/>
       <SearchListings changeLoad={changeLoadtoFalse}/>
-      {loading ? <BeatLoader/>: null}
+      <div align="center">{loading ? <BeatLoader align="center"/>: null}</div>
     </div>
 
   );

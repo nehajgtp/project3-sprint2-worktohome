@@ -255,7 +255,6 @@ export default function SearchEngine(props) {
         onChange={handleMinPriceChange}
         name=""
         id=""
-        placeholder="Enter numerical value"
         InputProps={{
           inputComponent: NumberFormatCustom
         }}
@@ -267,7 +266,6 @@ export default function SearchEngine(props) {
         onChange={handleMaxPriceChange}
         name=""
         id=""
-        placeholder="Enter numerical value"
         inputProps={{style: { textAlign: 'center' }}}
         InputProps={{
           inputComponent: NumberFormatCustom,
