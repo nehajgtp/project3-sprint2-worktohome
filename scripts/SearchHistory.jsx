@@ -58,7 +58,7 @@ export default function SearchHistory() {
                   <br />
                   Purchase Type:
                   {' '}
-                  {listing.purchae_type}
+                  {listing.purchase_type}
                   <hr />
                 </p>
                 <button type="button" onClick={() => {search(listing)} }>Search</button>

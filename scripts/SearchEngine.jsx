@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
     margin: '1.5rem',
   }
 }));
-export default function SearchEngine(props) {
-  const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props,ref) 
+
+const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props,ref) 
   {
     const { onChange, ...other } = props;
   
@@ -60,7 +60,7 @@ export default function SearchEngine(props) {
   };
 
 
-
+export default function SearchEngine(props) {
   const classes = useStyles();
 
   const [address, setAddress] = React.useState('');

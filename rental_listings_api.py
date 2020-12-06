@@ -99,7 +99,7 @@ def get_rental_listings(city, state_code, min_price, max_price, absolute_address
                                      mode="driving",
                                      departure_time=now)
                 commute = directions_result[0]["legs"][0]["duration"]["text"]
-                walkscore_info = walkscore_api.get_walkscore_info(property_inst["address"]["line"], property["address"]["city"], property["address"]["state_code"], property["address"]["lon"], property["address"]["lat"])
+                walkscore_info = walkscore_api.get_walkscore_info(property_inst["address"]["line"], property_inst["address"]["city"], property_inst["address"]["state_code"], property_inst["address"]["lon"], property_inst["address"]["lat"])
                 list_of_properties.append(
                     {
                         HOME_CITY: property_inst["address"]["city"],
