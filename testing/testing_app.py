@@ -58,7 +58,7 @@ class MockParsingSearchParameters(unittest.TestCase):
         return -1
     def mock_get_homes_exists(self, city, state, min_price, max_price, absolute_address):
         return 1
-    def mock_send_To_database(self, email, address, price_range_low, price_range_high, distance):
+    def mock_send_To_database(self, email, address, price_range_low, price_range_high, distance, city, state, purchase_type):
         return None
         
     @patch('flask_socketio.SocketIO.emit')
