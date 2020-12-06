@@ -45,6 +45,10 @@ const useStyles = makeStyles({
   walkscore_info: {
     fontSize: '15px',
   },
+  walkscore_desc: {
+    display: 'inline-block',
+    fontSize: '17px'
+  },
   iframe: {
     marginTop: '20px',
     marginBottom: '40px'
@@ -53,49 +57,8 @@ const useStyles = makeStyles({
 
 export default function SearchListings(props) {
   const classes = useStyles();
-  
-  var fake_listings = [{
-    'home_city': 'Charlotte',
-    'home_street': '8800 Meadow Vista Rd', 
-    'home_postal_code': '28213', 
-    'home_state_code': 'NC', 
-    'home_state': 'North Carolina', 
-    'home_price': 925, 
-    'home_baths': 1, 
-    'home_beds': 1, 
-    'home_image': 'https://ar.rdcpix.com/34426878/bf8c86062332425fc1a5601f3a722574c-f0o.jpg', 
-    'home_lon': -80.7373, 
-    'home_lat': 35.29486, 
-    'iframe_url': 'https://www.google.com/maps/embed/v1/directions?origin=place_id:EikyMCBTIENvbGxlZ2UgU3QsIENoYXJsb3R0ZSwgTkMgMjgyMDIsIFVTQSIaEhgKFAoSCTPOS_MloFaIEVBSj5h8cZIeEBQ&destination=place_id:ChIJ1dVho6YeVIgR-vjqxUGPe8U&key=AIzaSyDOqSBvo9oME1LGougkz6O3hQxuwcDIWP0', 
-    'commute_time': '19 mins', 
-    'home_walkscore': 34, 
-    'walkscore_description': 'Car-Dependent', 
-    'walkscore_logo': 'https://cdn.walk.sc/images/api-logo.png', 
-    'walkscore_more_info_link': 'https://www.redfin.com/how-walk-score-works', 
-    'home_walkscore_link': 'https://www.walkscore.com/score/8800-Meadow-Vista-Rd-Charlotte-NC/lat=35.29486/lng=-80.7373/?utm_source=worktohome-sprint2.herokuapp.com&utm_medium=ws_api&utm_campaign=ws_api'
-    },
-    {
-     'home_city': 'Charlotte', 
-     'home_street': '2002 Laysan Teal Ln', 
-     'home_postal_code': '28262', 
-     'home_state_code': 'NC', 
-     'home_state': 'North Carolina', 
-     'home_price': 935, 
-     'home_baths': 1, 
-     'home_beds': 1, 
-     'home_image': 'https://ar.rdcpix.com/1181656421/e5d47393908c1639704112d8979e2aecc-f0o.jpg', 
-     'home_lon': -80.7378, 
-     'home_lat': 35.33261, 
-     'iframe_url': 'https://www.google.com/maps/embed/v1/directions?origin=place_id:EikyMCBTIENvbGxlZ2UgU3QsIENoYXJsb3R0ZSwgTkMgMjgyMDIsIFVTQSIaEhgKFAoSCTPOS_MloFaIEVBSj5h8cZIeEBQ&destination=place_id:ChIJxxrl-mUcVIgRB-NHxBdPFfY&key=AIzaSyDOqSBvo9oME1LGougkz6O3hQxuwcDIWP0', 
-     'commute_time': '16 mins', 
-     'home_walkscore': 34, 
-     'walkscore_description': 'Car-Dependent', 
-     'walkscore_logo': 'https://cdn.walk.sc/images/api-logo.png', 
-     'walkscore_more_info_link': 'https://www.redfin.com/how-walk-score-works', 
-     'home_walkscore_link': 'https://www.walkscore.com/score/2002-Laysan-Teal-Ln-Charlotte-NC/lat=35.33261/lng=-80.7378/?utm_source=worktohome-sprint2.herokuapp.com&utm_medium=ws_api&utm_campaign=ws_api' 
-    }]
 
-  const [listings, setListings] = React.useState(fake_listings);
+  const [listings, setListings] = React.useState(false);
   const [result, setResult] = React.useState("");
 
   function onSearch() {
@@ -172,7 +135,7 @@ export default function SearchListings(props) {
                       </Typography>
                       <Link href={listing.walkscore_more_info_link} target="_blank">
                         <img className={classes.walkscore} src={listing.walkscore_logo}></img>
-                      </Link> ({listing.walkscore_description})
+                      </Link> <div className={classes.walkscore_desc}>{listing.home_walkscore} ({listing.walkscore_description})</div>
                       <br />
                       <Link href={listing.home_walkscore_link} target="_blank">
                         More Walkscore info about listing
