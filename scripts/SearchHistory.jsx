@@ -22,6 +22,10 @@ const useStyles = makeStyles({
     margin: 'auto',
     marginTop: 20,
     marginBottom: 20
+  }, 
+  searchengine: {
+    marginLeft: '83%',
+    marginTop: 18
   }
 });
 
@@ -62,6 +66,7 @@ export default function SearchHistory() {
   if (objects.length !== 0) {
     return (
       <div>
+      <Button id="backToSearchEngine" className={classes.searchengine} variant="contained" onClick={goToSearchEngine}>Back to search page!</Button>
       <Typography variant="h2" component="div" align="center" className={classes.header}>
         Search History
         </Typography>
