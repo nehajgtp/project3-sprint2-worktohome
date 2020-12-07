@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Content from './Content';
 import GuestGreeting from './GuestGreeting';
+import SearchHistory from './SearchHistory';
 
 function Greeting() {
   return (
@@ -11,6 +12,7 @@ function Greeting() {
         <Switch>
           <Route exact path="/" component={GuestGreeting} />
           <Route path="/content" component={Content} />
+          <Route path="/history" component={SearchHistory} />
         </Switch>
       </Router>
     </div>

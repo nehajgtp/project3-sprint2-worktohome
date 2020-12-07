@@ -12,43 +12,38 @@ import unittest.mock as mock
 KEY_INPUT = "input"
 KEY_EXPECTED = "expected"
 
-POSITIVE_TESTING_PARAMETERS = [{KEY_INPUT : {"email" : "hello@njit.edu", "address" : "9 Corn Drive, CityState, ZZ", "price_range_low" : 100000, "price_range_high" : 300000, "distance": 10}, KEY_EXPECTED : True },\
-{KEY_INPUT : ["hello@njit.edu", "9 Corn Drive, CityState, ZZ", 100000, 300000, 30], KEY_EXPECTED : ["hello@njit.edu", "9 Corn Drive, CityState, ZZ", 100000, 300000, 30]},\
-{KEY_INPUT : ["9 Corn Drive, CityState, ZZ", 100000, 300000, 30], KEY_EXPECTED : ["9 Corn Drive, CityState, ZZ", 100000, 300000, 30]}]
+POSITIVE_TESTING_PARAMETERS = [
+    {KEY_INPUT : {"email" : "hello@njit.edu", "address" : "9 Corn Drive, CityState, ZZ", "price_range_low" : 100000, "price_range_high" : 300000, "distance": 10}, 
+    KEY_EXPECTED : True },\
+    {
+    KEY_INPUT : ["hello@njit.edu", "9 Corn Drive, CityState, ZZ", 100000, 300000, "CityState", "ZZ", "sale"], 
+    KEY_EXPECTED : ["hello@njit.edu", "9 Corn Drive, CityState, ZZ", 100000, 300000,"CityState", "ZZ", "sale"]},\
+    {KEY_INPUT : ["9 Corn Drive, CityState, ZZ", 100000, 300000, 30], KEY_EXPECTED : ["9 Corn Drive, CityState, ZZ", 100000, 300000, 30]}]
 
 class TestingModels(unittest.TestCase):
     def setUp(self):
-        self.success_test_params = [{KEY_INPUT : {"email" : "hello@njit.edu", "address" : "9 Corn Drive, CityState, ZZ", "price_range_low" : 100000, "price_range_high" : 300000, "distance": 10}, KEY_EXPECTED : True },\
-            {KEY_INPUT : ["hello@njit.edu", "9 Corn Drive, CityState, ZZ", 100000, 300000, 30], KEY_EXPECTED : ["hello@njit.edu", "9 Corn Drive, CityState, ZZ", 100000, 300000, 30]},\
-            {KEY_INPUT : ["9 Corn Drive, CityState, ZZ", 100000, 300000, 30], KEY_EXPECTED : ["9 Corn Drive, CityState, ZZ", 100000, 300000, 30]}]
+        self.success_test_params = [\
+            {KEY_INPUT : ["hello@njit.edu", "9 Corn Drive, CityState, ZZ", 100000, 300000,"CityState", "ZZ", "sale"],\
+            KEY_EXPECTED : ["hello@njit.edu", "9 Corn Drive, CityState, ZZ", 100000, 300000, "CityState", "ZZ", "sale"]}]
             
     def check_class__table_defintion(self, testing_parameter):
         expected = testing_parameter[KEY_EXPECTED]
         input_data = testing_parameter[KEY_INPUT]
         input_address = input_data[1]
-        input_email = input_data[0];  input_dist = input_data[4];
+        input_email = input_data[0];
         input_low = input_data[2];  input_high = input_data[3]; 
-    
-        reference_not_perm = models.TableDefintion(input_email, input_address, input_low, input_high, input_dist)
+        input_city = input_data[4]; input_state = input_data[5];
+        input_purchase_type = input_data[6]
+        print(expected)
+        reference_not_perm = models.TableDefintion(input_email, input_address, input_low, input_high, input_city, input_state, input_purchase_type)
         if(reference_not_perm.email == expected[0] and reference_not_perm.address == expected[1]):#use is instead of == ?????
-            if(reference_not_perm.price_range_low == expected[2] and reference_not_perm.price_range_high == expected[3] and reference_not_perm.distance == expected[4]):
-                return True
+            if(reference_not_perm.price_low == expected[2] and reference_not_perm.price_high == expected[3]):
+                if(reference_not_perm.city == expected[4] and reference_not_perm.state == expected[5] and reference_not_perm.purchase_type == expected[6]):
+                    return True
         return False
             
-    def check_class__search_parameters(self, testing_parameter):
-        expected = testing_parameter[KEY_EXPECTED]
-        input_data = testing_parameter[KEY_INPUT]
-        input_string = input_data[0];  input_dist = input_data[3]
-        input_low = input_data[1];  input_high = input_data[2]; 
-    
-        reference_not_perm = models.SearchParameters(input_string, input_low, input_high, input_dist)
-        if(reference_not_perm.distance == expected[3] and reference_not_perm.address == expected[0]):
-            if(reference_not_perm.price_range_low == expected[1] and reference_not_perm.price_range_high == expected[2]):
-                return True
-        return False
-
     def test_success_test_params(self):
-        test_eval = self.check_class__search_parameters(POSITIVE_TESTING_PARAMETERS[1])
+        test_eval = self.check_class__table_defintion(POSITIVE_TESTING_PARAMETERS[1])
         #test_eval_2 = check_class__table_defintion(POSITIVE_TESTING_PARAMETERS[1])
         #test_eval_3 = mock_addition(POSITIVE_TESTING_PARAMETERS[0])
         

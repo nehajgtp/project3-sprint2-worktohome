@@ -1,13 +1,77 @@
 import * as React from 'react';
+import { useEffect } from 'react';
+import './SearchEngine.css';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import PropTypes from 'prop-types';
+import NumberFormat from 'react-number-format';
+import Divider from '@material-ui/core/Divider';
+import Button from '@material-ui/core/Button';
 import { Socket } from './Socket';
 
-export default function SearchEngine() {
+const useStyles = makeStyles({
+  formControl: {
+    margin: '2.7rem',
+    minWidth: 200,
+  },
+  address: {
+    margin: '2.7rem',
+    width: '50ch',
+  },
+  city: {
+    margin: '2.7rem',
+    width: '30ch',
+  },
+  price: {
+    margin: '1.5rem',
+  },
+});
+
+const NumberFormatCustom = React.forwardRef((props, ref) => {
+  const { onChange, ...other } = props;
+
+  return (
+    <NumberFormat
+      {...other}
+      getInputRef={ref}
+      onValueChange={(values) => {
+        onChange({
+          target: {
+            name: props.name,
+            value: values.value,
+          },
+        });
+      }}
+      thousandSeparator
+      isNumericString
+      prefix="$"
+    />
+  );
+});
+
+NumberFormatCustom.propTypes = {
+  name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
+export default function SearchEngine(props) {
+  const classes = useStyles();
+
   const [address, setAddress] = React.useState('');
   const [city, setCity] = React.useState('');
   const [statecode, setStateCode] = React.useState('');
-  const [maxCommute, setMaxCommute] = React.useState(50);
-  const [minPrice, setMinPrice] = React.useState(0);
-  const [maxPrice, setMaxPrice] = React.useState(10000);
+
+  const [minPrice, setMinPrice] = React.useState({
+    numberformat: '',
+  });
+  const [maxPrice, setMaxPrice] = React.useState({
+    numberformat: '',
+  });
+  const [purchaseType, setPurchaseType] = React.useState('');
 
   function handleAddressChange(event) {
     setAddress(event.target.value);
@@ -21,10 +85,6 @@ export default function SearchEngine() {
     setStateCode(event.target.value);
   }
 
-  function handleMaxCommuteChange(event) {
-    setMaxCommute(event.target.value);
-  }
-
   function handleMinPriceChange(event) {
     setMinPrice(event.target.value);
   }
@@ -33,90 +93,203 @@ export default function SearchEngine() {
     setMaxPrice(event.target.value);
   }
 
+  function handlePurchaseTypeChange(event) {
+    setPurchaseType(event.target.value);
+  }
+  // function getSearchHistoryParameters(){
+  useEffect(() => {
+    Socket.once('send history parameters', (data) => {
+
+      Socket.emit('send search parameters', {
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        max_commute: data.max_commute,
+        min_price: data.min_price,
+        max_price: data.max_price,
+        purchase_type: data.purchase_type,
+      });
+      props.changeLoad();
+      // setSearchHistory(false)
+    });
+  }, []);
+
+  // props.changeLoad()
+  // }
+  // getSearchHistoryParameters()
   function handleSubmit() {
-    Socket.emit('send search parameters', {
-      'address': address,
-      'city': city,
-      'state': statecode,
-      'max_commute': maxCommute,
-      'min_price': minPrice,
-      'max_price': maxPrice,
+    const inputErrors = [];
+
+    if (address === '') {
+      inputErrors.push('Please enter an address');
+    }
+
+    if (city === '') {
+      inputErrors.push('Please enter a city');
+    }
+
+    if (statecode === '') {
+      inputErrors.push('Please enter a state');
+    }
+
+    if (purchaseType === '') {
+      inputErrors.push('Please enter a purchase type');
+    }
+
+    if (Number.isInteger(parseInt(minPrice, 10)) === false) {
+      inputErrors.push('Min price is not a number');
+    }
+
+    if (Number.isInteger(parseInt(maxPrice, 10)) === false) {
+      inputErrors.push('Max price is not a number');
+    }
+
+    if (inputErrors.length > 0) {
+      alert(inputErrors);
+    }
+    if (inputErrors.length === 0) {
+      Socket.emit('send search parameters', {
+        address,
+        city,
+        state: statecode,
+        min_price: parseInt(minPrice, 10),
+        max_price: parseInt(maxPrice, 10),
+        purchase_type: purchaseType,
+      });
+      props.changeLoad();
+    }
+
+    Socket.on('Invalid search input', (invalidInputErrors) => {
+      alert(invalidInputErrors);
     });
   }
-
   return (
-    <div>
-      <h3>Commute Location</h3>
-      Address:
-      {' '}
-      <input onChange={handleAddressChange} />
-      City:
-      {' '}
-      <input onChange={handleCityChange} />
-      <label htmlFor="state">State:</label>
-      <select onChange={handleStateChange}>
-        <option value=""> -- Select state -- </option>
-        <option value="AL">Alabama</option>
-        <option value="AK">Alaska</option>
-        <option value="AZ">Arizona</option>
-        <option value="AR">Arkansas</option>
-        <option value="CA">California</option>
-        <option value="CO">Colorado</option>
-        <option value="CT">Connecticut</option>
-        <option value="DE">Delaware</option>
-        <option value="DC">District Of Columbia</option>
-        <option value="FL">Florida</option>
-        <option value="GA">Georgia</option>
-        <option value="HI">Hawaii</option>
-        <option value="ID">Idaho</option>
-        <option value="IL">Illinois</option>
-        <option value="IN">Indiana</option>
-        <option value="IA">Iowa</option>
-        <option value="KS">Kansas</option>
-        <option value="KY">Kentucky</option>
-        <option value="LA">Louisiana</option>
-        <option value="ME">Maine</option>
-        <option value="MD">Maryland</option>
-        <option value="MA">Massachusetts</option>
-        <option value="MI">Michigan</option>
-        <option value="MN">Minnesota</option>
-        <option value="MS">Mississippi</option>
-        <option value="MO">Missouri</option>
-        <option value="MT">Montana</option>
-        <option value="NE">Nebraska</option>
-        <option value="NV">Nevada</option>
-        <option value="NH">New Hampshire</option>
-        <option value="NJ">New Jersey</option>
-        <option value="NM">New Mexico</option>
-        <option value="NY">New York</option>
-        <option value="NC">North Carolina</option>
-        <option value="ND">North Dakota</option>
-        <option value="OH">Ohio</option>
-        <option value="OK">Oklahoma</option>
-        <option value="OR">Oregon</option>
-        <option value="PA">Pennsylvania</option>
-        <option value="RI">Rhode Island</option>
-        <option value="SC">South Carolina</option>
-        <option value="SD">South Dakota</option>
-        <option value="TN">Tennessee</option>
-        <option value="TX">Texas</option>
-        <option value="UT">Utah</option>
-        <option value="VT">Vermont</option>
-        <option value="VA">Virginia</option>
-        <option value="WA">Washington</option>
-        <option value="WV">West Virginia</option>
-        <option value="WI">Wisconsin</option>
-        <option value="WY">Wyoming</option>
-      </select>
-      <h3>Housing Prefrences</h3>
-      Maximum Commute Distance (miles):
-      <input placeholder="Max Commute" onChange={handleMaxCommuteChange} />
-      Price:
-      <input placeholder="Min Price" onChange={handleMinPriceChange} />
-      <input placeholder="Max Price" onChange={handleMaxPriceChange} />
-      <br />
-      <button type="submit" onClick={handleSubmit}>Search</button>
-      <hr />
+    <div className="searchPart">
+      <TextField
+        className={classes.address}
+        id=""
+        label="Address"
+        placeholder="Enter work address"
+        multiline
+        onChange={handleAddressChange}
+      />
+      <TextField
+        className={classes.city}
+        id=""
+        label="City"
+        placeholder="Enter work city"
+        multiline
+        onChange={handleCityChange}
+      />
+
+      <FormControl className={classes.formControl}>
+        <InputLabel id="">State</InputLabel>
+        <Select
+          labelId=""
+          id=""
+          value={statecode}
+          onChange={handleStateChange}
+          autoWidth
+        >
+          <MenuItem value="">
+            <em>Select state</em>
+          </MenuItem>
+          <MenuItem value="AL">Alabama</MenuItem>
+          <MenuItem value="AK">Alaska</MenuItem>
+          <MenuItem value="AZ">Arizona</MenuItem>
+          <MenuItem value="AR">Arkansas</MenuItem>
+          <MenuItem value="CA">California</MenuItem>
+          <MenuItem value="CO">Colorado</MenuItem>
+          <MenuItem value="CT">Connecticut</MenuItem>
+          <MenuItem value="DE">Delaware</MenuItem>
+          <MenuItem value="DC">District Of Columbia</MenuItem>
+          <MenuItem value="FL">Florida</MenuItem>
+          <MenuItem value="GA">Georgia</MenuItem>
+          <MenuItem value="HI">Hawaii</MenuItem>
+          <MenuItem value="ID">Idaho</MenuItem>
+          <MenuItem value="IL">Illinois</MenuItem>
+          <MenuItem value="IN">Indiana</MenuItem>
+          <MenuItem value="IA">Iowa</MenuItem>
+          <MenuItem value="KS">Kansas</MenuItem>
+          <MenuItem value="KY">Kentucky</MenuItem>
+          <MenuItem value="LA">Louisiana</MenuItem>
+          <MenuItem value="ME">Maine</MenuItem>
+          <MenuItem value="MD">Maryland</MenuItem>
+          <MenuItem value="MA">Massachusetts</MenuItem>
+          <MenuItem value="MI">Michigan</MenuItem>
+          <MenuItem value="MN">Minnesota</MenuItem>
+          <MenuItem value="MS">Mississippi</MenuItem>
+          <MenuItem value="MO">Missouri</MenuItem>
+          <MenuItem value="MT">Montana</MenuItem>
+          <MenuItem value="NE">Nebraska</MenuItem>
+          <MenuItem value="NV">Nevada</MenuItem>
+          <MenuItem value="NH">New Hampshire</MenuItem>
+          <MenuItem value="NJ">New Jersey</MenuItem>
+          <MenuItem value="NM">New Mexico</MenuItem>
+          <MenuItem value="NY">New York</MenuItem>
+          <MenuItem value="NC">North Carolina</MenuItem>
+          <MenuItem value="ND">North Dakota</MenuItem>
+          <MenuItem value="OH">Ohio</MenuItem>
+          <MenuItem value="OK">Oklahoma</MenuItem>
+          <MenuItem value="OR">Oregon</MenuItem>
+          <MenuItem value="PA">Pennsylvania</MenuItem>
+          <MenuItem value="RI">Rhode Island</MenuItem>
+          <MenuItem value="SC">South Carolina</MenuItem>
+          <MenuItem value="SD">South Dakota</MenuItem>
+          <MenuItem value="TN">Tennessee</MenuItem>
+          <MenuItem value="TX">Texas</MenuItem>
+          <MenuItem value="UT">Utah</MenuItem>
+          <MenuItem value="VT">Vermont</MenuItem>
+          <MenuItem value="VA">Virginia</MenuItem>
+          <MenuItem value="WA">Washington</MenuItem>
+          <MenuItem value="WV">West Virginia</MenuItem>
+          <MenuItem value="WI">Wisconsin</MenuItem>
+          <MenuItem value="WY">Wyoming</MenuItem>
+        </Select>
+      </FormControl>
+      <FormControl className={classes.formControl}>
+        <InputLabel id="">Rent/Sale</InputLabel>
+        <Select
+          labelId=""
+          id=""
+          value={purchaseType}
+          onChange={handlePurchaseTypeChange}
+          autoWidth
+        >
+          <MenuItem value="">
+            <em>Select purchase type</em>
+          </MenuItem>
+          <MenuItem value="rent">For Rent</MenuItem>
+          <MenuItem value="sale">For Sale</MenuItem>
+        </Select>
+      </FormControl>
+      <div id="price">
+        <TextField
+          className={classes.price}
+          label="Minimum Price"
+          value={minPrice.numberformat}
+          onChange={handleMinPriceChange}
+          name=""
+          id=""
+          InputProps={{
+            inputComponent: NumberFormatCustom,
+          }}
+        />
+        <TextField
+          className={classes.price}
+          label="Maximum Price"
+          value={maxPrice.numberformat}
+          onChange={handleMaxPriceChange}
+          name=""
+          id=""
+          inputProps={{ style: { textAlign: 'center' } }}
+          InputProps={{
+            inputComponent: NumberFormatCustom,
+          }}
+        />
+      </div>
+      <Button id="searchButton" variant="contained" onClick={handleSubmit}>Search</Button>
+      <Divider />
     </div>
   );
 }
