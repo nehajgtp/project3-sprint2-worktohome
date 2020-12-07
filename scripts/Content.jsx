@@ -1,31 +1,30 @@
 import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import { BeatLoader } from 'react-spinners';
-import SearchEngine from './SearchEngine';
-import SearchListings from './SearchListings';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import IconButton from "@material-ui/core/IconButton";
-import MenuItem from "@material-ui/core/MenuItem";
-import Menu from "@material-ui/core/Menu";
+import IconButton from '@material-ui/core/IconButton';
+import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu';
+import SearchListings from './SearchListings';
+import SearchEngine from './SearchEngine';
 
 const useStyles = makeStyles({
   appbar: {
-    background: '#8F90FA'
+    background: '#8F90FA',
   },
   icon: {
     width: '40px',
   },
   header: {
     marginLeft: '50%',
-    marginRight: '43%'
-  }
-  }
-);
+    marginRight: '43%',
+  },
+});
 
 function ElevationScroll(props) {
   const { children, window } = props;
@@ -49,19 +48,19 @@ export default function Content(props) {
   const classes = useStyles();
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  
-  function routHistory(){
-    history.push("/history");
+
+  function routHistory() {
+    history.push('/history');
   }
-  
+
   function logout() {
     history.push('/');
   }
-  
+
   function scrollUp() {
-   window.scrollTo({top: 0, behavior: 'smooth'});
-  };
-  
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   if (window.sessionStorage.getItem('name') == null) {
     history.push('/');
   }
@@ -81,16 +80,15 @@ export default function Content(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   return (
     <div className="theContent">
       <ElevationScroll {...props}>
         <AppBar className={classes.appbar}>
           <Toolbar>
             <Typography variant="h6" component="div" align="center" className={classes.header}>
-              <img className={classes.icon}src="https://i.imgur.com/Zlaf5hk.png" align="center" onClick={scrollUp}></img>
+              <img alt="" className={classes.icon} src="https://i.imgur.com/Zlaf5hk.png" align="center" onClick={scrollUp} />
             </Typography>
-            {(
             <div>
               <IconButton
                 id={classes.menu}
@@ -100,19 +98,19 @@ export default function Content(props) {
                 onClick={handleMenu}
                 color="inherit"
               >
-                <img src="https://i.imgur.com/p9kJLoE.png"/>
+                <img alt="" src="https://i.imgur.com/p9kJLoE.png" />
               </IconButton>
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorEl}
                 anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right"
+                  vertical: 'top',
+                  horizontal: 'right',
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right"
+                  vertical: 'top',
+                  horizontal: 'right',
                 }}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
@@ -121,13 +119,12 @@ export default function Content(props) {
                 <MenuItem onClick={logout}>Logout</MenuItem>
               </Menu>
             </div>
-          )}
           </Toolbar>
         </AppBar>
       </ElevationScroll>
-      <SearchEngine changeLoad={changeLoadtoTrue}/>
-      <SearchListings changeLoad={changeLoadtoFalse}/>
-      <div align="center">{loading ? <BeatLoader align="center"/>: null}</div>
+      <SearchEngine changeLoad={changeLoadtoTrue} />
+      <SearchListings changeLoad={changeLoadtoFalse} />
+      <div align="center">{loading ? <BeatLoader align="center" /> : null}</div>
     </div>
 
   );

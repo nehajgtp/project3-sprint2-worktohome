@@ -3,7 +3,7 @@ import FacebookLogin from 'react-facebook-login';
 import ReactDOM from 'react-dom';
 import { useHistory } from 'react-router-dom';
 import { Socket } from './Socket';
-import './FacebookButton.css'
+import './FacebookButton.css';
 
 export default function FacebookButton() {
   const history = useHistory();
