@@ -11,7 +11,7 @@ import googlemaps
 
 import requests
 import walkscore_api
-from google_maps_api import get_place_id, generate_iframe_url
+import google_maps_api
 
 DOTENV_PATH = join(dirname(__file__), "apikeys.env")
 load_dotenv(DOTENV_PATH)
@@ -53,7 +53,7 @@ def get_homes(city, state_code, min_price, max_price, absolute_address):
     """
     min_price = int(min_price)
     max_price = int(max_price)
-    origin_place_id = get_place_id(absolute_address)
+    origin_place_id = google_maps_api.get_place_id(absolute_address)
     url = "https://rapidapi.p.rapidapi.com/properties/v2/list-for-sale"
     querystring = {
         "city": city,
@@ -84,14 +84,14 @@ def get_homes(city, state_code, min_price, max_price, absolute_address):
                     pass
                 else:
                     continue
-                destination_place_id = get_place_id(
+                destination_place_id = google_maps_api.get_place_id(
                     property_instance["address"]["line"]
                     + " ,"
                     + property_instance["address"]["city"]
                     + " ,"
                     + property_instance["address"]["state_code"]
                 )
-                iframe_url = generate_iframe_url(origin_place_id, destination_place_id)
+                iframe_url = google_maps_api.generate_iframe_url(origin_place_id, destination_place_id)
                 now = datetime.now()
                 directions_result = GMAPS.directions(
                     absolute_address,
@@ -174,21 +174,21 @@ def nearby_homes(property_id, min_price, max_price, absolute_address):
         json_body = response.json()
         results = json_body["data"]["home"]["related_homes"]["results"]
         list_of_properties_2 = []
-        origin_place_id = get_place_id(absolute_address)
+        origin_place_id = google_maps_api.get_place_id(absolute_address)
         for result in results:
             if result["list_price"] >= min_price and result["list_price"] <= max_price:
                 geocode_result = GMAPS.geocode(
                     result["location"]["address"]["line"]
                     + result["location"]["address"]["city"]
                 )
-                destination_place_id = get_place_id(
+                destination_place_id = google_maps_api.get_place_id(
                     result["location"]["address"]["line"]
                     + " , "
                     + result["location"]["address"]["city"]
                     + " , "
                     + geocode_result[0]["address_components"][4]["long_name"]
                 )
-                iframe_url = generate_iframe_url(origin_place_id, destination_place_id)
+                iframe_url = google_maps_api.generate_iframe_url(origin_place_id, destination_place_id)
                 print(iframe_url)
                 now = datetime.now()
                 directions_result = GMAPS.directions(

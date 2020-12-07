@@ -28,17 +28,7 @@ DISTANCE = "max_commute"
 MIN_PRICE = "min_price"
 MAX_PRICE = "max_price"
 PURCHASE_TYPE = "purchase_type"
-# class MockSendToDatabase(unittest.TestCase):
-#     def setUp(self):
-#         self.success_test_params = {
-#             KEY_INPUT: {
-#                 EMAIL: "kevinng250",
-#                 ADDRESS: "141 Summit Street, Newark, NJ",
-#                 PRICE_RANGE_LOW: "100",
-#                 PRICE_RANGE_HIGH: "2000" 
-#             },
-#             KEY_EXPECTED: ""
-#         }
+
 class MockParsingSearchParameters(unittest.TestCase):
     def setUp(self):
         self.success_test_params = {
@@ -53,12 +43,50 @@ class MockParsingSearchParameters(unittest.TestCase):
             },
             KEY_EXPECTED: None
         }
+        self.success_test_params_rental = {
+            KEY_INPUT: {
+                ADDRESS:"141 Summit Street",
+                CITY:"Newark",
+                STATE:"NJ",
+                DISTANCE:"40",
+                MIN_PRICE:100,
+                MAX_PRICE:2000,
+                PURCHASE_TYPE: "rent"
+            },
+            KEY_EXPECTED: None
+        }
+        self.success_test_invalid_min ={
+            KEY_INPUT: {
+                ADDRESS:"141 Summit Street",
+                CITY:"Newark",
+                STATE:"NJ",
+                DISTANCE:"40",
+                MIN_PRICE:-100,
+                MAX_PRICE:2000,
+                PURCHASE_TYPE: "sale"
+            },
+            KEY_EXPECTED: None
+        }
+        self.success_test_invalid_max ={
+            KEY_INPUT: {
+                ADDRESS:"141 Summit Street",
+                CITY:"Newark",
+                STATE:"NJ",
+                DISTANCE:"40",
+                MIN_PRICE:100,
+                MAX_PRICE:-2000,
+                PURCHASE_TYPE: "sale"
+            },
+            KEY_EXPECTED: None
+        }
         
     def mock_get_homes(self, city, state, min_price, max_price, absolute_address):
         return -1
+    def mock_get_rental_listings(self, city, state, min_price, max_price, absolute_address):
+        return -1
     def mock_get_homes_exists(self, city, state, min_price, max_price, absolute_address):
         return 1
-    def mock_send_To_database(self, email, address, price_range_low, price_range_high, distance, city, state, purchase_type):
+    def mock_send_To_database(self, email, address, price_range_low, price_range_high, city, state, purchase_type):
         return None
         
     @patch('flask_socketio.SocketIO.emit')
@@ -66,6 +94,14 @@ class MockParsingSearchParameters(unittest.TestCase):
         test_case = self.success_test_params
         with mock.patch("app.send_to_database", self.mock_send_To_database):
             with mock.patch("apifunctions.get_homes", self.mock_get_homes):
+                result = app.parsing_search_parameters(test_case[KEY_INPUT])
+                mock_socket.assert_called_with('sending listing', [])
+                
+    @patch('flask_socketio.SocketIO.emit')
+    def test_parse_search_parameters_rental(self, mock_socket):
+        test_case = self.success_test_params_rental
+        with mock.patch("app.send_to_database", self.mock_send_To_database):
+            with mock.patch("rental_listings_api.get_rental_listings", self.mock_get_rental_listings):
                 result = app.parsing_search_parameters(test_case[KEY_INPUT])
                 mock_socket.assert_called_with('sending listing', [])
     
@@ -76,6 +112,18 @@ class MockParsingSearchParameters(unittest.TestCase):
             with mock.patch("apifunctions.get_homes", self.mock_get_homes_exists):
                 result = app.parsing_search_parameters(test_case[KEY_INPUT])
                 mock_socket.assert_called_with('sending listing', 1)
+                
+    def test_parse_search_minError(self):
+        test_case = self.success_test_invalid_min
+        with mock.patch("app.send_to_database", self.mock_send_To_database):
+            with mock.patch("apifunctions.get_homes", self.mock_get_homes):
+                result = app.parsing_search_parameters(test_case[KEY_INPUT])
+                
+    def test_parse_search_maxError(self):
+        test_case = self.success_test_invalid_max
+        with mock.patch("app.send_to_database", self.mock_send_To_database):
+            with mock.patch("apifunctions.get_homes", self.mock_get_homes):
+                result = app.parsing_search_parameters(test_case[KEY_INPUT])
                 
 class MockDisplayTable(unittest.TestCase):
     def setUp(self):

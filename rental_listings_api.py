@@ -11,7 +11,7 @@ import walkscore_api
 import googlemaps
 from datetime import datetime
 
-from google_maps_api import get_place_id, generate_iframe_url
+import google_maps_api
 
 DOTENV_PATH = join(dirname(__file__), "apikeys.env")
 load_dotenv(DOTENV_PATH)
@@ -47,7 +47,7 @@ def get_rental_listings(city, state_code, min_price, max_price, absolute_address
     '''
     Main Method
     '''
-    origin_place_id = get_place_id(absolute_address)
+    origin_place_id = google_maps_api.get_place_id(absolute_address)
     url = "https://realtor.p.rapidapi.com/properties/v2/list-for-rent"
     querystring = {
         "city": city,
@@ -64,16 +64,17 @@ def get_rental_listings(city, state_code, min_price, max_price, absolute_address
         "x-rapidapi-host": "realtor.p.rapidapi.com",
     }
 
-    response = requests.request("GET", url, headers=headers, params=querystring)
-    json_body = response.json()
-    # print(json.dumps(json_body, indent=2))
-    list_of_properties = []
-    image = ""
-    home_price = ""
-    home_baths = ""
-    home_beds = ""
+    
 
     try:
+        response = requests.request("GET", url, headers=headers, params=querystring)
+        json_body = response.json()
+        # print(json.dumps(json_body, indent=2))
+        list_of_properties = []
+        image = ""
+        home_price = ""
+        home_baths = ""
+        home_beds = ""
         if json_body["meta"]["returned_rows"] > 0:
             for property_inst in json_body["properties"]:
                 print(property_inst)
@@ -88,9 +89,9 @@ def get_rental_listings(city, state_code, min_price, max_price, absolute_address
                     home_price = property_inst["price"]
                     home_baths = property_inst["baths"]
                     home_beds = property_inst["beds"]
-                destination_place_id = get_place_id(property_inst["address"]["line"] + 
+                destination_place_id = google_maps_api.get_place_id(property_inst["address"]["line"] + 
                 " ," + property_inst["address"]["city"] + " ,"+ property_inst["address"]["state_code"])
-                iframe_url = generate_iframe_url(origin_place_id,destination_place_id)
+                iframe_url = google_maps_api.generate_iframe_url(origin_place_id,destination_place_id)
                 now = datetime.now()
                 directions_result = GMAPS.directions(absolute_address,
                                      property_inst["address"]["line"] + \

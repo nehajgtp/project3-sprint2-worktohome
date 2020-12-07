@@ -108,8 +108,6 @@ def new_user(data):
     """
     ...
     """
-    room = flask.request.sid
-    join_room(room)
     email_variable = data["email"]
     EMAIL_CLASS.set_email(email_variable)
 
@@ -160,8 +158,6 @@ def parsing_search_parameters(data):
 
 @SOCKETIO.on("send search history parameters")
 def send_search_parameters(data):
-    print(";alfdjs")
-    print(data)
     SOCKETIO.emit('send history parameters', data)
 
 @SOCKETIO.on("sort listings")
