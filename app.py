@@ -71,7 +71,9 @@ def display_table():
     if records is not None:
         history_table = []
         for record in records:
+            street = record.address.split(',')[0]
             transfer = {
+                "street": street,
                 "address": record.address,
                 "city": record.city,
                 "state": record.state,

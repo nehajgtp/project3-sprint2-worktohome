@@ -52,7 +52,7 @@ export default function SearchHistory() {
     // console.log(address)
     history.push('/content');
     Socket.emit('send search history parameters', {
-      address: listing.address,
+      address: listing.street,
       city: listing.city,
       state: listing.state,
       max_commute: listing.distance,
