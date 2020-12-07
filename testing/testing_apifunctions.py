@@ -16,6 +16,7 @@ from apifunctions import HOME_CITY, HOME_STREET, HOME_POSTAL_CODE,\
                             HOME_WALKSCORE_LINK
 import requests
 import io
+import google_maps_api
 
 KEY_INPUT = "input"
 KEY_EXPECTED = "expected"
@@ -142,8 +143,8 @@ class MockNearbyHomes(unittest.TestCase):
         test_case = self.success_test_params
         with mock.patch("requests.request", self.mock_success_requests):
             with mock.patch("googlemaps.Client.geocode", self.mock_success_geocode):
-                with mock.patch("apifunctions.get_place_id", self.mock_get_place_id):
-                    with mock.patch("apifunctions.generate_iframe_url", self.mock_generate_iframe_url):
+                with mock.patch("google_maps_api.get_place_id", self.mock_get_place_id):
+                    with mock.patch("google_maps_api.generate_iframe_url", self.mock_generate_iframe_url):
                         with mock.patch("googlemaps.Client.directions", self.mock_directions):
                             with mock.patch("walkscore_api.get_walkscore_info", self.mock_walkscore_info):
                                 inp = test_case[KEY_INPUT]
@@ -404,8 +405,8 @@ class MockGetHomes(unittest.TestCase):
         with mock.patch("requests.request", self.mock_success_requests_properties):
             with mock.patch("apifunctions.nearby_homes", self.mock_nearbyHomes):
                 with mock.patch("walkscore_api.get_walkscore_info", self.mock_walkscore_info):
-                    with mock.patch("apifunctions.generate_iframe_url", self.mock_generate_iframe_url):
-                        with mock.patch("apifunctions.get_place_id", self.mock_get_place_id):
+                    with mock.patch("google_maps_api.generate_iframe_url", self.mock_generate_iframe_url):
+                        with mock.patch("google_maps_api.get_place_id", self.mock_get_place_id):
                             with mock.patch("googlemaps.Client.directions", self.mock_directions):
                                 inp = test_case[KEY_INPUT]
                                 results = apifunctions.get_homes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE], inp[ABSOLUTE_ADDRESS])
@@ -428,8 +429,8 @@ class MockGetHomes(unittest.TestCase):
         with mock.patch("requests.request", self.mock_success_requests_properties_none):
             with mock.patch("apifunctions.nearby_homes", self.mock_nearbyHomes):
                 with mock.patch("walkscore_api.get_walkscore_info", self.mock_walkscore_info):
-                    with mock.patch("apifunctions.generate_iframe_url", self.mock_generate_iframe_url):
-                        with mock.patch("apifunctions.get_place_id", self.mock_get_place_id):
+                    with mock.patch("google_maps_api.generate_iframe_url", self.mock_generate_iframe_url):
+                        with mock.patch("google_maps_api.get_place_id", self.mock_get_place_id):
                             with mock.patch("googlemaps.Client.directions", self.mock_directions):
                                 inp = test_case[KEY_INPUT]
                                 results = apifunctions.get_homes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE], inp[ABSOLUTE_ADDRESS])
@@ -465,8 +466,8 @@ class MockGetHomes(unittest.TestCase):
         with mock.patch("requests.request", self.mock_success_requests_properties_no_thumbnail):
             with mock.patch("apifunctions.nearby_homes", self.mock_nearbyHomes):
                 with mock.patch("walkscore_api.get_walkscore_info", self.mock_walkscore_info):
-                    with mock.patch("apifunctions.generate_iframe_url", self.mock_generate_iframe_url):
-                        with mock.patch("apifunctions.get_place_id", self.mock_get_place_id):
+                    with mock.patch("google_maps_api.generate_iframe_url", self.mock_generate_iframe_url):
+                        with mock.patch("google_maps_api.get_place_id", self.mock_get_place_id):
                             with mock.patch("googlemaps.Client.directions", self.mock_directions):
                                 inp = test_case[KEY_INPUT]
                                 results = apifunctions.get_homes(inp[CITY], inp[STATE_CODE], inp[MIN_PRICE], inp[MAX_PRICE], inp[ABSOLUTE_ADDRESS])
@@ -529,7 +530,7 @@ class MockGetPlaceId(unittest.TestCase):
     def test_get_place_id(self):
         test_case = self.success_test_params
         with mock.patch("googlemaps.Client.find_place", self.mock_find_place):
-            result = apifunctions.get_place_id(test_case[KEY_INPUT])
+            result = google_maps_api.get_place_id(test_case[KEY_INPUT])
             self.assertEqual(result, test_case[KEY_EXPECTED])
     
 if __name__ == "__main__":

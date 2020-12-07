@@ -14,15 +14,7 @@ GMAPS = googlemaps.Client(key=GOOGLE_API_KEY)
 
 IFRAME_URL = "iframe_url"
 
-def get_distance(start_address, end_address):
-    '''
-    Calculates distance with GMAPS
-    '''
-    now = datetime.now()
-    directions_result = GMAPS.directions(
-        start_address, end_address, mode="driving", departure_time=now
-    )
-    print(json.dumps(directions_result, indent=2))
+
 
 def get_place_id(address):
     place = GMAPS.find_place(address,input_type="textquery")

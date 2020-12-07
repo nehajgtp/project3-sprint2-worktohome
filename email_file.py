@@ -15,8 +15,6 @@ class Email:
     def __init__(self, email):
         self.string = email
 
-    def __repr__(self):
-        return "The email is %s" % self.string
 
     def value_of(self):
         """
