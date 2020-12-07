@@ -26,6 +26,13 @@ const useStyles = makeStyles({
   searchengine: {
     marginLeft: '83%',
     marginTop: 18
+  },
+  searchengine2: {
+    marginTop: 30,
+    marginLeft: '43%'
+  },
+  noSearch: {
+    fontSize: '20px'
   }
 });
 
@@ -62,7 +69,7 @@ export default function SearchHistory() {
     Socket.emit('request search history');
     goToHistory();
   }
-  const objects = List;
+  const objects = List.reverse();
   if (objects.length !== 0) {
     return (
       <div>
@@ -104,8 +111,13 @@ export default function SearchHistory() {
 
   return (
     <div>
-      <h1>No searches for this user.</h1>
-      <button type="button" onClick={goToSearchEngine}>Go back to search page.</button>
+      <Typography variant="h2" component="div" align="center" className={classes.header}>
+        Search History
+      </Typography>
+      <Typography variant="h3" component="div" align="center" className={classes.noSearch}>
+        No search history yet!
+      </Typography>
+      <Button id="backToSearchEngine" className={classes.searchengine2} variant="contained" onClick={goToSearchEngine}>Back to search page!</Button>
     </div>
   );
 }
