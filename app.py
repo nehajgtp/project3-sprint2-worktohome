@@ -5,7 +5,6 @@ The file handles the inputs and outputs. (Controller)
 import os
 from os.path import join, dirname
 from dotenv import load_dotenv
-from flask_socketio import join_room, leave_room
 import flask
 import flask_sqlalchemy
 import flask_socketio
@@ -45,14 +44,20 @@ import models
 EMAIL_CLASS = email_file.Email("")
 
 
-def send_to_database(email, address, price_range_low, price_range_high, city, state, purchase_type):
+def send_to_database(email, address, price_range_low,
+                     price_range_high, city, state, purchase_type):
     """
     CALL THIS FUNCTION TO ADD TO THE DATABASE OR UPDATE DATABASE
     """
     DB.session.add(
         models.TableDefintion(
-            email, address, price_range_low, price_range_high,\
-            city, state, purchase_type\
+            email,
+            address,
+            price_range_low,
+            price_range_high,
+            city,
+            state,
+            purchase_type,
         )
     )
     DB.session.commit()
@@ -71,7 +76,7 @@ def display_table():
     if records is not None:
         history_table = []
         for record in records:
-            street = record.address.split(',')[0]
+            street = record.address.split(",")[0]
             transfer = {
                 "street": street,
                 "address": record.address,
@@ -79,7 +84,7 @@ def display_table():
                 "state": record.state,
                 "price_low": record.price_low,
                 "price_high": record.price_high,
-                "purchase_type": record.purchase_type
+                "purchase_type": record.purchase_type,
             }
             history_table.append(transfer)
         print(history_table)
@@ -108,7 +113,7 @@ def on_disconnect():
 @SOCKETIO.on("New Logged In User")
 def new_user(data):
     """
-    ...
+    Creates a new user
     """
     email_variable = data["email"]
     EMAIL_CLASS.set_email(email_variable)
@@ -138,17 +143,30 @@ def parsing_search_parameters(data):
 
     if min_price > max_price:
         invalid_input_errors.append("Min price cannot be bigger than max price")
-    
-    if (len(invalid_input_errors) == 0): 
-        send_to_database(EMAIL_CLASS.value_of(), absolute_address, min_price, max_price, city, state, purchase_type)
+
+    if len(invalid_input_errors) == 0:
+        send_to_database(
+            EMAIL_CLASS.value_of(),
+            absolute_address,
+            min_price,
+            max_price,
+            city,
+            state,
+            purchase_type,
+        )
         listings = ""
-        if (purchase_type == "sale"):
-            listings = apifunctions.get_homes(city, state, min_price, max_price,absolute_address)
-        if (purchase_type == "rent"):
-            listings = rental_listings_api.get_rental_listings(city, state, str(min_price), str(max_price), absolute_address)
+        if purchase_type == "sale":
+            listings = apifunctions.get_homes(
+                city, state, min_price, max_price, absolute_address
+            )
+        if purchase_type == "rent":
+            listings = rental_listings_api.get_rental_listings(
+                city, state, str(min_price), str(max_price), absolute_address
+            )
         print("Final listings outputted: " + str(listings))
-        if (listings == -1 or listings == None):
-            SOCKETIO.emit('sending listing', [])
+        tuple_checking = (-1, None)
+        if listings in tuple_checking:
+            SOCKETIO.emit("sending listing", [])
         else:
             SOCKETIO.emit("sending listing", listings)
     if len(invalid_input_errors) > 0:
@@ -160,13 +178,17 @@ def parsing_search_parameters(data):
 
 @SOCKETIO.on("send search history parameters")
 def send_search_parameters(data):
-    SOCKETIO.emit('send history parameters', data)
+    '''
+    Sends search hisotry on the socket
+    '''
+    SOCKETIO.emit("send history parameters", data)
+
 
 @SOCKETIO.on("sort listings")
 def sort_listings(listings):
-    '''
+    """
     Solution to handling change in desired list order
-    '''
+    """
     SOCKETIO.emit("sorted listings", listings)
 
 

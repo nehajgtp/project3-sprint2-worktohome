@@ -1,14 +1,16 @@
 # models.py
-'''
+"""
 Defines the table for PSQL (Model)
-'''
+"""
 import flask_sqlalchemy
 from app import DB
 
+
 class TableDefintion(DB.Model):
-    '''
+    """
     Main class
-    '''
+    """
+
     id = DB.Column(DB.Integer, primary_key=True)
     email = DB.Column(DB.String(255))
     address = DB.Column(DB.String(255))
@@ -18,7 +20,8 @@ class TableDefintion(DB.Model):
     state = DB.Column(DB.String(60))
     purchase_type = DB.Column(DB.String(60))
 
-    def __init__(self, email, address, price_one, price_two, city, state, purchase_type):
+    def __init__(self, email, address, price_one, price_two,
+                 city, state, purchase_type):
         self.email = email
         self.address = address
         self.price_low = price_one

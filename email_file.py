@@ -15,7 +15,6 @@ class Email:
     def __init__(self, email):
         self.string = email
 
-
     def value_of(self):
         """
         Getter
