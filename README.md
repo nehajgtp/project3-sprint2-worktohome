@@ -218,10 +218,10 @@ Kevin Ng:
  - Troubleshooted CircleCI and successfully built and deployed to Heroku
 
 Matthew Meeh
- - Redid models.py to reflect what we wanted to store
- - Wrote testing_models.py
- - Used pylint on models.py, app.py, and apifunctions.py
- - Tested database side manually
- - Rebuilt app.py to suit our needs
- - Merged feature_frontend with Ali's and my backend and fixed conflicts.
- - Merged Kevin's testing-backend with my linted backend into final-backend.
+ - Redid models.py to reduce unnesscary code and redefined what we stored.
+ - Linted all the testing files for the first and last time.
+  -Linted all the files again (includes both pylinting and eslinting).
+ - Tested database side manually again.
+ - I built the frontend to search history.
+  -I created a new file email_file.py to create an email class to fix the linting error for the global variable email.
+ - Fixed bugs with the some of the testing files, when they broke on my branches (not including the merging branches). 
