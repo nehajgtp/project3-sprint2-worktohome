@@ -224,11 +224,14 @@ Neha Jagtap:
  - Was PM for Week 5
 
 Kevin Ng:
- - Created Landing Page and Router Redirect to Main Content Page
- - Implemented Google OAuth
- - Wrote Unit Testing for app.py and apifunctions.py
+ - Implemented Facebook OAuth
+ - Wrote Unit Testing for app.py, apifunctions.py, models.py, rental_listings_api.py, walkscore_api.py
  - Deployed to Heroku
  - Troubleshooted CircleCI and successfully built and deployed to Heroku
+ - Created the loading animation for our contents page
+ - Created feature for user to click a previous search and redirect user to contents page with the new search
+ - Create a frontend response to no listings being returned
+ - PM for week 3
 
 Matthew Meeh
  - Redid models.py to reduce unnesscary code and redefined what we stored.
