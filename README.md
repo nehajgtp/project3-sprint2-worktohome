@@ -11,15 +11,17 @@ Make your home search more convenient to your commute!
     d)  `npm install -g webpack`  
     e)  `npm install --save-dev webpack`  
     f)  `npm install socket.io-client --save` 
-    g) `pip install googlemaps`
-    h) `npm install react-router-dom`
-    i) `npm install react-facebook-login`
-    k) `npm install react-spinners`
-    l) `npm install style-loader css-loader --save`
-    m) `npm i react-iframe`
-    n) `npm install —save @material-ui/core`
-    o) `npm install react-number-format --save`
-    p) `npm install --save prop-types`
+    g)  `pip install googlemaps`
+    h)  `npm install react-router-dom`
+    i)  `npm install react-facebook-login`
+    k)  `npm install react-spinners`
+    l)  `npm install style-loader css-loader --save`
+    m)  `npm i react-iframe`
+    n)  `npm install —save @material-ui/core`
+    o)  `npm install react-number-format --save`
+    p)  `npm install --save prop-types`
+    q)  `pip install mock`
+    r)  `pip install python-dotenv`
     If you see any error messages, make sure you use  `sudo pip`  or  `sudo npm`. If it says "pip cannot be found", run  `which pip`  and use  `sudo [path to pip from which pip] install`
 
 > Getting PSQL to work with Python
@@ -134,7 +136,7 @@ Unit Testing\
 13. Check your heroku link to see the deployment!
 14. Make sure to add your GOOGLE_API_KEY and RAPID_API_KEY to config variables
 
-### Circle CI CI/CD:
+### CircleCI:
 1. Go to https://circleci.com/signup/ and sign up with your github account
 2. Authorize and verify the account
 3. Make sure you're in the right repo and organization
@@ -205,10 +207,21 @@ Unit Testing\
 # Individual Contributions
 
 Neha Jagtap:
- - Creating the frontend of the website (SearchEngine.jsx and SearchResults.jsx); connected the client to the server so that the client would display data when calling API 
- - Linted Javascript files
- - Added CircleCI integration to repository
- - Developed idea for project and Github Projects board tasks
+ - Created backend code for function to call Walkscore API and return data about Walkscore, travel times, etc. 
+ - Added frontend display to show information from Walkscore
+ - Created backend code for function to call Realtor API to include rental listings in addition to houses on sale
+ - Added option for user on UI to choose between searching for rental listings and home listings
+ - Added feature for user to sort display of listings by price (either low to high or high to low)
+ - Added type checking for user input on frontend and backend of code; if user enters incorrect information, an alert will display to inform them
+ - Initialized integration of CircleCI into the project
+ - Styled the landing page using Material UI and CSS
+ - Added written content to landing page (About, Steps, Creation of Our App, Links, Made By)
+ - Styled the search page with the search input and search listings
+ - Added a navbar to the top of the search page which has an icon for the user to click on that leads them to the Search History page or to the landing page; home button on the navbar allows the user to scroll to the top of the page 
+ - Styled the search history page with Material UI
+ - Reformatted code so that functions that called the Google Maps API were in a new file
+ - Linted Javascript files with ESLint
+ - Was PM for Week 5
 
 Kevin Ng:
  - Created Landing Page and Router Redirect to Main Content Page
