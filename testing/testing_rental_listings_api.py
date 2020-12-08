@@ -7,11 +7,11 @@ import unittest
 import os
 import unittest.mock as mock
 from mock import patch, call
-import rental_listings_api
+
 import requests
 
 sys.path.append(join(dirname(__file__), "../"))
-
+import rental_listings_api
 
 from rental_listings_api import (
     HOME_CITY,

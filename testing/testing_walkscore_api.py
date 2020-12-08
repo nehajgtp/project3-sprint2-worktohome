@@ -7,10 +7,10 @@ import unittest
 import os
 import unittest.mock as mock
 from mock import patch, call
-import walkscore_api
+
 import requests
 sys.path.append(join(dirname(__file__), "../"))
-
+import walkscore_api
 
 
 KEY_INPUT = "key_input"

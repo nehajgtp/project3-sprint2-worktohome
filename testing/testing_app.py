@@ -2,7 +2,7 @@
 This file tests app.py
 '''
 import unittest
-import app
+
 import os
 import unittest.mock as mock
 from mock import patch
@@ -11,7 +11,7 @@ from os.path import dirname, join
 import sys
 
 sys.path.append(join(dirname(__file__), "../"))
-
+import app
 
 
 KEY_INPUT = "input"

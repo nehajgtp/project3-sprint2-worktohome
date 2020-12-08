@@ -4,9 +4,9 @@ tests models.py
 from os.path import dirname, join
 import sys
 import unittest
-import models
-sys.path.append(join(dirname(__file__), "../"))
 
+sys.path.append(join(dirname(__file__), "../"))
+import models
 
 
 KEY_INPUT = "input"
