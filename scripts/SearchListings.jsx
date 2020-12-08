@@ -118,11 +118,7 @@ export default function SearchListings(props) {
             (listing) => (
               <p align="center">
                 <Typography variant="h5" component="div" align="center">
-                  {listing.home_street}
-                  ,
-                  {listing.home_city}
-                  ,
-                  {listing.home_state_code}
+                  {listing.home_street}, {listing.home_city}, {listing.home_state_code}
                 </Typography>
                 <Typography variant="h5" className={classes.price} component="div" align="center">
                   $

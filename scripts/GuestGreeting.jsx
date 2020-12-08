@@ -172,75 +172,13 @@ export default function GuestGreeting() {
           <Card className={classes.box}>
             <CardContent>
               <Typography className={classes.pos} align="center">
-                <li>
-                  Frontend: For the frontend, our project contains a landing page, a page to look up real estate, and a page to look up a user’s search history. The frontend was mainly written in
-                  <b>React</b>
-                  {' '}
-                  and styled using
-                  <b>MaterialUI</b>
-                  {' '}
-                  and
-                  <b>CSS</b>
-                  . On the landing page, we used Google and Facebook login buttons as a form of
-                  <b>OAuth</b>
-                  , so that a user could easily login without needing to create a new account.
-                  {' '}
-                </li>
-                <li>
-                  Backend: For our project, we decided to implement the Python microframework
-                  <b>Flask</b>
-                  {' '}
-                  to run the server. In addition, we created functions that would call the various
-                  <b>APIs (Realtor API, Google Maps API, Walkscore API)</b>
-                  {' '}
-                  used in our project. In order to send information between the client and server, we used
-                  <b>Socket.io</b>
-                  {' '}
-                  to send information bi-directionally.
-                </li>
-                <li>
-                  Unit Testing: We created unit tests to make sure that the program is running correctly and could handle edge cases. We created unit tests to test the backend Python code. To create them, we used a Python library called
-                  <b>unittest.</b>
-                </li>
-                <li>
-                  Linting: In order to style our code according to coding patterns and avoid bugs, we used a code analysis tool called
-                  <b>ESLint</b>
-                  {' '}
-                  to lint our Javascript code following Airbnb’s ESLint Rules. We also used
-                  <b>PyLint</b>
-                  {' '}
-                  and
-                  <b>Black</b>
-                  {' '}
-                  to lint our Python code.
-                </li>
-                <li>
-                  Version Control: We used
-                  <b>Git</b>
-                  {' '}
-                  to track changes to our source code. Generally, each group member created their own branches to make different changes, and then we made pull requests in order to merge our code to the main branch. We used
-                  <b>GitHub</b>
-                  {' '}
-                  to remotely host our code repository.
-                  {' '}
-                </li>
-                <li>
-                  CI/CD: We used
-                  <b>Heroku</b>
-                  {' '}
-                  to deploy our project live. We also used
-                  <b>CircleCI</b>
-                  {' '}
-                  in order to continuously test our code whenever a change was made to the remote repository. If a bug was detected by CircleCI, we would instantly be notified of it and make necessary changes to our code.
-                  {' '}
-                </li>
-                <li>
-                  Agile development: To iteratively develop our project, we used agile development practices in order to track our progress. This included creating a
-                  <b>Kanban board</b>
-                  {' '}
-                  on GitHub Projects to track the status of each tasks required for completion and track each members’ contribution.
-                  {' '}
-                </li>
+                <li>Frontend: For the frontend, our project contains a landing page, a page to look up real estate, and a page to look up a user’s search history. The frontend was mainly written in <b>React</b> and styled using <b>MaterialUI</b> and <b>CSS</b>. On the landing page, we used Google and Facebook login buttons as a form of <b>OAuth</b>, so that a user could easily login without needing to create a new account. </li>
+                <li>Backend: For our project, we decided to implement the Python microframework <b>Flask</b> to run the server. In addition, we created functions that would call the various <b>APIs (Realtor API, Google Maps API, Walkscore API)</b> used in our project. In order to send information between the client and server, we used <b>Socket.io</b> to send information bi-directionally.</li>
+                <li>Unit Testing: We created unit tests to make sure that the program is running correctly and could handle edge cases. We created unit tests to test the backend Python code. To create them, we used a Python library called <b>unittest.</b></li>
+                <li>Linting: In order to style our code according to coding patterns and avoid bugs, we used a code analysis tool called <b>ESLint</b> to lint our Javascript code following Airbnb’s ESLint Rules. We also used <b>PyLint</b> and <b>Black</b> to lint our Python code.</li>
+                <li>Version Control: We used <b>Git</b> to track changes to our source code. Generally, each group member created their own branches to make different changes, and then we made pull requests in order to merge our code to the main branch. We used <b>GitHub</b> to remotely host our code repository. </li>
+                <li>CI/CD: We used <b>Heroku</b> to deploy our project live. We also used <b>CircleCI</b> in order to continuously test our code whenever a change was made to the remote repository. If a bug was detected by CircleCI, we would instantly be notified of it and make necessary changes to our code. </li>
+                <li>Agile development: To iteratively develop our project, we used agile development practices in order to track our progress. This included creating a <b>Kanban board</b> on GitHub Projects to track the status of each tasks required for completion and track each members’ contribution. </li>
               </Typography>
             </CardContent>
           </Card>
