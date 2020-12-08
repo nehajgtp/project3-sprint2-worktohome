@@ -79,8 +79,10 @@ def get_homes(city, state_code, min_price, max_price, absolute_address):
                     image = property_instance["thumbnail"]
                 else:
                     image = "DEFAULT_IMAGE"
-                if property_instance["price"] >= min_price and \
-                property_instance["price"] <= max_price:
+                if (
+                        property_instance["price"] >= min_price
+                        and property_instance["price"] <= max_price
+                ):
                     pass
                 else:
                     continue
@@ -91,7 +93,9 @@ def get_homes(city, state_code, min_price, max_price, absolute_address):
                     + " ,"
                     + property_instance["address"]["state_code"]
                 )
-                iframe_url = google_maps_api.generate_iframe_url(origin_place_id, destination_place_id)
+                iframe_url = google_maps_api.generate_iframe_url(
+                    origin_place_id, destination_place_id
+                )
                 now = datetime.now()
                 directions_result = GMAPS.directions(
                     absolute_address,
@@ -188,7 +192,9 @@ def nearby_homes(property_id, min_price, max_price, absolute_address):
                     + " , "
                     + geocode_result[0]["address_components"][4]["long_name"]
                 )
-                iframe_url = google_maps_api.generate_iframe_url(origin_place_id, destination_place_id)
+                iframe_url = google_maps_api.generate_iframe_url(
+                    origin_place_id, destination_place_id
+                )
                 print(iframe_url)
                 now = datetime.now()
                 directions_result = GMAPS.directions(
@@ -254,8 +260,6 @@ def nearby_homes(property_id, min_price, max_price, absolute_address):
         print("getHomes API : Something Else", err)
     except IndexError as out_of_bound:
         print("nearby: No results found for this address!")
-
-
 
 
 # getHomes("teaneck","nj",300000,70000000)
