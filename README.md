@@ -1,4 +1,4 @@
-# Project 3 - MVP (Work to Home)
+# Project 3 - Sprint 2 (Work to Home)
 Make your home search more convenient to your commute!
 
 ## Setting up React and PSQL
@@ -13,6 +13,13 @@ Make your home search more convenient to your commute!
     f)  `npm install socket.io-client --save` 
     g) `pip install googlemaps`
     h) `npm install react-router-dom`
+    i) `npm install react-facebook-login`
+    k) `npm install react-spinners`
+    l) `npm install style-loader css-loader --save`
+    m) `npm i react-iframe`
+    n) `npm install —save @material-ui/core`
+    o) `npm install react-number-format --save`
+    p) `npm install --save prop-types`
     If you see any error messages, make sure you use  `sudo pip`  or  `sudo npm`. If it says "pip cannot be found", run  `which pip`  and use  `sudo [path to pip from which pip] install`
 
 > Getting PSQL to work with Python
