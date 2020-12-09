@@ -1,6 +1,8 @@
 # Work to Home (Sprint 2)
 Make your home search more convenient to your commute!
 
+https://worktohome-sprint2.herokuapp.com/
+
 ## Setting up React and PSQL
 > React
 0.  `cd ~/environment && git clone https://github.com/Sresht/lect11/ && cd lect11`
