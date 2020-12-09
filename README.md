@@ -245,3 +245,11 @@ Matthew Meeh
  - I built the frontend to search history.
   -I created a new file email_file.py to create an email class to fix the linting error for the global variable email.
  - Fixed bugs with the some of the testing files, when they broke on my branches (not including the merging branches). 
+ 
+ Ali Alkhateeb
+ - Wrote functions to calculate the commute times between every listing.
+ - Implemented the functionality to display dynamic google maps for each listing.
+ - Wrote code to convert a google place id  to an appropriate iframe link.
+ - formatted api code and linted files using pylint/eslint.
+ - General Troubleshooting.
+ - PM for week 4.
