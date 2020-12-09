@@ -1,4 +1,4 @@
-# Project 3 - Sprint 2 (Work to Home)
+# Work to Home (Sprint 2)
 Make your home search more convenient to your commute!
 
 ## Setting up React and PSQL
@@ -83,7 +83,11 @@ Make your home search more convenient to your commute!
     RAPID_API_KEY='YOUR_RAPID_API_KEY'
     GOOGLE_API_KEY='YOUR_GOOGLE_API_KEY'
 9. Install googlemaps dependency  ``` pip install -U googlemaps ```
-  
+
+> Setting up Walkscore API
+  1. Go to [this](https://www.walkscore.com/professional/api-sign-up.php) link.
+  2. Sign up with your information.
+  3. When you receive your API Key in an email from Walkscore, add the key to the `apikeys.env` file as `WALKSCORE_API_KEY='YOUR_API_KEY'`
 
 ## Enabling read/write from SQLAlchemy
 
@@ -99,12 +103,10 @@ There's a special file that you need to enable your db admin password to work fo
     c) Preview Running Application (might have to clear your cache by doing a hard refresh)
 
 ## Unit Testing
-Unit Testing\
 1. run `pip install coverage`
 2. To run all tests, run `coverage run -m --source=. unittest testing/*.py`
 
 ## Heroku Deployment
-### Heroku Deployment
 1. Go to heroku.com and make an account
 2. Run `npm install -g heroku` for heroku installation
 3. Run the following commands (enter login when prompted to do so):
